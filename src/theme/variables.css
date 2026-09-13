@@ -1,0 +1,12 @@
+/* colores sacados del figma */
+:root {
+  --azul: #2e5aa5;
+  --azul-claro: #bfd3fb;
+  --gris-boton: #c7cdd8;
+  --fondo: #f6f7fb;
+  --texto: #111111;
+
+  --ion-font-family: 'Inter', sans-serif;
+  --ion-background-color: var(--fondo);
+  --ion-text-color: var(--texto);
+}
