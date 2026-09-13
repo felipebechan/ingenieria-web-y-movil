@@ -1,0 +1,163 @@
+.app-page {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-barra {
+  background: var(--azul);
+  height: 38px;
+  flex-shrink: 0;
+}
+
+.app-cuerpo {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: white;
+  border-right: 1px solid #e3e6ee;
+}
+
+.app-main {
+  flex: 1;
+  min-width: 0;
+  padding: 30px 40px 50px;
+}
+
+.app-ola {
+  background-image: url('/img/ola.svg');
+  background-repeat: repeat-x;
+  background-size: 72px 60px;
+  height: 60px;
+}
+
+/* ---------- header ---------- */
+.app-header {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.app-titulos h1 {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0 0 10px;
+}
+
+.app-titulos p {
+  font-size: 20px;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.app-header .app-ola {
+  flex: 1;
+  margin: 0 -40px 0 16px;
+}
+
+.header-acciones {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 3px solid var(--azul);
+  background: #dfe6f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar ion-icon {
+  font-size: 28px;
+  color: var(--azul);
+}
+
+.flechita {
+  font-size: 16px;
+}
+
+.app-footer {
+  background: var(--azul);
+  color: white;
+  text-align: center;
+  font-size: 12px;
+  padding: 10px 16px;
+}
+
+/* cosas del celu que en desktop no van */
+.header-movil,
+.ola-movil-app {
+  display: none;
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 768px) {
+  .app-barra,
+  .sidebar,
+  .app-header {
+    display: none;
+  }
+
+  .header-movil {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--azul);
+    color: white;
+    padding: 20px 14px 14px;
+  }
+
+  .header-movil ion-menu-button {
+    --color: white;
+    font-size: 26px;
+  }
+
+  .header-movil p {
+    margin: 0;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .header-movil .campana {
+    color: white;
+    margin-right: 10px;
+  }
+
+  .header-movil .campana ion-icon {
+    font-size: 30px;
+  }
+
+  .ola-movil-app {
+    display: block;
+    margin-top: -6px;
+  }
+
+  .app-main {
+    padding: 10px 16px 30px;
+  }
+}

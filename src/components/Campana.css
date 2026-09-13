@@ -1,0 +1,28 @@
+.campana {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--azul);
+  padding: 0;
+}
+
+.campana ion-icon {
+  font-size: 34px;
+}
+
+.badge-chico {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  background: #e04a3a;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

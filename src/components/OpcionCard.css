@@ -1,0 +1,117 @@
+.opcion {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: white;
+  border: 1px solid #e6e8ee;
+  border-radius: 14px;
+  padding: 26px 20px;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.opcion:hover {
+  border-color: #b9c8e8;
+}
+
+.opcion-icono {
+  width: 68px;
+  height: 68px;
+  border-radius: 22px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1d2a44;
+}
+
+.opcion-icono ion-icon {
+  font-size: 34px;
+}
+
+.icono-azul {
+  background: #4f7fdc;
+}
+
+.icono-celeste {
+  background: #a9c1ee;
+}
+
+.icono-blanco {
+  color: white;
+}
+
+.opcion-texto {
+  flex: 1;
+}
+
+.opcion h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: #111;
+}
+
+.opcion p {
+  font-size: 15px;
+  color: #555b66;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.opcion-flecha {
+  font-size: 22px;
+  color: #1d2a44;
+}
+
+.badge-opcion {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: #e04a3a;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .opcion {
+    padding: 14px 16px;
+  }
+
+  .opcion-icono {
+    width: 54px;
+    height: 54px;
+    border-radius: 18px;
+  }
+
+  .opcion-icono ion-icon {
+    font-size: 28px;
+  }
+
+  .opcion h3 {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+
+  .opcion p {
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  .badge-opcion {
+    top: 10px;
+    right: 12px;
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+  }
+}
