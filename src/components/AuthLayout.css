@@ -1,0 +1,226 @@
+.auth-page {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* barras azules de arriba y abajo */
+.barra {
+  background-color: var(--azul);
+  height: 38px;
+  flex-shrink: 0;
+}
+
+.auth-contenido {
+  flex: 1;
+}
+
+/* ---------- header ---------- */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 30px 30px 20px;
+}
+
+.header-logo {
+  width: 120px;
+  margin-right: 24px;
+}
+
+.header-textos h1 {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0 0 10px;
+}
+
+.header-textos p {
+  font-size: 22px;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.ola {
+  background-image: url('/img/ola.svg');
+  background-repeat: repeat-x;
+  background-size: 72px 60px;
+  height: 60px;
+}
+
+.header .ola {
+  flex: 1;
+  margin-left: 20px;
+}
+
+.ola-movil {
+  display: none;
+}
+
+/* ---------- las 2 tarjetas ---------- */
+.tarjetas {
+  display: flex;
+  justify-content: center;
+  gap: 240px;
+  padding: 0 20px;
+}
+
+.tarjeta {
+  background: white;
+  border: 1px solid #e6e8ee;
+  border-radius: 12px;
+  width: 450px;
+  padding: 24px 36px;
+}
+
+/* asi no se estira cuando el formulario es mas largo (registro) */
+.info {
+  align-self: flex-start;
+}
+
+.info h2 {
+  color: var(--azul);
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 50px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.item-icono {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--azul-claro);
+  border: 3px solid var(--azul);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 20px;
+}
+
+.item-icono ion-icon {
+  font-size: 38px;
+  color: var(--azul);
+}
+
+.item p {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ---------- formulario ---------- */
+.form {
+  padding-top: 70px;
+}
+
+.form h3 {
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0 0 24px;
+}
+
+.botones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+}
+
+.boton {
+  width: 160px;
+  height: 48px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.boton-azul {
+  background: var(--azul);
+}
+
+.boton-gris {
+  background: var(--gris-boton);
+}
+
+.footer {
+  text-align: center;
+  font-size: 15px;
+  padding: 90px 16px 26px;
+  margin: 0;
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 12px 20px 0;
+  }
+
+  .header-logo {
+    width: 70px;
+    margin: 0 0 0 10px;
+  }
+
+  .header-textos h1 {
+    font-size: 30px;
+    margin-bottom: 6px;
+  }
+
+  .header-textos p {
+    font-size: 18px;
+  }
+
+  /* la ola va abajo del header en el celu */
+  .header .ola {
+    display: none;
+  }
+
+  .ola-movil {
+    display: block;
+    margin-top: 6px;
+  }
+
+  .ola-abajo {
+    opacity: 0.45;
+    margin-top: 20px;
+  }
+
+  .tarjetas {
+    display: block;
+    padding: 0 20px;
+  }
+
+  .info {
+    display: none;
+  }
+
+  .tarjeta {
+    width: auto;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .form {
+    padding-top: 26px;
+  }
+
+  .form h3 {
+    font-size: 20px;
+  }
+
+  .footer {
+    padding: 30px 16px 8px;
+  }
+}

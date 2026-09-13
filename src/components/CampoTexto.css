@@ -1,0 +1,37 @@
+.campo-label {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 6px 6px;
+}
+
+.campo {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #333;
+  border-radius: 6px;
+  background: white;
+  padding: 0 14px;
+  height: 48px;
+  margin-bottom: 50px;
+}
+
+.campo ion-input {
+  flex: 1;
+  min-width: 0; /* sin esto se sale del cuadro en el celu */
+  --padding-start: 0;
+  --placeholder-color: #8a8f99;
+  font-size: 16px;
+}
+
+.campo ion-icon {
+  font-size: 22px;
+}
+
+.ver-pass {
+  background: none;
+  border: none;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+}
