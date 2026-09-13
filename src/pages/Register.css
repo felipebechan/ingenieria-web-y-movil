@@ -1,0 +1,42 @@
+/* lo demas viene de AuthLayout.css, aca solo lo que cambia */
+
+.form-registro h3 {
+  margin-bottom: 40px;
+}
+
+.form-registro .campo {
+  margin-bottom: 36px;
+}
+
+.terminos {
+  display: flex;
+  align-items: center;
+  margin: -6px 0 40px 8px;
+}
+
+.terminos input {
+  width: 16px;
+  height: 16px;
+  margin: 0 12px 0 0;
+  accent-color: var(--azul);
+}
+
+.terminos label {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.terminos a {
+  color: #2f62e0;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .form-registro h3 {
+    margin-bottom: 70px;
+  }
+
+  .form-registro .campo {
+    margin-bottom: 32px;
+  }
+}
