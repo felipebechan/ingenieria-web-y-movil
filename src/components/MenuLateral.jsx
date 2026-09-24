@@ -6,7 +6,7 @@ import {
   addCircleOutline,
   notificationsOutline,
   personOutline,
-  helpCircleOutline,
+  helpCircleOutline
 } from 'ionicons/icons'
 import { usuario } from '../data/datosPrueba'
 import './MenuLateral.css'
@@ -16,6 +16,7 @@ const opciones = [
   { nombre: 'Inicio', icono: homeOutline, ruta: '/inicio' },
   { nombre: 'Mis solicitudes', icono: documentTextOutline },
   { nombre: 'Nueva solicitud', icono: addCircleOutline },
+  { nombre: 'Ingresar reclamo', iconoCustom: '/img/alerta-usuario.svg', ruta: '/ingreso-reclamo' }, 
   { nombre: 'Notificaciones', icono: notificationsOutline, badge: usuario.notificaciones },
   { nombre: 'Mi perfil', icono: personOutline },
   { nombre: 'Ayuda', icono: helpCircleOutline },
@@ -44,7 +45,11 @@ function MenuLateral() {
           className={location.pathname === opcion.ruta ? 'menu-item activo' : 'menu-item'}
           onClick={() => irA(opcion)}
         >
-          <IonIcon icon={opcion.icono} />
+          {opcion.iconoCustom ? (
+            <IonIcon src={opcion.iconoCustom} />
+          ) : (
+            <IonIcon icon={opcion.icono} />
+          )}
           <span>{opcion.nombre}</span>
           {opcion.badge > 0 && <span className="badge">{opcion.badge}</span>}
         </button>

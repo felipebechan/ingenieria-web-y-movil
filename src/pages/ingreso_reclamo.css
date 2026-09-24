@@ -1,0 +1,109 @@
+.contenedor-relativo {
+  position: relative;
+  min-height: 70vh; 
+  display: flex;
+  flex-direction: column;
+}
+
+.titulo-principal {
+  color: #1a56a8; 
+  font-weight: bold;
+  font-size: 32px; 
+  margin-bottom: 24px;
+  padding-left: 8px;
+}
+
+.contenedor-formulario {
+  width: 100%;
+  max-width: 450px; 
+  padding-left: 8px; 
+  position: relative;
+  z-index: 1; 
+}
+
+.campo-contenedor {
+  margin-bottom: 16px;
+}
+
+.etiqueta-campo {
+  font-weight: 700;
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+  padding-left: 4px;
+}
+
+.input-bordeado {
+  --background: #ffffff;
+  border: 1px solid #8e8e8e;
+  border-radius: 6px;
+  --padding-start: 12px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.terminos-contenedor {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding-left: 4px;
+}
+
+.texto-terminos {
+  margin-left: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.link-azul {
+  color: #1a56a8;
+  cursor: pointer;
+}
+
+.boton-enviar {
+  --background: #1a56a8;
+  --border-radius: 6px;
+  margin-top: 10px;
+  margin-left: 0; 
+  font-weight: bold;
+  height: 40px;
+  width: 160px; 
+}
+
+.contenedor-imagen-fondo {
+  position: absolute;
+  bottom: -16px; 
+  right: -16px;  
+  z-index: 0;
+  pointer-events: none;
+}
+
+.imagen-costa {
+  width: 100vw;
+  max-width: 600px; 
+  display: block;
+}
+
+/* Diseño responsivo para celulares */
+@media (max-width: 768px) {
+  .contenedor-formulario {
+    max-width: 100%;
+  }
+  
+  .boton-enviar {
+    width: 100%;
+  }
+
+  .contenedor-imagen-fondo {
+    position: relative;
+    bottom: 0;
+    right: 0;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+  }
+}
