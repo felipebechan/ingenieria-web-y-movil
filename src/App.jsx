@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Inicio from './pages/Inicio'
 import MenuLateral from './components/MenuLateral'
+import IngresoReclamo from './pages/ingreso_reclamo'
 
 setupIonicReact()
 
@@ -23,11 +24,12 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/inicio" element={<Inicio />} />
+          <Route path="/ingreso-reclamo" element={<IngresoReclamo />} />
+          
           <Route path="/" element={<Navigate to="/login" replace />} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
   )
 }
-
 export default App
