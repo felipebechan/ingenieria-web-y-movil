@@ -1,0 +1,147 @@
+/* ---------- Vista de Mis Solicitudes ---------- */
+.mis-solicitudes-seccion {
+  width: 100%;
+}
+
+.mis-solicitudes-titulo {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--azul);
+  margin: 16px 0 24px;
+}
+
+/* ---------- Tabla Desktop ---------- */
+.tabla-solicitudes-contenedor {
+  background: white;
+  border: 1px solid #dbe0ea;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.tabla-solicitudes {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.tabla-solicitudes thead tr {
+  background: #cfd4db;
+}
+
+.tabla-solicitudes th {
+  padding: 18px 22px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1e24;
+  text-align: left;
+  letter-spacing: 0.2px;
+}
+
+.tabla-solicitudes th.th-col-estado {
+  text-align: center;
+}
+
+.tabla-solicitudes tbody tr {
+  border-bottom: 1px solid #edf0f5;
+  transition: background-color 0.15s ease;
+}
+
+.tabla-solicitudes tbody tr:last-child {
+  border-bottom: none;
+}
+
+.tabla-solicitudes tbody tr:hover {
+  background-color: #f7f9fd;
+}
+
+.tabla-solicitudes td {
+  padding: 18px 22px;
+  color: #2b303a;
+  vertical-align: middle;
+}
+
+.td-col-folio {
+  font-weight: 600;
+  color: #1c2230;
+}
+
+.td-col-fecha {
+  color: #333842;
+}
+
+.td-col-tipo {
+  color: #333842;
+}
+
+.td-col-desc {
+  color: #333842;
+}
+
+.td-col-estado {
+  text-align: center;
+}
+
+/* ---------- Lista Móvil ---------- */
+.solicitudes-movil-lista {
+  display: none;
+}
+
+/* ---------- Responsive (Mobile) ---------- */
+@media (max-width: 768px) {
+  .mis-solicitudes-titulo {
+    font-size: 24px;
+    margin: 10px 0 16px;
+  }
+
+  .tabla-solicitudes-contenedor {
+    display: none;
+  }
+
+  .solicitudes-movil-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .solicitud-tarjeta-movil {
+    background: white;
+    border: 1px solid #e3e6ee;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  }
+
+  .solicitud-tarjeta-movil-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .solicitud-tarjeta-folio {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1c2230;
+  }
+
+  .solicitud-tarjeta-desc {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1c2230;
+    margin: 0 0 6px;
+  }
+
+  .solicitud-tarjeta-pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #5c6270;
+  }
+
+  .solicitud-tarjeta-flecha {
+    font-size: 18px;
+    color: #8c93a0;
+  }
+}

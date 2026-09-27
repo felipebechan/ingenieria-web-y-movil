@@ -1,4 +1,4 @@
-import { IonIcon } from '@ionic/react'
+import { IonIcon, useIonRouter } from '@ionic/react'
 import { chevronForward, arrowForward } from 'ionicons/icons'
 import AppLayout from '../components/AppLayout'
 import OpcionCard from '../components/OpcionCard'
@@ -7,6 +7,7 @@ import { usuario, opcionesInicio, solicitudes } from '../data/datosPrueba'
 import './Inicio.css'
 
 function Inicio() {
+  const router = useIonRouter()
   // solo el primer nombre para el saludo
   const primerNombre = usuario.nombre.split(' ')[0]
 
@@ -17,11 +18,11 @@ function Inicio() {
           <h2>Hola {primerNombre}, bienvenido a Santo Domingo Responde</h2>
           <p>Gestiona tus solicitudes, revisa su estado y mantente informado sobre cada avance desde un solo lugar.</p>
           <div className="bienvenida-links">
-            <a href="#">Ingresa nuevos reclamos</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); router.push('/ingreso-reclamo'); }}>Ingresa nuevos reclamos</a>
             <span>|</span>
-            <a href="#">Consulta el estado de tus trámites</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); router.push('/mis-solicitudes'); }}>Consulta el estado de tus trámites</a>
             <span>|</span>
-            <a href="#">Recibe notificaciones de avance</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); }}>Recibe notificaciones de avance</a>
           </div>
         </div>
         <img src="/img/playa.png" alt="Costa de Santo Domingo" />
@@ -36,6 +37,7 @@ function Inicio() {
             icono={opcion.icono}
             color={opcion.color}
             badge={opcion.badge}
+            onClick={() => opcion.ruta && router.push(opcion.ruta)}
           />
         ))}
       </section>
@@ -43,7 +45,9 @@ function Inicio() {
       <section className="recientes">
         <div className="recientes-top">
           <h2>Mis solicitudes recientes</h2>
-          <a href="#">Ver todas <IonIcon icon={arrowForward} /></a>
+          <a href="#" onClick={(e) => { e.preventDefault(); router.push('/mis-solicitudes'); }}>
+            Ver todas <IonIcon icon={arrowForward} />
+          </a>
         </div>
 
         {/* tabla para desktop */}

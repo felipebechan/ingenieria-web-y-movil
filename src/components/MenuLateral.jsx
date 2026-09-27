@@ -6,7 +6,8 @@ import {
   addCircleOutline,
   notificationsOutline,
   personOutline,
-  helpCircleOutline
+  helpCircleOutline,
+  logOutOutline
 } from 'ionicons/icons'
 import { usuario } from '../data/datosPrueba'
 import './MenuLateral.css'
@@ -14,12 +15,13 @@ import './MenuLateral.css'
 // las que no tienen ruta es porque todavia no hacemos esa pagina
 const opciones = [
   { nombre: 'Inicio', icono: homeOutline, ruta: '/inicio' },
-  { nombre: 'Mis solicitudes', icono: documentTextOutline },
+  { nombre: 'Mis solicitudes', icono: documentTextOutline, ruta: '/mis-solicitudes' },
   { nombre: 'Nueva solicitud', icono: addCircleOutline },
   { nombre: 'Ingresar reclamo', iconoCustom: '/img/alerta-usuario.svg', ruta: '/ingreso-reclamo' }, 
   { nombre: 'Notificaciones', icono: notificationsOutline, badge: usuario.notificaciones },
   { nombre: 'Mi perfil', icono: personOutline },
   { nombre: 'Ayuda', icono: helpCircleOutline },
+  { nombre: 'Cerrar Sesión', icono: logOutOutline, ruta: '/login' },
 ]
 
 function MenuLateral() {

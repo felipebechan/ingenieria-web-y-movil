@@ -6,6 +6,7 @@ import Register from './pages/Register'
 import Inicio from './pages/Inicio'
 import MenuLateral from './components/MenuLateral'
 import IngresoReclamo from './pages/ingreso_reclamo'
+import MisSolicitudes from './pages/MisSolicitudes'
 
 setupIonicReact()
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/inicio" element={<Inicio />} />
           <Route path="/ingreso-reclamo" element={<IngresoReclamo />} />
+          <Route path="/mis-solicitudes" element={<MisSolicitudes />} />
           
           <Route path="/" element={<Navigate to="/login" replace />} />
         </IonRouterOutlet>
