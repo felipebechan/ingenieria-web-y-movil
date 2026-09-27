@@ -1,0 +1,241 @@
+/* ---------- Revisar Solicitudes (Panel Funcionario) ---------- */
+.revisar-solicitudes-seccion {
+  width: 100%;
+}
+
+.revisar-solicitudes-titulo {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--azul);
+  margin: 12px 0 24px;
+}
+
+/* ---------- Filtros Desktop ---------- */
+.filtros-desktop {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.filtro-columna {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 320px;
+}
+
+.filtro-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a202c;
+}
+
+.filtro-input {
+  width: 100%;
+  height: 42px;
+  background: white;
+  border: 1.5px solid #8e9db3;
+  border-radius: 8px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #2d3748;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.filtro-input::placeholder {
+  color: #8c9ba5;
+  font-size: 14px;
+}
+
+.filtro-select {
+  cursor: pointer;
+  appearance: auto;
+}
+
+/* ---------- Filtros Móvil ---------- */
+.filtros-movil {
+  display: none;
+}
+
+/* ---------- Tabla Desktop ---------- */
+.tabla-admin-contenedor {
+  background: white;
+  border: 1px solid #d3dae6;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.tabla-admin {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.tabla-admin thead tr {
+  background: #d4d9e2;
+}
+
+.tabla-admin th {
+  padding: 16px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a202c;
+  text-align: left;
+}
+
+.tabla-admin th.th-estado {
+  text-align: center;
+}
+
+.tabla-admin th.th-accion {
+  width: 50px;
+  text-align: center;
+}
+
+.tabla-admin tbody tr {
+  border-bottom: 1px solid #edf2f7;
+}
+
+.tabla-admin tbody tr:last-child {
+  border-bottom: none;
+}
+
+.tabla-admin td {
+  padding: 16px 20px;
+  color: #2d3748;
+  vertical-align: middle;
+}
+
+.td-folio {
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.td-fecha {
+  color: #333842;
+}
+
+.td-ciudadano {
+  color: #1a202c;
+}
+
+.td-tipo {
+  color: #333842;
+}
+
+.td-estado {
+  text-align: center;
+}
+
+.td-accion {
+  text-align: center;
+}
+
+.icono-puntos {
+  font-size: 22px;
+  color: #4a5568;
+  vertical-align: middle;
+}
+
+/* ---------- Móvil (Tarjetas) ---------- */
+.solicitudes-movil-contenedor {
+  display: none;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .revisar-solicitudes-titulo {
+    font-size: 24px;
+    margin: 10px 0 16px;
+  }
+
+  .filtros-desktop,
+  .tabla-admin-contenedor {
+    display: none;
+  }
+
+  .filtros-movil {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .solicitudes-movil-label {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a202c;
+  }
+
+  .filtro-input-movil {
+    width: 100%;
+    height: 44px;
+    background: white;
+    border: 1.5px solid #8e9db3;
+    border-radius: 8px;
+    padding: 0 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #2d3748;
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  .filtro-input-movil::placeholder {
+    color: #8c9ba5;
+    font-size: 14px;
+  }
+
+  .solicitudes-movil-contenedor {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .tarjeta-solicitud-figma {
+    background: white;
+    border: 1.5px solid #d4dbe8;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  }
+
+  .tarjeta-folio-titulo {
+    font-size: 14px;
+    font-weight: 800;
+    color: #1a202c;
+    margin: 0 0 10px;
+    letter-spacing: 0.3px;
+  }
+
+  .tarjeta-linea {
+    font-size: 14px;
+    color: #1a202c;
+    margin: 0 0 6px;
+  }
+
+  .tarjeta-campo {
+    font-weight: 700;
+  }
+
+  .tarjeta-badge-wrapper {
+    display: flex;
+    margin-top: 10px;
+  }
+
+  .badge-con-flecha {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .badge-flecha-icono {
+    font-size: 15px;
+    color: #718096;
+    margin-left: -6px;
+    margin-right: 4px;
+  }
+}
