@@ -1,40 +1,69 @@
-import { add, documentTextOutline, notifications } from 'ionicons/icons'
+import { notifications } from 'ionicons/icons'
 
-// datos de prueba hasta que tengamos el backend
+// Datos de prueba idénticos a los prototipos de Figma
 
 export const usuario = {
   nombre: 'Juan López',
   notificaciones: 3,
 }
 
+// 3 tarjetas superiores de la pantalla Inicio (idénticas a Figma)
 export const opcionesInicio = [
   {
+    id: 1,
     titulo: 'Nueva solicitud',
-    texto: 'Ingresa un reclamo, solicitud o sugerencia.',
-    icono: add,
-    color: 'icono-azul',
+    texto: 'Ingresa un reclamo,\nsolicitud o sugerencia',
+    icono: notifications,
     ruta: '/ingreso-reclamo',
   },
   {
-    titulo: 'Mis solicitudes',
-    texto: 'Revisa el estado de tus trámites.',
-    icono: documentTextOutline,
-    color: 'icono-celeste',
-    ruta: '/mis-solicitudes',
+    id: 2,
+    titulo: 'Nueva solicitud',
+    texto: 'Ingresa un reclamo,\nsolicitud o sugerencia',
+    icono: notifications,
+    ruta: '/ingreso-reclamo',
   },
   {
-    titulo: 'Notificaciones',
-    texto: 'Mantente al día con novedades.',
+    id: 3,
+    titulo: 'Nueva solicitud',
+    texto: 'Ingresa un reclamo,\nsolicitud o sugerencia',
     icono: notifications,
-    color: 'icono-azul icono-blanco',
-    badge: usuario.notificaciones,
+    ruta: '/ingreso-reclamo',
   },
 ]
 
+// Solicitudes recientes para la pantalla Inicio (idénticas a Figma)
 export const solicitudes = [
-  { folio: '#SD-2026-0012', fecha: '05 sept 2026', tipo: 'Alumbrado', descripcion: 'Foco apagado en Av. del Mar', estado: 'En revisión' },
-  { folio: '#SD-2026-0011', fecha: '01 sept 2026', tipo: 'Aseo y limpieza', descripcion: 'Retiro de escombros', estado: 'En proceso' },
-  { folio: '#SD-2026-0010', fecha: '28 ago 2026', tipo: 'Áreas verdes', descripcion: 'Poda de árboles en plaza', estado: 'Resuelto' },
+  {
+    id: 1,
+    folio: '#AAABBB123',
+    fecha: '13/09/2026',
+    tipo: 'Alumbrado',
+    descripcion: 'Foco apagado ...',
+    descripcionMovil: 'Foco apagado en Av....',
+    estado: 'En revisión',
+    estadoMovil: 'Resuelto'
+  },
+  {
+    id: 2,
+    folio: '#AAABBB123',
+    fecha: '13/09/2026',
+    tipo: 'Alumbrado',
+    descripcion: 'Foco apagado ...',
+    descripcionMovil: 'Foco apagado en Av....',
+    estado: 'En revisión',
+    estadoMovil: 'Resuelto'
+  },
+  {
+    id: 3,
+    folio: '#AAABBB123',
+    fecha: '13/09/2026',
+    tipo: 'Alumbrado',
+    descripcion: 'Foco apagado ...',
+    descripcionMovil: 'Foco apagado en Av....',
+    estado: 'En revisión',
+    estadoMovil: 'Resuelto'
+  },
 ]
 
 export const misSolicitudes = [
@@ -46,3 +75,33 @@ export const misSolicitudes = [
   { id: 6, folio: '#AAABBB123', fecha: '13/09/2026', tipo: 'Permisos', descripcion: 'Permisos...', estado: 'Rechazado' },
 ]
 
+// Casos exactos visibles en la pantalla de Figma del Administrador
+export const solicitudesFigma = [
+  {
+    id: 1,
+    folio: '#AAABBB123',
+    fecha: '13/09/2026',
+    ciudadano: 'Ana Paula',
+    tipo: 'Foco apagado ...',
+    tipoMovil: 'Alumbrado',
+    estado: 'En revisión'
+  },
+  {
+    id: 2,
+    folio: '#AAABBB124',
+    fecha: '13/09/2026',
+    ciudadano: 'Juan Pérez',
+    tipo: 'Foco apagado ...',
+    tipoMovil: 'Alumbrado',
+    estado: 'En revisión'
+  },
+  {
+    id: 3,
+    folio: '#AAABBB125',
+    fecha: '13/09/2026',
+    ciudadano: 'Daniel carvajal',
+    tipo: 'Foco apagado ...',
+    tipoMovil: 'Alumbrado',
+    estado: 'En revisión'
+  }
+]

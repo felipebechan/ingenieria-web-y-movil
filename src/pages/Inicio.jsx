@@ -1,93 +1,118 @@
+import React from 'react'
 import { IonIcon, useIonRouter } from '@ionic/react'
-import { chevronForward, arrowForward } from 'ionicons/icons'
+import { caretForward } from 'ionicons/icons'
 import AppLayout from '../components/AppLayout'
 import OpcionCard from '../components/OpcionCard'
 import EstadoBadge from '../components/EstadoBadge'
-import { usuario, opcionesInicio, solicitudes } from '../data/datosPrueba'
+import { opcionesInicio, solicitudes } from '../data/datosPrueba'
 import './Inicio.css'
 
 function Inicio() {
   const router = useIonRouter()
-  // solo el primer nombre para el saludo
-  const primerNombre = usuario.nombre.split(' ')[0]
 
   return (
     <AppLayout>
+      {/* Banner de bienvenida idéntico a Figma */}
       <section className="bienvenida">
         <div className="bienvenida-texto">
-          <h2>Hola {primerNombre}, bienvenido a Santo Domingo Responde</h2>
-          <p>Gestiona tus solicitudes, revisa su estado y mantente informado sobre cada avance desde un solo lugar.</p>
+          <h2>Bienvenido a Santo Domingo Responde</h2>
+          <p>
+            Gestiona tus solicitudes, revisa su estado y mantente informado sobre cada avance desde un solo lugar.
+          </p>
           <div className="bienvenida-links">
-            <a href="#" onClick={(e) => { e.preventDefault(); router.push('/ingreso-reclamo'); }}>Ingresa nuevos reclamos</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); router.push('/ingreso-reclamo'); }}>
+              Ingresa nuevos reclamos
+            </a>
             <span>|</span>
-            <a href="#" onClick={(e) => { e.preventDefault(); router.push('/mis-solicitudes'); }}>Consulta el estado de tus trámites</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); router.push('/mis-solicitudes'); }}>
+              Consulta el estado de tus trámites
+            </a>
             <span>|</span>
-            <a href="#" onClick={(e) => { e.preventDefault(); }}>Recibe notificaciones de avance</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); }}>
+              Recibe notificaciones de avance
+            </a>
           </div>
         </div>
         <img src="/img/playa.png" alt="Costa de Santo Domingo" />
       </section>
 
+      {/* 3 Opciones superiores */}
       <section className="opciones">
         {opcionesInicio.map((opcion) => (
           <OpcionCard
-            key={opcion.titulo}
+            key={opcion.id}
             titulo={opcion.titulo}
             texto={opcion.texto}
             icono={opcion.icono}
-            color={opcion.color}
-            badge={opcion.badge}
             onClick={() => opcion.ruta && router.push(opcion.ruta)}
           />
         ))}
       </section>
 
+      {/* Sección Mis solicitudes recientes */}
       <section className="recientes">
-        <div className="recientes-top">
-          <h2>Mis solicitudes recientes</h2>
-          <a href="#" onClick={(e) => { e.preventDefault(); router.push('/mis-solicitudes'); }}>
-            Ver todas <IonIcon icon={arrowForward} />
-          </a>
+        {/* Encabezado Desktop */}
+        <div className="recientes-header-desktop">
+          <h2>Mis solicitudes recientes:</h2>
         </div>
 
-        {/* tabla para desktop */}
+        {/* Encabezado Móvil (con Ver todas → al lado) */}
+        <div className="recientes-header-movil">
+          <h2>
+            Mis solicitudes recientes:{' '}
+            <a
+              href="#"
+              className="ver-todas-link-movil"
+              onClick={(e) => {
+                e.preventDefault()
+                router.push('/mis-solicitudes')
+              }}
+            >
+              Ver todas →
+            </a>
+          </h2>
+        </div>
+
+        {/* Tabla para Desktop (idéntica a Figma) */}
         <div className="tabla-caja">
           <table className="tabla">
             <thead>
               <tr>
-                <th>#</th>
+                <th># Folio</th>
                 <th>Fecha</th>
                 <th>Tipo</th>
                 <th>Descripción</th>
                 <th>Estado</th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
               {solicitudes.map((s) => (
-                <tr key={s.folio}>
-                  <td>{s.folio}</td>
-                  <td>{s.fecha}</td>
-                  <td>{s.tipo}</td>
-                  <td>{s.descripcion}</td>
-                  <td><EstadoBadge estado={s.estado} /></td>
-                  <td><IonIcon icon={chevronForward} /></td>
+                <tr key={s.id}>
+                  <td className="td-inicio-folio">{s.folio}</td>
+                  <td className="td-inicio-fecha">{s.fecha}</td>
+                  <td className="td-inicio-tipo">{s.tipo}</td>
+                  <td className="td-inicio-desc">{s.descripcion}</td>
+                  <td className="td-inicio-estado">
+                    <EstadoBadge estado={s.estado} />
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        {/* en el celu la tabla no cabe asi que van tarjetas */}
+        {/* Tarjetas para Móvil (idénticas a Figma) */}
         <div className="lista-movil">
           {solicitudes.map((s) => (
-            <div className="solicitud-card" key={s.folio}>
-              <div className="solicitud-card-top">
-                <span className="folio">{s.folio}</span>
-                <EstadoBadge estado={s.estado} />
+            <div className="solicitud-card-inicio" key={s.id}>
+              <div className="solicitud-card-inicio-izq">
+                <span className="folio-inicio-movil">{s.folio}</span>
+                <span className="desc-inicio-movil">{s.descripcionMovil}</span>
               </div>
-              <p className="solicitud-desc">{s.descripcion}</p>
-              <p className="solicitud-info">{s.tipo} · {s.fecha}</p>
+              <div className="solicitud-card-inicio-der">
+                <EstadoBadge estado={s.estadoMovil} />
+                <IonIcon icon={caretForward} className="flecha-card-movil" />
+              </div>
             </div>
           ))}
         </div>
