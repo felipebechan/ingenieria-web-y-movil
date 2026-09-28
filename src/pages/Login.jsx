@@ -1,18 +1,30 @@
 import { useState } from 'react'
-import { useIonRouter } from '@ionic/react'
+import { IonButton, useIonRouter } from '@ionic/react'
 import { mailOutline } from 'ionicons/icons'
 import AuthLayout from '../components/AuthLayout'
 import CampoTexto from '../components/CampoTexto'
+import { usePerfil } from '../context/PerfilContext'
 
 function Login() {
   const router = useIonRouter()
+  const { iniciarSesion } = usePerfil()
   const [correo, setCorreo] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
 
-  const iniciarSesion = () => {
-    // por ahora no valida nada, falta conectar con el backend
-    console.log('login', correo, password)
-    router.push('/inicio')
+  const entrar = () => {
+    if (!correo || !password) {
+      setError('Debes ingresar tu correo y tu contraseña')
+      return
+    }
+
+    // Mientras no exista el backend el rol se decide por el correo:
+    // los correos @muni.cl entran como funcionario y el resto como ciudadano
+    const esFuncionario = correo.endsWith('@muni.cl')
+
+    setError('')
+    iniciarSesion(esFuncionario ? 'admin' : 'usuario')
+    router.push(esFuncionario ? '/revisar-solicitudes' : '/inicio')
   }
 
   return (
@@ -29,9 +41,11 @@ function Login() {
       />
       <CampoTexto label="Contraseña *" type="password" value={password} onChange={setPassword} />
 
+      {error && <p className="mensaje-error">{error}</p>}
+
       <div className="botones">
-        <button className="boton boton-azul" onClick={iniciarSesion}>Iniciar Sesión</button>
-        <button className="boton boton-gris" onClick={() => router.push('/register')}>Crear cuenta</button>
+        <IonButton className="boton boton-azul" onClick={entrar}>Iniciar Sesión</IonButton>
+        <IonButton className="boton boton-gris" onClick={() => router.push('/register')}>Crear cuenta</IonButton>
       </div>
     </AuthLayout>
   )

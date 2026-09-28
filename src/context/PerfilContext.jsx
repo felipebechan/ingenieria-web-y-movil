@@ -1,30 +1,34 @@
-import React, { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 const PerfilContext = createContext()
 
+// Guarda la sesion y el rol del usuario. Lo dejamos en localStorage para que
+// no se pierda al recargar. Cuando tengamos el backend (EP2) aca va el token JWT.
 export function PerfilProvider({ children }) {
-  // Por defecto siempre inicia en el perfil del usuario (Juan López)
-  const [perfil, setPerfil] = useState('usuario')
+  const [perfil, setPerfil] = useState(() => localStorage.getItem('perfil'))
 
-  const cambiarPerfil = (nuevo) => {
-    if (nuevo === 'admin' || nuevo === 'usuario') {
-      setPerfil(nuevo)
-    }
+  const iniciarSesion = (rol) => {
+    const nuevo = rol === 'admin' ? 'admin' : 'usuario'
+    localStorage.setItem('perfil', nuevo)
+    setPerfil(nuevo)
   }
 
-  const alternarPerfil = () => {
-    setPerfil((prev) => (prev === 'admin' ? 'usuario' : 'admin'))
+  const cerrarSesion = () => {
+    localStorage.removeItem('perfil')
+    setPerfil(null)
   }
 
+  const haySesion = perfil !== null
   const esAdmin = perfil === 'admin'
 
   return (
     <PerfilContext.Provider
       value={{
         perfil,
+        haySesion,
         esAdmin,
-        cambiarPerfil,
-        alternarPerfil
+        iniciarSesion,
+        cerrarSesion
       }}
     >
       {children}

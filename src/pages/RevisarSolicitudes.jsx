@@ -3,35 +3,25 @@ import { IonIcon } from '@ionic/react'
 import { ellipsisHorizontal, chevronDown } from 'ionicons/icons'
 import AppLayout from '../components/AppLayout'
 import EstadoBadge from '../components/EstadoBadge'
-import { solicitudesFigma } from '../data/datosPrueba'
+import { buscarSolicitudesAdmin } from '../services/solicitudesService'
 import './RevisarSolicitudes.css'
 
 function RevisarSolicitudes() {
   const [busqueda, setBusqueda] = useState('')
   const [filtroEstado, setFiltroEstado] = useState('')
 
-  // Filtrado solo sobre los 3 casos exactos de Figma
-  const solicitudesFiltradas = useMemo(() => {
-    return solicitudesFigma.filter((item) => {
-      const matchBusqueda =
-        item.folio.toLowerCase().includes(busqueda.toLowerCase()) ||
-        item.ciudadano.toLowerCase().includes(busqueda.toLowerCase()) ||
-        item.tipo.toLowerCase().includes(busqueda.toLowerCase()) ||
-        item.tipoMovil.toLowerCase().includes(busqueda.toLowerCase())
-
-      const matchEstado =
-        !filtroEstado || item.estado.toLowerCase().includes(filtroEstado.toLowerCase())
-
-      return matchBusqueda && matchEstado
-    })
-  }, [busqueda, filtroEstado])
+  // el filtro vive en el service, aca solo guardamos lo que escribe el funcionario
+  const solicitudesFiltradas = useMemo(
+    () => buscarSolicitudesAdmin(busqueda, filtroEstado),
+    [busqueda, filtroEstado]
+  )
 
   return (
     <AppLayout>
       <div className="revisar-solicitudes-seccion">
         <h1 className="revisar-solicitudes-titulo">Revisar solicitudes</h1>
 
-        {/* Filtros Desktop */}
+        {/* filtros desktop */}
         <div className="filtros-desktop">
           <div className="filtro-columna">
             <label className="filtro-label" htmlFor="busqueda-input">
@@ -66,7 +56,7 @@ function RevisarSolicitudes() {
           </div>
         </div>
 
-        {/* Buscador Móvil */}
+        {/* buscador del celular */}
         <div className="filtros-movil">
           <label className="solicitudes-movil-label">Solicitudes:</label>
           <input
@@ -78,7 +68,7 @@ function RevisarSolicitudes() {
           />
         </div>
 
-        {/* Tabla Desktop (idéntica a Figma) */}
+        {/* tabla para desktop */}
         <div className="tabla-admin-contenedor">
           <table className="tabla-admin">
             <thead>
@@ -110,7 +100,7 @@ function RevisarSolicitudes() {
           </table>
         </div>
 
-        {/* Tarjetas Móvil (idénticas a Figma) */}
+        {/* tarjetas para el celular */}
         <div className="solicitudes-movil-contenedor">
           {solicitudesFiltradas.map((item) => (
             <div className="tarjeta-solicitud-figma" key={item.id}>
@@ -119,7 +109,7 @@ function RevisarSolicitudes() {
                 <span className="tarjeta-campo">Ciudadano:</span> {item.ciudadano}
               </p>
               <p className="tarjeta-linea">
-                <span className="tarjeta-campo">Tipo:</span> {item.tipoMovil}
+                <span className="tarjeta-campo">Tipo:</span> {item.tipo}
               </p>
               <div className="tarjeta-badge-wrapper">
                 <div className="badge-con-flecha">

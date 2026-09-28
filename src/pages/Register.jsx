@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useIonRouter } from '@ionic/react'
+import { IonButton, useIonRouter } from '@ionic/react'
 import { mailOutline, personOutline, idCardOutline, callOutline } from 'ionicons/icons'
 import AuthLayout from '../components/AuthLayout'
 import CampoTexto from '../components/CampoTexto'
@@ -15,22 +15,42 @@ function Register() {
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
   const [terminos, setTerminos] = useState(false)
+  const [error, setError] = useState('')
+  const [cuentaCreada, setCuentaCreada] = useState(false)
+
+  // validaciones simples de formato
+  const correoValido = (valor) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)
+  const rutValido = (valor) => /^[0-9.]{7,12}-[0-9kK]$/.test(valor)
 
   const crearCuenta = () => {
     if (!nombre || !correo || !rut || !telefono || !password) {
-      alert('Completa todos los campos')
+      setError('Completa todos los campos obligatorios')
+      return
+    }
+    if (!correoValido(correo)) {
+      setError('El correo no tiene un formato válido (ejemplo: nombre@correo.cl)')
+      return
+    }
+    if (!rutValido(rut)) {
+      setError('El RUT debe ir con el formato 12.345.678-9')
+      return
+    }
+    if (password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres')
       return
     }
     if (password !== password2) {
-      alert('Las contraseñas no coinciden')
+      setError('Las contraseñas no coinciden')
       return
     }
     if (!terminos) {
-      alert('Tienes que aceptar los términos y condiciones')
+      setError('Tienes que aceptar los términos y condiciones')
       return
     }
-    // falta mandarlo al backend
-    console.log('registro', nombre, correo, rut, telefono)
+
+    // falta mandarlo al backend, por ahora solo avisamos que quedo listo
+    setError('')
+    setCuentaCreada(true)
   }
 
   return (
@@ -52,9 +72,14 @@ function Register() {
           </label>
         </div>
 
+        {error && <p className="mensaje-error">{error}</p>}
+        {cuentaCreada && (
+          <p className="mensaje-ok">Cuenta creada. Ya puedes iniciar sesión con tu correo.</p>
+        )}
+
         <div className="botones">
-          <button className="boton boton-azul" onClick={crearCuenta}>Crear cuenta</button>
-          <button className="boton boton-gris" onClick={() => router.push('/login', 'back')}>Volver</button>
+          <IonButton className="boton boton-azul" onClick={crearCuenta}>Crear cuenta</IonButton>
+          <IonButton className="boton boton-gris" onClick={() => router.push('/login', 'back')}>Volver</IonButton>
         </div>
       </div>
     </AuthLayout>
