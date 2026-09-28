@@ -425,7 +425,7 @@ La jerarquía de navegación delimita de manera nítida el entorno público del 
 
 ## 6. Bocetos UI/UX
 
-[Figma - Prototipo de UI/UX (Municipalidad Santo Domingo)](https://www.figma.com/design/JikLataPUhoOYYd2Q8mXPN/Municipalidad---Ingenier%C3%ADa-Web-y-M%C3%B3vil?node-id=51-907&t=W8P07MjhLURe7epO-1)
+[Figma - Prototipo de UI/UX (Municipalidad Santo Domingo)](https://www.figma.com/design/JikLataPUhoOYYd2Q8mXPN/Municipalidad---Ingenier%C3%ADa-Web-y-M%C3%B3vil?node-id=0-1&t=Vqj4RTxgDktNZwDX-1)
 
 ---
 
