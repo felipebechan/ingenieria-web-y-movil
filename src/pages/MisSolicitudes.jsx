@@ -1,18 +1,20 @@
-import React from 'react'
-import { IonIcon } from '@ionic/react'
+import { IonIcon, useIonRouter } from '@ionic/react'
 import { chevronForward } from 'ionicons/icons'
 import AppLayout from '../components/AppLayout'
 import EstadoBadge from '../components/EstadoBadge'
-import { misSolicitudes } from '../data/datosPrueba'
+import { obtenerMisSolicitudes } from '../services/solicitudesService'
 import './MisSolicitudes.css'
 
 function MisSolicitudes() {
+  const router = useIonRouter()
+  const misSolicitudes = obtenerMisSolicitudes()
+
   return (
     <AppLayout>
       <div className="mis-solicitudes-seccion">
         <h1 className="mis-solicitudes-titulo">Mis solicitudes</h1>
 
-        {/* Tabla para pantallas Desktop */}
+        {/* tabla para desktop */}
         <div className="tabla-solicitudes-contenedor">
           <table className="tabla-solicitudes">
             <thead>
@@ -26,7 +28,7 @@ function MisSolicitudes() {
             </thead>
             <tbody>
               {misSolicitudes.map((item) => (
-                <tr key={item.id}>
+                <tr key={item.id} className="fila-clickeable" onClick={() => router.push(`/solicitud/${item.id}`)}>
                   <td className="td-col-folio">{item.folio}</td>
                   <td className="td-col-fecha">{item.fecha}</td>
                   <td className="td-col-tipo">{item.tipo}</td>
@@ -40,10 +42,14 @@ function MisSolicitudes() {
           </table>
         </div>
 
-        {/* Tarjetas para vista móvil */}
+        {/* tarjetas para el celular */}
         <div className="solicitudes-movil-lista">
           {misSolicitudes.map((item) => (
-            <div className="solicitud-tarjeta-movil" key={item.id}>
+            <div
+              className="solicitud-tarjeta-movil"
+              key={item.id}
+              onClick={() => router.push(`/solicitud/${item.id}`)}
+            >
               <div className="solicitud-tarjeta-movil-top">
                 <span className="solicitud-tarjeta-folio">{item.folio}</span>
                 <EstadoBadge estado={item.estado} />

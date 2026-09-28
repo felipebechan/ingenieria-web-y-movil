@@ -248,3 +248,12 @@
     color: #1c2230;
   }
 }
+
+/* las filas llevan al detalle de la solicitud */
+.fila-clickeable {
+  cursor: pointer;
+}
+
+.fila-clickeable:hover {
+  background: #f6f8fc;
+}

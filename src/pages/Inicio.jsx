@@ -4,15 +4,17 @@ import { caretForward } from 'ionicons/icons'
 import AppLayout from '../components/AppLayout'
 import OpcionCard from '../components/OpcionCard'
 import EstadoBadge from '../components/EstadoBadge'
-import { opcionesInicio, solicitudes } from '../data/datosPrueba'
+import { opcionesInicio } from '../data/datosPrueba'
+import { obtenerSolicitudesRecientes } from '../services/solicitudesService'
 import './Inicio.css'
 
 function Inicio() {
   const router = useIonRouter()
+  const solicitudes = obtenerSolicitudesRecientes()
 
   return (
     <AppLayout>
-      {/* Banner de bienvenida idéntico a Figma */}
+      {/* Banner de bienvenida */}
       <section className="bienvenida">
         <div className="bienvenida-texto">
           <h2>Bienvenido a Santo Domingo Responde</h2>
@@ -36,7 +38,7 @@ function Inicio() {
         <img src="/img/playa.png" alt="Costa de Santo Domingo" />
       </section>
 
-      {/* 3 Opciones superiores */}
+      {/* accesos rapidos */}
       <section className="opciones">
         {opcionesInicio.map((opcion) => (
           <OpcionCard
@@ -49,14 +51,14 @@ function Inicio() {
         ))}
       </section>
 
-      {/* Sección Mis solicitudes recientes */}
+      {/* ultimas solicitudes del vecino */}
       <section className="recientes">
-        {/* Encabezado Desktop */}
+        {/* encabezado desktop */}
         <div className="recientes-header-desktop">
           <h2>Mis solicitudes recientes:</h2>
         </div>
 
-        {/* Encabezado Móvil (con Ver todas → al lado) */}
+        {/* encabezado movil, con el Ver todas al lado */}
         <div className="recientes-header-movil">
           <h2>
             Mis solicitudes recientes:{' '}
@@ -73,7 +75,7 @@ function Inicio() {
           </h2>
         </div>
 
-        {/* Tabla para Desktop (idéntica a Figma) */}
+        {/* tabla para desktop */}
         <div className="tabla-caja">
           <table className="tabla">
             <thead>
@@ -87,7 +89,7 @@ function Inicio() {
             </thead>
             <tbody>
               {solicitudes.map((s) => (
-                <tr key={s.id}>
+                <tr key={s.id} className="fila-clickeable" onClick={() => router.push(`/solicitud/${s.id}`)}>
                   <td className="td-inicio-folio">{s.folio}</td>
                   <td className="td-inicio-fecha">{s.fecha}</td>
                   <td className="td-inicio-tipo">{s.tipo}</td>
@@ -101,16 +103,20 @@ function Inicio() {
           </table>
         </div>
 
-        {/* Tarjetas para Móvil (idénticas a Figma) */}
+        {/* en el celular la tabla no cabe, van tarjetas */}
         <div className="lista-movil">
           {solicitudes.map((s) => (
-            <div className="solicitud-card-inicio" key={s.id}>
+            <div
+              className="solicitud-card-inicio"
+              key={s.id}
+              onClick={() => router.push(`/solicitud/${s.id}`)}
+            >
               <div className="solicitud-card-inicio-izq">
                 <span className="folio-inicio-movil">{s.folio}</span>
                 <span className="desc-inicio-movil">{s.descripcionMovil}</span>
               </div>
               <div className="solicitud-card-inicio-der">
-                <EstadoBadge estado={s.estadoMovil} />
+                <EstadoBadge estado={s.estado} />
                 <IonIcon icon={caretForward} className="flecha-card-movil" />
               </div>
             </div>

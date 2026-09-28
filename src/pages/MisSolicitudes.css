@@ -145,3 +145,16 @@
     color: #8c93a0;
   }
 }
+
+/* las filas y tarjetas llevan al detalle de la solicitud */
+.fila-clickeable {
+  cursor: pointer;
+}
+
+.fila-clickeable:hover {
+  background: #f6f8fc;
+}
+
+.solicitud-tarjeta-movil {
+  cursor: pointer;
+}
