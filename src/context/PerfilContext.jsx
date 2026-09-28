@@ -6,16 +6,21 @@ const PerfilContext = createContext()
 // no se pierda al recargar. Cuando tengamos el backend (EP2) aca va el token JWT.
 export function PerfilProvider({ children }) {
   const [perfil, setPerfil] = useState(() => localStorage.getItem('perfil'))
+  const [nombre, setNombre] = useState(() => localStorage.getItem('nombre') || '')
 
-  const iniciarSesion = (rol) => {
+  const iniciarSesion = (rol, nombreUsuario) => {
     const nuevo = rol === 'admin' ? 'admin' : 'usuario'
     localStorage.setItem('perfil', nuevo)
+    localStorage.setItem('nombre', nombreUsuario)
     setPerfil(nuevo)
+    setNombre(nombreUsuario)
   }
 
   const cerrarSesion = () => {
     localStorage.removeItem('perfil')
+    localStorage.removeItem('nombre')
     setPerfil(null)
+    setNombre('')
   }
 
   const haySesion = perfil !== null
@@ -25,6 +30,7 @@ export function PerfilProvider({ children }) {
     <PerfilContext.Provider
       value={{
         perfil,
+        nombre,
         haySesion,
         esAdmin,
         iniciarSesion,

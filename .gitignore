@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# la pauta del ramo no va al repositorio
+*.pdf

@@ -10,6 +10,7 @@ import {
 import AppLayout from '../components/AppLayout'
 import EstadoBadge from '../components/EstadoBadge'
 import { obtenerSolicitudPorId } from '../services/solicitudesService'
+import { usePerfil } from '../context/PerfilContext'
 import './DetalleSolicitud.css'
 
 // Pasos del seguimiento, se van pintando segun el estado de la solicitud
@@ -24,6 +25,11 @@ function pasosCompletados(estado) {
 function DetalleSolicitud() {
   const { id } = useParams()
   const router = useIonRouter()
+  const { esAdmin } = usePerfil()
+
+  // el funcionario vuelve a su bandeja y el vecino a sus solicitudes
+  const rutaVolver = esAdmin ? '/revisar-solicitudes' : '/mis-solicitudes'
+  const textoVolver = esAdmin ? 'Volver a revisar solicitudes' : 'Volver a mis solicitudes'
   const solicitud = obtenerSolicitudPorId(id)
 
   if (!solicitud) {
@@ -32,8 +38,8 @@ function DetalleSolicitud() {
         <div className="detalle-seccion">
           <h1 className="detalle-titulo">Detalle de solicitud</h1>
           <p>No encontramos esa solicitud.</p>
-          <button className="volver-link" onClick={() => router.push('/mis-solicitudes')}>
-            Volver a mis solicitudes
+          <button className="volver-link" onClick={() => router.push(rutaVolver)}>
+            {textoVolver}
           </button>
         </div>
       </AppLayout>
@@ -118,8 +124,8 @@ function DetalleSolicitud() {
           </ol>
         </div>
 
-        <button className="volver-link" onClick={() => router.push('/mis-solicitudes', 'back')}>
-          Volver a mis solicitudes
+        <button className="volver-link" onClick={() => router.push(rutaVolver, 'back')}>
+          {textoVolver}
         </button>
       </div>
     </AppLayout>

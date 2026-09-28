@@ -1,4 +1,5 @@
-import { IonIcon, useIonRouter } from '@ionic/react'
+import { useState } from 'react'
+import { IonIcon, useIonRouter, useIonViewWillEnter } from '@ionic/react'
 import { chevronForward } from 'ionicons/icons'
 import AppLayout from '../components/AppLayout'
 import EstadoBadge from '../components/EstadoBadge'
@@ -7,7 +8,10 @@ import './MisSolicitudes.css'
 
 function MisSolicitudes() {
   const router = useIonRouter()
-  const misSolicitudes = obtenerMisSolicitudes()
+  const [misSolicitudes, setMisSolicitudes] = useState(obtenerMisSolicitudes())
+
+  // al volver a la pantalla recargamos por si se ingreso una solicitud nueva
+  useIonViewWillEnter(() => setMisSolicitudes(obtenerMisSolicitudes()))
 
   return (
     <AppLayout>

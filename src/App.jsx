@@ -47,7 +47,7 @@ function App() {
 
             <Route
               path="/solicitud/:id"
-              element={<RutaProtegida rol="usuario"><DetalleSolicitud /></RutaProtegida>}
+              element={<RutaProtegida><DetalleSolicitud /></RutaProtegida>}
             />
 
             {/* Rutas protegidas del funcionario */}

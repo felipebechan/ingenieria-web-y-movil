@@ -487,7 +487,11 @@ Todavía no existe backend (se implementa en la Entrega Parcial 2), por lo que l
 | Ciudadano | `juan@correo.cl` | cualquiera | `/inicio` |
 | Funcionario | `carlos@muni.cl` | cualquiera | `/revisar-solicitudes` |
 
+También se puede crear una cuenta nueva desde el registro: queda guardada en el navegador y se puede iniciar sesión con ese correo.
+
 Si se intenta abrir una ruta privada sin haber iniciado sesión, la aplicación redirige a `/login`. Si un ciudadano intenta entrar a la bandeja del funcionario (o al revés), la aplicación lo devuelve a la vista que sí le corresponde.
+
+Los reclamos que se ingresan y las cuentas que se crean se guardan en el `localStorage` del navegador, así que se puede probar el flujo completo sin backend. Para partir de cero basta con borrar los datos del sitio en el navegador.
 
 ---
 
@@ -513,7 +517,8 @@ src/
 * Siete pantallas en Figma (login, registro, inicio, mis solicitudes, ingreso de reclamo, panel del funcionario y detalle de solicitud), en versión web y móvil.
 * Seis vistas funcionando en Ionic con React: login, registro, inicio, ingreso de reclamo, mis solicitudes, detalle de solicitud y bandeja del funcionario.
 * Rutas públicas y protegidas con React Router, con redirección al login y diferenciación por rol.
-* Validaciones de formulario con mensajes de error visibles y confirmación al enviar un reclamo.
+* Validaciones de formulario con mensajes de error visibles, RUT con dígito verificador y confirmación con folio al enviar un reclamo.
+* Ingreso de reclamos que quedan guardados y aparecen en "Mis solicitudes" y en la bandeja del funcionario, con folio y fecha generados automáticamente (RF-02).
 * Diseño responsivo para escritorio y móvil, con menú lateral en escritorio y menú desplegable en móvil.
 
 ### Planificado para las siguientes entregas
@@ -521,3 +526,4 @@ src/
 * Autenticación real con JWT y contraseñas cifradas con bcrypt (hoy la sesión es solo del lado del frontend).
 * Consulta pública por folio, perfil de usuario, notificaciones, ayuda y las vistas de administrador.
 * Carga de fotografías y geolocalización en el formulario de reclamo.
+* Pantallas de notificaciones, ayuda y perfil: en el menú aparecen atenuadas porque todavía no existen.

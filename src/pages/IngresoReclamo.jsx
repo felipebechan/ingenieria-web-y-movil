@@ -5,11 +5,22 @@ import {
   useIonToast 
 } from '@ionic/react';
 import { useIonRouter } from '@ionic/react';
-import AppLayout from '../components/AppLayout'; 
+import AppLayout from '../components/AppLayout';
+import TerminosLink from '../components/TerminosLink';
+import { crearSolicitud } from '../services/solicitudesService';
+import { usePerfil } from '../context/PerfilContext'; 
 import './IngresoReclamo.css';
+
+// para guardar el tipo con el nombre que se ve en las tablas
+const TIPOS = {
+  alumbrado: 'Alumbrado',
+  basura: 'Aseo y limpieza',
+  bache: 'Vialidad'
+};
 
 const IngresoReclamo = () => {
   const router = useIonRouter();
+  const { nombre } = usePerfil();
   const [formulario, setFormulario] = useState({
     tipo: '',
     direccion: '',
@@ -36,10 +47,15 @@ const IngresoReclamo = () => {
       return;
     }
 
-    console.log("Datos listos para enviar al backend:", formulario);
+    // se guarda en el navegador hasta que exista el backend
+    const solicitud = crearSolicitud({
+      ...formulario,
+      tipo: TIPOS[formulario.tipo] || formulario.tipo,
+      ciudadano: nombre
+    });
 
     presentToast({
-      message: '¡Reclamo enviado con éxito!',
+      message: `Reclamo enviado. Tu folio es ${solicitud.folio}`,
       duration: 3000,
       color: 'success',
       icon: 'checkmark-circle-outline'
@@ -107,7 +123,7 @@ const IngresoReclamo = () => {
               onIonChange={(e) => manejarCambio('terminos', e.detail.checked)}
             />
             <IonLabel className="texto-terminos">
-              Acepto los <span className="link-azul">términos y condiciones.</span>
+              Acepto los <TerminosLink />
             </IonLabel>
           </div>
 
