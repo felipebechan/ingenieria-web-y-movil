@@ -24,6 +24,7 @@ Plataforma web y móvil para la gestión y seguimiento de reclamos ciudadanos (O
    * [Roles del Sistema](#roles-del-sistema)
    * [Definición de conceptos](#definición-de-conceptos)
    * [Proto-personas](#proto-personas)
+   * [Supuestos y fuentes utilizadas](#supuestos-y-fuentes-utilizadas)
 4. [Requerimientos](#4-requerimientos)
    * [Requerimientos Funcionales por Rol](#requerimientos-funcionales-por-rol)
    * [Funcionalidades Transversales](#funcionalidades-transversales)
@@ -35,6 +36,7 @@ Plataforma web y móvil para la gestión y seguimiento de reclamos ciudadanos (O
    * [4. Flujos de Tareas (Task Flows)](#4-flujos-de-tareas-task-flows)
    * [5. Puntos críticos de interacción](#5-puntos-críticos-de-interacción)
    * [6. Justificación Técnica](#6-justificación-técnica)
+   * [7. Coherencia entre dispositivos](#coherencia-de-la-experiencia-entre-dispositivos)
 6. [Bocetos UI/UX](#6-bocetos-uiux)
 7. [Tecnologías y Librerías Utilizadas](#7-tecnologías-y-librerías-utilizadas)
 8. [Instalación y Ejecución](#8-instalación-y-ejecución)
@@ -144,6 +146,25 @@ Dentro de este grupo se encuentran:
   * Sistemas lentos o con procesos de guardado engorrosos.
 * **Funcionalidades de la aplicación que utilizaría:** Panel general de gestión, derivación interdepartamental, semáforo de plazos legales, carga de informes y emisión de oficios de respuesta formal.
 * **Dispositivo y contexto probable de acceso:** Computador de escritorio en su puesto de trabajo municipal durante la jornada laboral.
+
+### Supuestos y fuentes utilizadas
+
+Las tres proto-personas anteriores **no corresponden a usuarios reales ni a resultados de entrevistas**. Son una caracterización preliminar construida a partir de fuentes secundarias y de supuestos razonados por el equipo, tal como permite esta etapa del proyecto.
+
+**Fuentes consultadas**
+* Ley N° 18.695, Orgánica Constitucional de Municipalidades, y la Ordenanza OIRS, de donde se toman el plazo legal de respuesta de 20 días corridos y las obligaciones de respuesta formal del municipio.
+* Ley N° 19.628 sobre protección de la vida privada, que fundamenta el tratamiento reservado de los datos de contacto del vecino.
+* Sitio institucional de la Municipalidad de Santo Domingo y sus canales de atención actuales, para identificar las unidades técnicas (Obras, Tránsito, Aseo y Ornato, Seguridad Ciudadana) y los tipos de requerimiento existentes.
+* Revisión de plataformas OIRS de otros municipios chilenos, usadas como referencia de las funcionalidades esperadas: ingreso con folio, seguimiento en línea y derivación interna.
+
+**Supuestos asumidos**
+* Que una parte relevante de los vecinos accede principalmente desde el teléfono, por lo que el diseño parte por la versión móvil.
+* Que existe un grupo con menor familiaridad digital, especialmente adultos mayores, que necesita pasos simples y textos legibles.
+* Que el funcionario trabaja desde un computador de escritorio durante su jornada y necesita ver varios requerimientos a la vez.
+* Que el vecino valora tener un comprobante con folio, porque hoy la incertidumbre sobre si el reclamo fue recibido es uno de los motivos de desconfianza.
+* Que el volumen de solicitudes de una comuna de este tamaño permite una bandeja única con filtros, sin necesidad de asignación automática.
+
+Estos supuestos deberán validarse con usuarios reales en etapas posteriores del proyecto.
 
 ---
 
@@ -421,11 +442,27 @@ Las funcionalidades de mayor frecuencia (ingresar reclamo y consultar folio) son
 #### Claridad estructural
 La jerarquía de navegación delimita de manera nítida el entorno público del entorno protegido, evitando confusiones y garantizando que los procesos internos de gestión municipal queden debidamente resguardados.
 
+#### Coherencia de la experiencia entre dispositivos
+Las dos versiones muestran la misma información y permiten las mismas acciones; lo que cambia es la forma de presentarla:
+
+| Elemento | Escritorio | Móvil |
+| :--- | :--- | :--- |
+| Navegación | Menú lateral fijo, siempre visible | Menú desplegable con botón de hamburguesa, con las mismas opciones y en el mismo orden |
+| Encabezado | Título, campana y usuario en una franja superior | Barra azul compacta con hamburguesa, título y campana |
+| Listados | Tabla con todas las columnas | Tarjetas con los datos principales (folio, descripción y estado) |
+| Formularios | Una columna centrada junto a la imagen de apoyo | Una columna a ancho completo, sin la imagen |
+| Detalle | Tres tarjetas en fila y el historial horizontal | Tarjetas apiladas y el historial en vertical |
+
+Los colores, los íconos, los nombres de las opciones y los estados de las solicitudes son los mismos en ambas versiones, de modo que quien usa la aplicación en el teléfono y después en el computador reconoce de inmediato dónde está.
+
+#### Escalabilidad
+La separación en `pages`, `components`, `routes` y `services` permite agregar vistas nuevas sin tocar las existentes: una pantalla nueva se suma como una ruta más dentro de `App.jsx` y, si es privada, se envuelve con `RutaProtegida`. Al concentrar el acceso a los datos en `services`, el cambio de los datos de prueba a la API del backend no obliga a modificar las pantallas.
+
 ---
 
 ## 6. Bocetos UI/UX
 
-[Figma - Prototipo de UI/UX (Municipalidad Santo Domingo)](https://www.figma.com/design/JikLataPUhoOYYd2Q8mXPN/Municipalidad---Ingenier%C3%ADa-Web-y-M%C3%B3vil?node-id=51-907&t=W8P07MjhLURe7epO-1)
+[Figma - Prototipo de UI/UX (Municipalidad Santo Domingo)](https://www.figma.com/design/JikLataPUhoOYYd2Q8mXPN/Municipalidad---Ingenier%C3%ADa-Web-y-M%C3%B3vil?node-id=0-1&t=Vqj4RTxgDktNZwDX-1)
 
 ---
 
