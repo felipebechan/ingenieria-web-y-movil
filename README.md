@@ -35,9 +35,11 @@ Plataforma web y móvil para la gestión y seguimiento de reclamos ciudadanos (O
    * [4. Flujos de Tareas (Task Flows)](#4-flujos-de-tareas-task-flows)
    * [5. Puntos críticos de interacción](#5-puntos-críticos-de-interacción)
    * [6. Justificación Técnica](#6-justificación-técnica)
-6. [Bocetos UX/UI](#6-bocetos-uxui)
+6. [Bocetos UI/UX](#6-bocetos-uiux)
 7. [Tecnologías y Librerías Utilizadas](#7-tecnologías-y-librerías-utilizadas)
 8. [Instalación y Ejecución](#8-instalación-y-ejecución)
+9. [Estructura del proyecto](#9-estructura-del-proyecto)
+10. [Estado de la entrega (EP1)](#10-estado-de-la-entrega-ep1)
 
 ---
 
@@ -200,34 +202,36 @@ Los requerimientos no funcionales establecen las condiciones de calidad, rendimi
 La aplicación considera rutas públicas y rutas protegidas según el perfil autenticado.
 
 #### Rutas públicas
-| Ruta | Vista | Descripción |
-| :--- | :--- | :--- |
-| `/login` | Inicio de sesión | Permite al usuario ingresar a la plataforma con sus credenciales. |
-| `/registro` | Registro de usuario | Permite crear una nueva cuenta ciudadana ingresando datos de identificación. |
-| `/consulta-folio` | Consulta pública | Permite verificar el estado de un reclamo mediante el código de folio y RUT. |
+| Ruta | Vista | Estado | Descripción |
+| :--- | :--- | :--- | :--- |
+| `/login` | Inicio de sesión | Implementada en EP1 | Permite al usuario ingresar a la plataforma con sus credenciales. |
+| `/register` | Registro de usuario | Implementada en EP1 | Permite crear una nueva cuenta ciudadana ingresando datos de identificación. |
+| `/consulta-folio` | Consulta pública | Planificada | Permite verificar el estado de un reclamo mediante el código de folio y RUT. |
 
 #### Rutas protegidas del Ciudadano
-| Ruta | Vista | Descripción |
-| :--- | :--- | :--- |
-| `/ciudadano/inicio` | Inicio Ciudadano | Despliega resumen de trámites activos y accesos directos principales. |
-| `/ciudadano/reclamos/nuevo` | Nuevo Requerimiento | Formulario estructurado para registrar una solicitud o reclamo con fotos y ubicación. |
-| `/ciudadano/mis-solicitudes` | Mis Solicitudes | Pantalla de seguimiento y listado completo de trámites y reclamos ingresados por el vecino, con visualización de folio, fecha, tipo y estado actual. |
-| `/ciudadano/reclamos/:id` | Detalle del Requerimiento | Muestra la trazabilidad, unidad asignada, plazos de respuesta y resolución final. |
-| `/ciudadano/perfil` | Perfil de Usuario | Consulta y actualización de datos de contacto y preferencias de notificación. |
+| Ruta | Vista | Estado | Descripción |
+| :--- | :--- | :--- | :--- |
+| `/inicio` | Inicio Ciudadano | Implementada en EP1 | Despliega el resumen de trámites activos y los accesos directos principales. |
+| `/ingreso-reclamo` | Nueva solicitud | Implementada en EP1 | Formulario para registrar una solicitud o reclamo con tipo, dirección y descripción. |
+| `/mis-solicitudes` | Mis Solicitudes | Implementada en EP1 | Listado completo de trámites del vecino, con folio, fecha, tipo, descripción y estado. |
+| `/solicitud/:id` | Detalle de la solicitud | Implementada en EP1 | Muestra la información, la descripción, la evidencia y el historial de seguimiento. |
+| `/perfil` | Perfil de Usuario | Planificada | Consulta y actualización de datos de contacto y preferencias de notificación. |
 
 #### Rutas protegidas del Funcionario
-| Ruta | Vista | Descripción |
-| :--- | :--- | :--- |
-| `/funcionario/inicio` | Panel de Control OIRS | Resumen operativo, indicadores diarios y alertas de plazos por vencer. |
-| `/funcionario/bandeja` | Bandeja de Reclamos | Listado completo de requerimientos con filtros por estado, unidad y fecha. |
-| `/funcionario/reclamos/:id/atender` | Gestión de Solicitud | Interfaz para derivar internamente, adjuntar informes técnicos y responder formalmente. |
+| Ruta | Vista | Estado | Descripción |
+| :--- | :--- | :--- | :--- |
+| `/revisar-solicitudes` | Bandeja de solicitudes | Implementada en EP1 | Listado de requerimientos con buscador por folio o ciudadano y filtro por estado. |
+| `/revisar-solicitudes/:id` | Gestión de Solicitud | Planificada | Interfaz para derivar internamente, adjuntar informes técnicos y responder formalmente. |
 
 #### Rutas protegidas del Administrador
-| Ruta | Vista | Descripción |
-| :--- | :--- | :--- |
-| `/admin/inicio` | Inicio Administrador | Panel de control general con estadísticas comunales y tiempos de respuesta. |
-| `/admin/usuarios` | Gestión de Usuarios | Administración y asignación de roles para funcionarios municipales. |
-| `/admin/configuracion` | Parámetros del Sistema | Catálogo de direcciones municipales y tipologías de reclamos. |
+Estas vistas corresponden a la arquitectura propuesta y se implementarán en las siguientes entregas, cuando exista backend y gestión real de cuentas.
+
+| Ruta | Vista | Estado | Descripción |
+| :--- | :--- | :--- | :--- |
+| `/admin/inicio` | Inicio Administrador | Planificada | Panel de control general con estadísticas comunales y tiempos de respuesta. |
+| `/admin/usuarios` | Gestión de Usuarios | Planificada | Administración y asignación de roles para funcionarios municipales. |
+| `/admin/configuracion` | Parámetros del Sistema | Planificada | Catálogo de direcciones municipales y tipologías de reclamos. |
+
 
 ---
 
@@ -299,24 +303,24 @@ El administrador es el responsable técnico de la configuración y supervisión 
 * **El administrador no tendrá como función:** La atención directa ni la redacción técnica de respuestas a requerimientos vecinales.
 
 #### Control de acceso a rutas
+
+El control lo hace el componente `RutaProtegida` (`src/routes/RutaProtegida.jsx`), que envuelve cada vista privada: si no hay sesión activa redirige a `/login`, y si el rol no corresponde redirige al inicio del rol que sí tiene permiso.
+
 ```text
+Rutas públicas (no requieren sesión)
 /login
-/registro
-/consulta-folio
+/register
 
-/ciudadano/inicio
-/ciudadano/reclamos/nuevo
-/ciudadano/mis-solicitudes
-/ciudadano/reclamos/:id
-/ciudadano/perfil
+Rutas protegidas del ciudadano (rol "usuario")
+/inicio
+/ingreso-reclamo
+/mis-solicitudes
+/solicitud/:id
 
-/funcionario/inicio
-/funcionario/bandeja
-/funcionario/reclamos/:id/atender
+Rutas protegidas del funcionario (rol "admin")
+/revisar-solicitudes
 
-/admin/inicio
-/admin/usuarios
-/admin/configuracion
+Cualquier otra ruta redirige a /login
 ```
 
 ---
@@ -436,7 +440,7 @@ La jerarquía de navegación delimita de manera nítida el entorno público del 
 | :--- | :--- |
 | `react` | Construcción de la interfaz mediante componentes. |
 | `react-dom` | Renderizado de los componentes React en el navegador. |
-| `@ionic/react` | Proporciona los componentes de interfaz de Ionic (`IonPage`, `IonContent`, `IonButton`, `IonInput`, `IonCard`, entre otros). |
+| `@ionic/react` | Componentes de interfaz de Ionic usados en el proyecto (`IonPage`, `IonContent`, `IonMenu`, `IonMenuButton`, `IonButton`, `IonInput`, `IonSelect`, `IonTextarea`, `IonCheckbox`, `IonIcon` y `useIonToast`). |
 | `@ionic/react-router` | Integración de la navegación de Ionic con React Router. |
 | `react-router-dom` | Definición y gestión de rutas entre las diferentes vistas de la aplicación. |
 | `ionicons` | Biblioteca oficial de iconos utilizada por Ionic. |
@@ -445,8 +449,8 @@ La jerarquía de navegación delimita de manera nítida el entorno público del 
 - **Ionic Framework** (@ionic/react v9)
 - **React** (v19)
 - **JavaScript (JSX)**
-- **Vite**
-- **Capacitor** (para plugins nativos, si aplica)
+- **Vite** (servidor de desarrollo y build)
+- **CSS propio** por vista y componente, con variables en `src/theme/variables.css`
 
 ---
 
@@ -460,10 +464,10 @@ La jerarquía de navegación delimita de manera nítida el entorno público del 
 
 ```bash
 # 1. Clonar el repositorio
-git clone <URL_DEL_REPOSITORIO>
+git clone https://github.com/felipebechan/ingenieria-web-y-movil.git
 
 # 2. Entrar a la carpeta del proyecto
-cd "web practica"
+cd ingenieria-web-y-movil
 
 # 3. Instalar dependencias
 npm install
@@ -473,3 +477,47 @@ npm run dev
 ```
 
 La aplicación quedará disponible en el navegador en: **`http://localhost:5173/`**
+
+### Cómo probar la aplicación
+
+Todavía no existe backend (se implementa en la Entrega Parcial 2), por lo que la sesión se simula en el frontend y el rol se decide según el correo con el que se inicia sesión:
+
+| Perfil | Correo de ejemplo | Contraseña | Vista a la que entra |
+| :--- | :--- | :--- | :--- |
+| Ciudadano | `juan@correo.cl` | cualquiera | `/inicio` |
+| Funcionario | `carlos@muni.cl` | cualquiera | `/revisar-solicitudes` |
+
+Si se intenta abrir una ruta privada sin haber iniciado sesión, la aplicación redirige a `/login`. Si un ciudadano intenta entrar a la bandeja del funcionario (o al revés), la aplicación lo devuelve a la vista que sí le corresponde.
+
+---
+
+## 9. Estructura del proyecto
+
+```text
+src/
+├── components/   Componentes reutilizables (AppLayout, AuthLayout, MenuLateral, CampoTexto, EstadoBadge, OpcionCard, Campana, InfoTarjeta)
+├── context/      PerfilContext: guarda la sesión y el rol del usuario
+├── data/         Datos de prueba mientras no exista backend
+├── pages/        Una carpeta por vista: Login, Register, Inicio, IngresoReclamo, MisSolicitudes, DetalleSolicitud, RevisarSolicitudes
+├── routes/       RutaProtegida: control de sesión y de rol en las rutas privadas
+├── services/     solicitudesService: acceso a los datos; aquí irán las llamadas a la API
+├── theme/        Variables de color y tipografía
+└── App.jsx       Definición de todas las rutas de la aplicación
+```
+
+---
+
+## 10. Estado de la entrega (EP1)
+
+### Implementado en esta entrega
+* Siete pantallas en Figma (login, registro, inicio, mis solicitudes, ingreso de reclamo, panel del funcionario y detalle de solicitud), en versión web y móvil.
+* Seis vistas funcionando en Ionic con React: login, registro, inicio, ingreso de reclamo, mis solicitudes, detalle de solicitud y bandeja del funcionario.
+* Rutas públicas y protegidas con React Router, con redirección al login y diferenciación por rol.
+* Validaciones de formulario con mensajes de error visibles y confirmación al enviar un reclamo.
+* Diseño responsivo para escritorio y móvil, con menú lateral en escritorio y menú desplegable en móvil.
+
+### Planificado para las siguientes entregas
+* Backend en Node.js con API REST, base de datos relacional y archivo `.sql`.
+* Autenticación real con JWT y contraseñas cifradas con bcrypt (hoy la sesión es solo del lado del frontend).
+* Consulta pública por folio, perfil de usuario, notificaciones, ayuda y las vistas de administrador.
+* Carga de fotografías y geolocalización en el formulario de reclamo.
