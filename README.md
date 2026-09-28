@@ -145,6 +145,25 @@ Dentro de este grupo se encuentran:
 * **Funcionalidades de la aplicación que utilizaría:** Panel general de gestión, derivación interdepartamental, semáforo de plazos legales, carga de informes y emisión de oficios de respuesta formal.
 * **Dispositivo y contexto probable de acceso:** Computador de escritorio en su puesto de trabajo municipal durante la jornada laboral.
 
+### Supuestos y fuentes utilizadas
+
+Las tres proto-personas anteriores **no corresponden a usuarios reales ni a resultados de entrevistas**. Son una caracterización preliminar construida a partir de fuentes secundarias y de supuestos razonados por el equipo, tal como permite esta etapa del proyecto.
+
+**Fuentes consultadas**
+* Ley N° 18.695, Orgánica Constitucional de Municipalidades, y la Ordenanza OIRS, de donde se toman el plazo legal de respuesta de 20 días corridos y las obligaciones de respuesta formal del municipio.
+* Ley N° 19.628 sobre protección de la vida privada, que fundamenta el tratamiento reservado de los datos de contacto del vecino.
+* Sitio institucional de la Municipalidad de Santo Domingo y sus canales de atención actuales, para identificar las unidades técnicas (Obras, Tránsito, Aseo y Ornato, Seguridad Ciudadana) y los tipos de requerimiento existentes.
+* Revisión de plataformas OIRS de otros municipios chilenos, usadas como referencia de las funcionalidades esperadas: ingreso con folio, seguimiento en línea y derivación interna.
+
+**Supuestos asumidos**
+* Que una parte relevante de los vecinos accede principalmente desde el teléfono, por lo que el diseño parte por la versión móvil.
+* Que existe un grupo con menor familiaridad digital, especialmente adultos mayores, que necesita pasos simples y textos legibles.
+* Que el funcionario trabaja desde un computador de escritorio durante su jornada y necesita ver varios requerimientos a la vez.
+* Que el vecino valora tener un comprobante con folio, porque hoy la incertidumbre sobre si el reclamo fue recibido es uno de los motivos de desconfianza.
+* Que el volumen de solicitudes de una comuna de este tamaño permite una bandeja única con filtros, sin necesidad de asignación automática.
+
+Estos supuestos deberán validarse con usuarios reales en etapas posteriores del proyecto.
+
 ---
 
 ## 4. Requerimientos
