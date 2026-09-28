@@ -4,10 +4,12 @@ import {
   IonSelect, IonSelectOption, IonButton, IonCheckbox,
   useIonToast 
 } from '@ionic/react';
+import { useIonRouter } from '@ionic/react';
 import AppLayout from '../components/AppLayout'; 
-import './ingreso_reclamo.css';
+import './IngresoReclamo.css';
 
 const IngresoReclamo = () => {
+  const router = useIonRouter();
   const [formulario, setFormulario] = useState({
     tipo: '',
     direccion: '',
@@ -44,6 +46,9 @@ const IngresoReclamo = () => {
     });
 
     setFormulario({ tipo: '', direccion: '', descripcion: '', terminos: false });
+
+    // despues de enviar lo mandamos a ver el listado de sus solicitudes
+    router.push('/mis-solicitudes');
   };
 
   return (
