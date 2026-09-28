@@ -440,6 +440,22 @@ Las funcionalidades de mayor frecuencia (ingresar reclamo y consultar folio) son
 #### Claridad estructural
 La jerarquía de navegación delimita de manera nítida el entorno público del entorno protegido, evitando confusiones y garantizando que los procesos internos de gestión municipal queden debidamente resguardados.
 
+#### Coherencia de la experiencia entre dispositivos
+Las dos versiones muestran la misma información y permiten las mismas acciones; lo que cambia es la forma de presentarla:
+
+| Elemento | Escritorio | Móvil |
+| :--- | :--- | :--- |
+| Navegación | Menú lateral fijo, siempre visible | Menú desplegable con botón de hamburguesa, con las mismas opciones y en el mismo orden |
+| Encabezado | Título, campana y usuario en una franja superior | Barra azul compacta con hamburguesa, título y campana |
+| Listados | Tabla con todas las columnas | Tarjetas con los datos principales (folio, descripción y estado) |
+| Formularios | Una columna centrada junto a la imagen de apoyo | Una columna a ancho completo, sin la imagen |
+| Detalle | Tres tarjetas en fila y el historial horizontal | Tarjetas apiladas y el historial en vertical |
+
+Los colores, los íconos, los nombres de las opciones y los estados de las solicitudes son los mismos en ambas versiones, de modo que quien usa la aplicación en el teléfono y después en el computador reconoce de inmediato dónde está.
+
+#### Escalabilidad
+La separación en `pages`, `components`, `routes` y `services` permite agregar vistas nuevas sin tocar las existentes: una pantalla nueva se suma como una ruta más dentro de `App.jsx` y, si es privada, se envuelve con `RutaProtegida`. Al concentrar el acceso a los datos en `services`, el cambio de los datos de prueba a la API del backend no obliga a modificar las pantallas.
+
 ---
 
 ## 6. Bocetos UI/UX
