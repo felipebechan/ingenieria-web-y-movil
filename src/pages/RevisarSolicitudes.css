@@ -239,3 +239,13 @@
     margin-right: 4px;
   }
 }
+
+/* las filas y tarjetas abren el detalle */
+.fila-clickeable,
+.tarjeta-solicitud {
+  cursor: pointer;
+}
+
+.fila-clickeable:hover {
+  background: #f6f8fc;
+}

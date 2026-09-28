@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react'
-import { IonIcon } from '@ionic/react'
+import { useState, useMemo } from 'react'
+import { IonIcon, useIonRouter } from '@ionic/react'
 import { ellipsisHorizontal, chevronDown } from 'ionicons/icons'
 import AppLayout from '../components/AppLayout'
 import EstadoBadge from '../components/EstadoBadge'
@@ -7,6 +7,7 @@ import { buscarSolicitudesAdmin } from '../services/solicitudesService'
 import './RevisarSolicitudes.css'
 
 function RevisarSolicitudes() {
+  const router = useIonRouter()
   const [busqueda, setBusqueda] = useState('')
   const [filtroEstado, setFiltroEstado] = useState('')
 
@@ -83,7 +84,7 @@ function RevisarSolicitudes() {
             </thead>
             <tbody>
               {solicitudesFiltradas.map((item) => (
-                <tr key={item.id}>
+                <tr key={item.id} className="fila-clickeable" onClick={() => router.push(`/solicitud/${item.id}`)}>
                   <td className="td-folio">{item.folio}</td>
                   <td className="td-fecha">{item.fecha}</td>
                   <td className="td-ciudadano">{item.ciudadano}</td>
@@ -103,7 +104,11 @@ function RevisarSolicitudes() {
         {/* tarjetas para el celular */}
         <div className="solicitudes-movil-contenedor">
           {solicitudesFiltradas.map((item) => (
-            <div className="tarjeta-solicitud" key={item.id}>
+            <div
+              className="tarjeta-solicitud"
+              key={item.id}
+              onClick={() => router.push(`/solicitud/${item.id}`)}
+            >
               <h3 className="tarjeta-folio-titulo">FOLIO {item.folio}</h3>
               <p className="tarjeta-linea">
                 <span className="tarjeta-campo">Ciudadano:</span> {item.ciudadano}

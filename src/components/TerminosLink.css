@@ -1,0 +1,14 @@
+.link-terminos {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: #2f62e0;
+  cursor: pointer;
+}
+
+.link-terminos:hover {
+  text-decoration: underline;
+}

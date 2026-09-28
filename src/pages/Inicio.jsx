@@ -1,5 +1,6 @@
 import React from 'react'
-import { IonIcon, useIonRouter } from '@ionic/react'
+import { useState } from 'react'
+import { IonIcon, useIonRouter, useIonViewWillEnter } from '@ionic/react'
 import { caretForward } from 'ionicons/icons'
 import AppLayout from '../components/AppLayout'
 import OpcionCard from '../components/OpcionCard'
@@ -10,7 +11,9 @@ import './Inicio.css'
 
 function Inicio() {
   const router = useIonRouter()
-  const solicitudes = obtenerSolicitudesRecientes()
+  const [solicitudes, setSolicitudes] = useState(obtenerSolicitudesRecientes())
+
+  useIonViewWillEnter(() => setSolicitudes(obtenerSolicitudesRecientes()))
 
   return (
     <AppLayout>

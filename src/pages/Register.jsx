@@ -3,10 +3,14 @@ import { IonButton, useIonRouter } from '@ionic/react'
 import { mailOutline, personOutline, idCardOutline, callOutline } from 'ionicons/icons'
 import AuthLayout from '../components/AuthLayout'
 import CampoTexto from '../components/CampoTexto'
+import TerminosLink from '../components/TerminosLink'
+import { registrarUsuario } from '../services/usuariosService'
+import { usePerfil } from '../context/PerfilContext'
 import './Register.css'
 
 function Register() {
   const router = useIonRouter()
+  const { iniciarSesion } = usePerfil()
 
   const [nombre, setNombre] = useState('')
   const [correo, setCorreo] = useState('')
@@ -20,7 +24,27 @@ function Register() {
 
   // validaciones simples de formato
   const correoValido = (valor) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)
-  const rutValido = (valor) => /^[0-9.]{7,12}-[0-9kK]$/.test(valor)
+  // valida el formato y ademas el digito verificador (modulo 11)
+  const rutValido = (valor) => {
+    if (!/^[0-9.]{7,12}-[0-9kK]$/.test(valor)) return false
+
+    const limpio = valor.replace(/\./g, '')
+    const [numero, dv] = limpio.split('-')
+
+    let suma = 0
+    let multiplo = 2
+    for (let i = numero.length - 1; i >= 0; i--) {
+      suma += Number(numero[i]) * multiplo
+      multiplo = multiplo === 7 ? 2 : multiplo + 1
+    }
+
+    const resto = 11 - (suma % 11)
+    let esperado = String(resto)
+    if (resto === 11) esperado = '0'
+    if (resto === 10) esperado = 'K'
+
+    return esperado === dv.toUpperCase()
+  }
 
   const crearCuenta = () => {
     if (!nombre || !correo || !rut || !telefono || !password) {
@@ -32,7 +56,7 @@ function Register() {
       return
     }
     if (!rutValido(rut)) {
-      setError('El RUT debe ir con el formato 12.345.678-9')
+      setError('El RUT no es válido, revisa el número y el dígito verificador (ejemplo: 12.345.678-5)')
       return
     }
     if (password.length < 6) {
@@ -48,9 +72,17 @@ function Register() {
       return
     }
 
-    // falta mandarlo al backend, por ahora solo avisamos que quedo listo
+    // por ahora la cuenta queda guardada en el navegador, en la EP2 va al backend
+    const resultado = registrarUsuario({ nombre, correo, rut, telefono })
+    if (!resultado.ok) {
+      setError(resultado.mensaje)
+      return
+    }
+
     setError('')
     setCuentaCreada(true)
+    iniciarSesion('usuario', nombre)
+    router.push('/inicio')
   }
 
   return (
@@ -68,7 +100,7 @@ function Register() {
         <div className="terminos">
           <input type="checkbox" id="terminos" checked={terminos} onChange={() => setTerminos(!terminos)} />
           <label htmlFor="terminos">
-            Acepto los <a href="#">términos y condiciones.</a>
+            Acepto los <TerminosLink />
           </label>
         </div>
 

@@ -26,3 +26,8 @@
   align-items: center;
   justify-content: center;
 }
+
+/* todavia no hay pantalla de notificaciones */
+.campana {
+  cursor: default;
+}

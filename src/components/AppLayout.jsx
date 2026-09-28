@@ -9,8 +9,8 @@ import './AppLayout.css'
 // Layout de las pantallas con sesion iniciada (menu, header y footer)
 function AppLayout({ children }) {
   // El rol viene de la sesion, no de la ruta
-  const { esAdmin } = usePerfil()
-  const nombreUsuario = esAdmin ? 'Administrador' : usuario.nombre
+  const { esAdmin, nombre } = usePerfil()
+  const nombreUsuario = nombre || (esAdmin ? 'Administrador' : usuario.nombre)
 
   return (
     <IonPage>

@@ -4,6 +4,8 @@ import { mailOutline } from 'ionicons/icons'
 import AuthLayout from '../components/AuthLayout'
 import CampoTexto from '../components/CampoTexto'
 import { usePerfil } from '../context/PerfilContext'
+import { buscarUsuarioPorCorreo } from '../services/usuariosService'
+import { usuario } from '../data/datosPrueba'
 
 function Login() {
   const router = useIonRouter()
@@ -22,8 +24,12 @@ function Login() {
     // los correos @muni.cl entran como funcionario y el resto como ciudadano
     const esFuncionario = correo.endsWith('@muni.cl')
 
+    // si la persona creo su cuenta en el registro usamos ese nombre
+    const cuenta = buscarUsuarioPorCorreo(correo)
+    const nombre = cuenta ? cuenta.nombre : esFuncionario ? 'Administrador' : usuario.nombre
+
     setError('')
-    iniciarSesion(esFuncionario ? 'admin' : 'usuario')
+    iniciarSesion(esFuncionario ? 'admin' : 'usuario', nombre)
     router.push(esFuncionario ? '/revisar-solicitudes' : '/inicio')
   }
 
