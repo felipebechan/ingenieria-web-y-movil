@@ -550,6 +550,9 @@ src/
 
 ## 10. Estado de la entrega (EP1)
 
+La aplicación está publicada en **https://felipebechan.github.io/ingenieria-web-y-movil/**, así que se puede revisar sin instalar nada. Cada vez que se sube un cambio a `main`, GitHub Actions compila el proyecto y actualiza el sitio (ver `.github/workflows/deploy.yml`).
+
+
 ### Implementado en esta entrega
 * Siete pantallas en Figma (login, registro, inicio, mis solicitudes, ingreso de reclamo, panel del funcionario y detalle de solicitud), en versión web y móvil.
 * Seis vistas funcionando en Ionic con React: login, registro, inicio, ingreso de reclamo, mis solicitudes, detalle de solicitud y bandeja del funcionario.
@@ -564,3 +567,27 @@ src/
 * Consulta pública por folio, perfil de usuario, notificaciones, ayuda y las vistas de administrador.
 * Carga de fotografías y geolocalización en el formulario de reclamo.
 * Pantallas de notificaciones, ayuda y perfil: en el menú aparecen atenuadas porque todavía no existen.
+
+---
+
+## 11. Cosas por hacer
+
+Lista de lo que sigue, en orden de prioridad:
+
+### Entrega Parcial 2
+- [ ] Levantar el backend en Node.js con Express y conectarlo a una base de datos relacional.
+- [ ] Escribir el archivo `.sql` con las tablas, claves primarias y foráneas, en la rama `backend`.
+- [ ] Crear los endpoints REST de solicitudes y usuarios, y reemplazar el `localStorage` por llamadas a la API dentro de `services/`.
+- [ ] Autenticación real con JWT y contraseñas cifradas con bcrypt, en vez de decidir el rol por el correo.
+- [ ] Probar los endpoints en Postman y guardar la evidencia.
+
+### Pantallas que faltan
+- [ ] Notificaciones, Mi perfil y Ayuda: hoy aparecen atenuadas en el menú.
+- [ ] Consulta pública por folio, sin necesidad de iniciar sesión.
+- [ ] Gestión de la solicitud para el funcionario: derivar a una unidad y responder formalmente.
+
+### Mejoras pendientes
+- [ ] Subir fotografías y ubicación en el formulario de reclamo.
+- [ ] Semáforo del plazo legal de 20 días en la bandeja del funcionario.
+- [ ] Revisar la aplicación en tamaños de tablet, hoy está probada en escritorio y móvil.
+- [ ] Validar las proto-personas con usuarios reales.

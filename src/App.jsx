@@ -18,7 +18,7 @@ function App() {
   return (
     <PerfilProvider>
       <IonApp>
-        <IonReactRouter>
+        <IonReactRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
           {/* menu que se abre con el boton de hamburguesa en el celular */}
           <IonMenu contentId="main" type="overlay" swipeGesture={false}>
             <IonContent>

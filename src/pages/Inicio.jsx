@@ -38,7 +38,7 @@ function Inicio() {
             </a>
           </div>
         </div>
-        <img src="/img/playa.png" alt="Costa de Santo Domingo" />
+        <img src={import.meta.env.BASE_URL + "img/playa.png"} alt="Costa de Santo Domingo" />
       </section>
 
       {/* accesos rapidos */}

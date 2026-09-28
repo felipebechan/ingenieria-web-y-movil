@@ -45,7 +45,7 @@ function MenuLateral() {
     if (opcion.accion === 'salir') {
       cerrarSesion()
       // recargamos para limpiar los formularios y las pantallas que ionic deja montadas
-      window.location.href = '/login'
+      window.location.href = import.meta.env.BASE_URL + 'login'
       return
     }
 
@@ -56,7 +56,7 @@ function MenuLateral() {
 
   return (
     <nav className="menu-lateral">
-      <img className="menu-logo" src="/img/logo.png" alt="Municipalidad de Santo Domingo" />
+      <img className="menu-logo" src={import.meta.env.BASE_URL + "img/logo.png"} alt="Municipalidad de Santo Domingo" />
 
       {opciones.map((opcion) => {
         const estaActivo = location.pathname === opcion.ruta

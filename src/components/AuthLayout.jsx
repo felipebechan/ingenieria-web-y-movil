@@ -12,7 +12,7 @@ function AuthLayout({ children }) {
 
           <div className="auth-contenido">
             <header className="header">
-              <img className="header-logo" src="/img/logo.png" alt="Municipalidad de Santo Domingo" />
+              <img className="header-logo" src={import.meta.env.BASE_URL + "img/logo.png"} alt="Municipalidad de Santo Domingo" />
               <div className="header-textos">
                 <h1>Santo Domingo:<br />Responde</h1>
                 <p>Gestión y seguimiento de<br />solicitudes ciudadanas</p>

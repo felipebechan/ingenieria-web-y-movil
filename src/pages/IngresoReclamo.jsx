@@ -134,7 +134,7 @@ const IngresoReclamo = () => {
         </div>
 
         <div className="contenedor-imagen-fondo">
-          <img src="/img/playa.png" alt="Costa de Santo Domingo" className="imagen-costa" />
+          <img src={import.meta.env.BASE_URL + "img/playa.png"} alt="Costa de Santo Domingo" className="imagen-costa" />
         </div>
 
       </div>
