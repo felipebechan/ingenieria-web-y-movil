@@ -5,7 +5,7 @@ import './OpcionCard.css'
 function OpcionCard({ titulo, texto, icono = notifications, onClick }) {
   return (
     <button className="opcion" onClick={onClick}>
-      <div className="opcion-icono-figma">
+      <div className="opcion-icono">
         <IonIcon icon={icono} className="icono-campana-opcion" />
       </div>
       <div className="opcion-texto">

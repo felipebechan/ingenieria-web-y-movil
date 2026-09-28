@@ -103,7 +103,7 @@ function RevisarSolicitudes() {
         {/* tarjetas para el celular */}
         <div className="solicitudes-movil-contenedor">
           {solicitudesFiltradas.map((item) => (
-            <div className="tarjeta-solicitud-figma" key={item.id}>
+            <div className="tarjeta-solicitud" key={item.id}>
               <h3 className="tarjeta-folio-titulo">FOLIO {item.folio}</h3>
               <p className="tarjeta-linea">
                 <span className="tarjeta-campo">Ciudadano:</span> {item.ciudadano}

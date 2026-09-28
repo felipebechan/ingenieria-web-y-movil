@@ -17,7 +17,7 @@
   border-color: #b9c8e8;
 }
 
-.opcion-icono-figma {
+.opcion-icono {
   width: 58px;
   height: 58px;
   border-radius: 50%;
@@ -64,7 +64,7 @@
     gap: 16px;
   }
 
-  .opcion-icono-figma {
+  .opcion-icono {
     width: 48px;
     height: 32px;
     border-radius: 12px;

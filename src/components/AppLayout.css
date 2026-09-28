@@ -107,7 +107,7 @@
   padding: 10px 16px;
 }
 
-/* cosas del celu que en desktop no van */
+/* cosas del celular que en desktop no van */
 .header-movil,
 .ola-movil-app {
   display: none;
