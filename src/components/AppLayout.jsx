@@ -1,29 +1,16 @@
-import React from 'react'
-import { IonPage, IonContent, IonIcon, IonMenuButton, useIonRouter } from '@ionic/react'
-import { useLocation } from 'react-router-dom'
+import { IonPage, IonContent, IonIcon, IonMenuButton } from '@ionic/react'
 import { personOutline, chevronDown } from 'ionicons/icons'
 import MenuLateral from './MenuLateral'
 import Campana from './Campana'
+import { usePerfil } from '../context/PerfilContext'
+import { usuario } from '../data/datosPrueba'
 import './AppLayout.css'
 
+// Layout de las pantallas con sesion iniciada (menu, header y footer)
 function AppLayout({ children }) {
-  const router = useIonRouter()
-  const location = useLocation()
-
-  // Es admin solo si se encuentra en la pantalla de revisión de solicitudes del administrador
-  // Por default, cualquier otra ruta es la pantalla del usuario (Juan López)
-  const esAdmin =
-    location.pathname === '/revisar-solicitudes' ||
-    location.pathname === '/panel-funcionario'
-
-  // Al hacer clic en el perfil, cambia entre usuario (Juan López) y administrador
-  const cambiarModo = () => {
-    if (esAdmin) {
-      router.push('/mis-solicitudes')
-    } else {
-      router.push('/revisar-solicitudes')
-    }
-  }
+  // El rol viene de la sesion, no de la ruta
+  const { esAdmin } = usePerfil()
+  const nombreUsuario = esAdmin ? 'Administrador' : usuario.nombre
 
   return (
     <IonPage>
@@ -31,17 +18,17 @@ function AppLayout({ children }) {
         <div className="app-page">
           <div className="app-barra"></div>
 
-          {/* Header azul que sale en el celu */}
+          {/* Header azul que sale en el celular */}
           <div className="header-movil">
             <IonMenuButton autoHide={false} />
             <p>
               {esAdmin ? (
-                <>Panel de<br />Gestion</>
+                <>Panel de<br />Gestión</>
               ) : (
                 <>Santo Domingo:<br />Responde</>
               )}
             </p>
-            <Campana cantidad={3} />
+            <Campana cantidad={usuario.notificaciones} />
           </div>
           <div className="app-ola ola-movil-app"></div>
 
@@ -55,7 +42,7 @@ function AppLayout({ children }) {
                 <div className="app-titulos">
                   {esAdmin ? (
                     <>
-                      <h1>Panel de Gestion<br />Municipal</h1>
+                      <h1>Panel de Gestión<br />Municipal</h1>
                       <p>Gestión y seguimiento de<br />solicitudes ciudadanas</p>
                     </>
                   ) : (
@@ -68,19 +55,13 @@ function AppLayout({ children }) {
                 <div className="app-ola"></div>
 
                 <div className="header-acciones">
-                  <Campana cantidad={3} />
+                  <Campana cantidad={usuario.notificaciones} />
                   
-                  {/* Clic en el usuario permite alternar entre perfil usuario (Juan López) y administrador */}
-                  <div
-                    className="usuario"
-                    onClick={cambiarModo}
-                    style={{ cursor: 'pointer' }}
-                    title={`Click para cambiar a perfil ${esAdmin ? 'Usuario (Juan López)' : 'Administrador'}`}
-                  >
+                  <div className="usuario">
                     <div className="avatar">
                       <IonIcon icon={personOutline} />
                     </div>
-                    <span>{esAdmin ? 'Administrador' : 'Juan López'}</span>
+                    <span>{nombreUsuario}</span>
                     <IonIcon icon={chevronDown} className="flechita" />
                   </div>
                 </div>
