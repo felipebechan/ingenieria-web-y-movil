@@ -3,6 +3,10 @@ Plataforma web y móvil para la gestión y seguimiento de reclamos ciudadanos (O
 
 ![Logo Municipalidad de Santo Domingo](public/img/logo.png)
 
+**Aplicación en línea:** https://felipebechan.github.io/ingenieria-web-y-movil/login
+
+Se puede revisar sin instalar nada. Para entrar como ciudadano basta con cualquier correo (por ejemplo `juan@correo.cl`) y cualquier contraseña; para entrar como funcionario, un correo terminado en `@muni.cl` (por ejemplo `carlos@muni.cl`). Ver [Cómo probar la aplicación](#cómo-probar-la-aplicación).
+
 ---
 
 ## Integrantes y Distribución de Responsabilidades
@@ -550,7 +554,7 @@ src/
 
 ## 10. Estado de la entrega (EP1)
 
-La aplicación está publicada en **https://felipebechan.github.io/ingenieria-web-y-movil/**, así que se puede revisar sin instalar nada. Cada vez que se sube un cambio a `main`, GitHub Actions compila el proyecto y actualiza el sitio (ver `.github/workflows/deploy.yml`).
+La aplicación está publicada en **https://felipebechan.github.io/ingenieria-web-y-movil/login**, así que se puede revisar sin instalar nada. Cada vez que se sube un cambio a `main`, GitHub Actions compila el proyecto y actualiza el sitio (ver `.github/workflows/deploy.yml`).
 
 
 ### Implementado en esta entrega
