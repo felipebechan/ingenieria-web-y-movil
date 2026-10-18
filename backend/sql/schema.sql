@@ -19,7 +19,7 @@ CREATE TABLE usuarios (
 
 CREATE TABLE solicitudes (
   id SERIAL PRIMARY KEY,
-  folio VARCHAR(20) NOT NULL UNIQUE,
+  folio VARCHAR(20) UNIQUE,
   usuario_id INTEGER NOT NULL REFERENCES usuarios(id),
   tipo VARCHAR(50) NOT NULL,
   descripcion TEXT NOT NULL,
@@ -30,6 +30,8 @@ CREATE TABLE solicitudes (
 );
 
 CREATE INDEX idx_solicitudes_usuario ON solicitudes(usuario_id);
+
+-- El folio queda nulo al insertar y el backend lo completa con el id recien creado
 
 -- PENDIENTE (Tomás): tabla historial_estados y los datos iniciales de prueba.
 -- Revisa tareas-equipo/tomas/instrucciones.txt
