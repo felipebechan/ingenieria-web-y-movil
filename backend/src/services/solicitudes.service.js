@@ -69,5 +69,17 @@ export async function listarTodas(filtros = {}) {
   return rows
 }
 
+export async function cambiarEstado(id, estado) {
+  const { rows } = await consultar(
+    `UPDATE solicitudes
+     SET estado = $1
+     WHERE id = $2
+     RETURNING *`,
+    [estado, id]
+  )
+  return rows[0]
+}
+
+
 
 

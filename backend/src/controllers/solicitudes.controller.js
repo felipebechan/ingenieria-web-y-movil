@@ -2,9 +2,13 @@ import {
   crearSolicitud,
   listarPorUsuario,
   buscarPorId,
-  listarTodas as listarTodasService
+  listarTodas as listarTodasService,
+  cambiarEstado as cambiarEstadoService
 } from '../services/solicitudes.service.js'
 import { validarSolicitud } from '../validaciones.js'
+
+const ESTADOS_VALIDOS = ['En revisión', 'En proceso', 'Resuelto', 'Rechazado']
+
 
 
 
@@ -59,6 +63,29 @@ export async function listarTodas(req, res, next) {
     next(error)
   }
 }
+
+export async function cambiarEstado(req, res, next) {
+  try {
+    const { id } = req.params
+    const { estado } = req.body
+
+    if (!estado || !ESTADOS_VALIDOS.includes(estado)) {
+      return res.status(400).json({
+        error: 'El estado solo puede ser: En revisión, En proceso, Resuelto o Rechazado'
+      })
+    }
+
+    const solicitud = await cambiarEstadoService(id, estado)
+    if (!solicitud) {
+      return res.status(404).json({ error: 'La solicitud no existe' })
+    }
+
+    res.json(solicitud)
+  } catch (error) {
+    next(error)
+  }
+}
+
 
 
 
