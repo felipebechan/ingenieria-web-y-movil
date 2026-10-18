@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { IonIcon, useIonRouter } from '@ionic/react'
 import { ellipsisHorizontal, chevronDown } from 'ionicons/icons'
 import AppLayout from '../components/AppLayout'
@@ -11,11 +11,22 @@ function RevisarSolicitudes() {
   const [busqueda, setBusqueda] = useState('')
   const [filtroEstado, setFiltroEstado] = useState('')
 
-  // el filtro vive en el service, aca solo guardamos lo que escribe el funcionario
-  const solicitudesFiltradas = useMemo(
-    () => buscarSolicitudesAdmin(busqueda, filtroEstado),
-    [busqueda, filtroEstado]
-  )
+  const [solicitudes, setSolicitudes] = useState([])
+  const [error, setError] = useState('')
+
+  // cada vez que cambia el buscador o el filtro le preguntamos al backend
+  useEffect(() => {
+    const cargar = async () => {
+      try {
+        setSolicitudes(await buscarSolicitudesAdmin(busqueda, filtroEstado))
+        setError('')
+      } catch (problema) {
+        setError(problema.message)
+      }
+    }
+
+    cargar()
+  }, [busqueda, filtroEstado])
 
   return (
     <AppLayout>
@@ -69,6 +80,8 @@ function RevisarSolicitudes() {
           />
         </div>
 
+        {error && <p className="mensaje-error">{error}</p>}
+
         {/* tabla para desktop */}
         <div className="tabla-admin-contenedor">
           <table className="tabla-admin">
@@ -83,7 +96,7 @@ function RevisarSolicitudes() {
               </tr>
             </thead>
             <tbody>
-              {solicitudesFiltradas.map((item) => (
+              {solicitudes.map((item) => (
                 <tr key={item.id} className="fila-clickeable" onClick={() => router.push(`/solicitud/${item.id}`)}>
                   <td className="td-folio">{item.folio}</td>
                   <td className="td-fecha">{item.fecha}</td>
@@ -103,7 +116,7 @@ function RevisarSolicitudes() {
 
         {/* tarjetas para el celular */}
         <div className="solicitudes-movil-contenedor">
-          {solicitudesFiltradas.map((item) => (
+          {solicitudes.map((item) => (
             <div
               className="tarjeta-solicitud"
               key={item.id}
