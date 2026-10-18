@@ -5,7 +5,7 @@ Plataforma web y móvil para la gestión y seguimiento de reclamos ciudadanos (O
 
 **Aplicación en línea:** https://felipebechan.github.io/ingenieria-web-y-movil/login
 
-Se puede revisar sin instalar nada. Para entrar como ciudadano basta con cualquier correo (por ejemplo `juan@correo.cl`) y cualquier contraseña; para entrar como funcionario, un correo terminado en `@muni.cl` (por ejemplo `carlos@muni.cl`). Ver [Cómo probar la aplicación](#cómo-probar-la-aplicación).
+La versión publicada muestra la interfaz, pero para usarla con datos reales hay que levantar también el backend en el computador. Las instrucciones están en [Cómo probar la aplicación](#cómo-probar-la-aplicación) y en [backend/README.md](backend/README.md).
 
 ---
 
@@ -521,18 +521,33 @@ La aplicación quedará disponible en el navegador en: **`http://localhost:5173/
 
 ### Cómo probar la aplicación
 
-Todavía no existe backend (se implementa en la Entrega Parcial 2), por lo que la sesión se simula en el frontend y el rol se decide según el correo con el que se inicia sesión:
+El frontend necesita que el backend esté corriendo. En una terminal:
 
-| Perfil | Correo de ejemplo | Contraseña | Vista a la que entra |
-| :--- | :--- | :--- | :--- |
-| Ciudadano | `juan@correo.cl` | cualquiera | `/inicio` |
-| Funcionario | `carlos@muni.cl` | cualquiera | `/revisar-solicitudes` |
+```bash
+cd backend
+npm install
+cp .env.example .env     # completar los datos de PostgreSQL
+createdb santo_domingo
+psql -d santo_domingo -f sql/schema.sql
+npm run dev              # queda en http://localhost:3000
+```
 
-También se puede crear una cuenta nueva desde el registro: queda guardada en el navegador y se puede iniciar sesión con ese correo.
+Y en otra terminal, el frontend:
+
+```bash
+cp .env.example .env     # VITE_API_URL=http://localhost:3000/api
+npm run dev              # queda en http://localhost:5173
+```
+
+Después se crea una cuenta desde el registro de la aplicación. Todas las cuentas nuevas entran como ciudadano. Para convertir una en funcionario y ver el panel de gestión:
+
+```bash
+psql -d santo_domingo -c "UPDATE usuarios SET rol = 'funcionario' WHERE correo = 'tucorreo@muni.cl';"
+```
+
+Hay que volver a iniciar sesión para que el token traiga el rol nuevo.
 
 Si se intenta abrir una ruta privada sin haber iniciado sesión, la aplicación redirige a `/login`. Si un ciudadano intenta entrar a la bandeja del funcionario (o al revés), la aplicación lo devuelve a la vista que sí le corresponde.
-
-Los reclamos que se ingresan y las cuentas que se crean se guardan en el `localStorage` del navegador, así que se puede probar el flujo completo sin backend. Para partir de cero basta con borrar los datos del sitio en el navegador.
 
 ---
 
@@ -563,11 +578,11 @@ La aplicación está publicada en **https://felipebechan.github.io/ingenieria-we
 * Rutas públicas y protegidas con React Router, con redirección al login y diferenciación por rol.
 * Validaciones de formulario con mensajes de error visibles, RUT con dígito verificador y confirmación con folio al enviar un reclamo.
 * Ingreso de reclamos que quedan guardados y aparecen en "Mis solicitudes" y en la bandeja del funcionario, con folio y fecha generados automáticamente (RF-02).
+* Backend en Node.js con Express, base de datos PostgreSQL, API REST, autenticación con JWT y contraseñas con bcrypt. El frontend consume esa API: ya no hay datos en el navegador.
 * Diseño responsivo para escritorio y móvil, con menú lateral en escritorio y menú desplegable en móvil.
 
 ### Planificado para las siguientes entregas
-* Backend en Node.js con API REST, base de datos relacional y archivo `.sql`.
-* Autenticación real con JWT y contraseñas cifradas con bcrypt (hoy la sesión es solo del lado del frontend).
+* Endpoints del funcionario para derivar y responder formalmente una solicitud.
 * Consulta pública por folio, perfil de usuario, notificaciones, ayuda y las vistas de administrador.
 * Carga de fotografías y geolocalización en el formulario de reclamo.
 * Pantallas de notificaciones, ayuda y perfil: en el menú aparecen atenuadas porque todavía no existen.

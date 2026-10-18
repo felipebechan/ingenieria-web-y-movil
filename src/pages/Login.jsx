@@ -4,8 +4,7 @@ import { mailOutline } from 'ionicons/icons'
 import AuthLayout from '../components/AuthLayout'
 import CampoTexto from '../components/CampoTexto'
 import { usePerfil } from '../context/PerfilContext'
-import { buscarUsuarioPorCorreo } from '../services/usuariosService'
-import { usuario } from '../data/datosPrueba'
+import { iniciarSesion as loginApi } from '../services/usuariosService'
 
 function Login() {
   const router = useIonRouter()
@@ -13,24 +12,26 @@ function Login() {
   const [correo, setCorreo] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [cargando, setCargando] = useState(false)
 
-  const entrar = () => {
+  const entrar = async () => {
     if (!correo || !password) {
       setError('Debes ingresar tu correo y tu contraseña')
       return
     }
 
-    // Mientras no exista el backend el rol se decide por el correo:
-    // los correos @muni.cl entran como funcionario y el resto como ciudadano
-    const esFuncionario = correo.endsWith('@muni.cl')
-
-    // si la persona creo su cuenta en el registro usamos ese nombre
-    const cuenta = buscarUsuarioPorCorreo(correo)
-    const nombre = cuenta ? cuenta.nombre : esFuncionario ? 'Administrador' : usuario.nombre
-
     setError('')
-    iniciarSesion(esFuncionario ? 'admin' : 'usuario', nombre)
-    router.push(esFuncionario ? '/revisar-solicitudes' : '/inicio')
+    setCargando(true)
+
+    try {
+      const { usuario, token } = await loginApi(correo, password)
+      iniciarSesion(usuario.rol, usuario.nombre, token)
+      router.push(usuario.rol === 'funcionario' ? '/revisar-solicitudes' : '/inicio')
+    } catch (problema) {
+      setError(problema.message)
+    } finally {
+      setCargando(false)
+    }
   }
 
   return (
@@ -50,7 +51,9 @@ function Login() {
       {error && <p className="mensaje-error">{error}</p>}
 
       <div className="botones">
-        <IonButton className="boton boton-azul" onClick={entrar}>Iniciar Sesión</IonButton>
+        <IonButton className="boton boton-azul" onClick={entrar} disabled={cargando}>
+          {cargando ? 'Entrando...' : 'Iniciar Sesión'}
+        </IonButton>
         <IonButton className="boton boton-gris" onClick={() => router.push('/register')}>Crear cuenta</IonButton>
       </div>
     </AuthLayout>

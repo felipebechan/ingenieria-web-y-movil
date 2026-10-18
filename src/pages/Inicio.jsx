@@ -11,9 +11,19 @@ import './Inicio.css'
 
 function Inicio() {
   const router = useIonRouter()
-  const [solicitudes, setSolicitudes] = useState(obtenerSolicitudesRecientes())
+  const [solicitudes, setSolicitudes] = useState([])
+  const [error, setError] = useState('')
 
-  useIonViewWillEnter(() => setSolicitudes(obtenerSolicitudesRecientes()))
+  const cargar = async () => {
+    try {
+      setSolicitudes(await obtenerSolicitudesRecientes())
+      setError('')
+    } catch (problema) {
+      setError(problema.message)
+    }
+  }
+
+  useIonViewWillEnter(() => { cargar() })
 
   return (
     <AppLayout>
@@ -77,6 +87,8 @@ function Inicio() {
             </a>
           </h2>
         </div>
+
+        {error && <p className="mensaje-error">{error}</p>}
 
         {/* tabla para desktop */}
         <div className="tabla-caja">
