@@ -28,3 +28,6 @@ dist-ssr
 
 # variables locales
 .env
+
+# carpeta con el reparto de tareas del equipo
+tareas-equipo/
