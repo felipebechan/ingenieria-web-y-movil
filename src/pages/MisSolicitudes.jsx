@@ -8,15 +8,27 @@ import './MisSolicitudes.css'
 
 function MisSolicitudes() {
   const router = useIonRouter()
-  const [misSolicitudes, setMisSolicitudes] = useState(obtenerMisSolicitudes())
+  const [misSolicitudes, setMisSolicitudes] = useState([])
+  const [error, setError] = useState('')
 
   // al volver a la pantalla recargamos por si se ingreso una solicitud nueva
-  useIonViewWillEnter(() => setMisSolicitudes(obtenerMisSolicitudes()))
+  const cargar = async () => {
+    try {
+      setMisSolicitudes(await obtenerMisSolicitudes())
+      setError('')
+    } catch (problema) {
+      setError(problema.message)
+    }
+  }
+
+  useIonViewWillEnter(() => { cargar() })
 
   return (
     <AppLayout>
       <div className="mis-solicitudes-seccion">
         <h1 className="mis-solicitudes-titulo">Mis solicitudes</h1>
+
+        {error && <p className="mensaje-error">{error}</p>}
 
         {/* tabla para desktop */}
         <div className="tabla-solicitudes-contenedor">

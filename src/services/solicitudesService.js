@@ -1,80 +1,58 @@
-import { solicitudes, misSolicitudes, solicitudesAdmin } from '../data/datosPrueba'
+import { pedir } from './api'
 
-// Mientras no exista el backend guardamos las solicitudes nuevas en localStorage.
-// Cuando llegue la API (EP2) solo cambian estas funciones, las pantallas quedan igual.
+// El backend devuelve la fecha completa y el frontend muestra dd/mm/aaaa,
+// asi que acomodamos los datos aca y las pantallas quedan igual que antes.
+function acomodar(solicitud) {
+  const fecha = new Date(solicitud.creada_en)
+  const dia = String(fecha.getDate()).padStart(2, '0')
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0')
 
-const CLAVE = 'solicitudes'
-
-function leerGuardadas() {
-  const guardadas = localStorage.getItem(CLAVE)
-  return guardadas ? JSON.parse(guardadas) : []
-}
-
-// Genera el folio correlativo que pide el RF-02
-function nuevoFolio(cantidad) {
-  const numero = 13 + cantidad
-  return '#SD-2026-' + String(numero).padStart(4, '0')
-}
-
-function fechaDeHoy() {
-  const hoy = new Date()
-  const dia = String(hoy.getDate()).padStart(2, '0')
-  const mes = String(hoy.getMonth() + 1).padStart(2, '0')
-  return `${dia}/${mes}/${hoy.getFullYear()}`
-}
-
-export function crearSolicitud({ tipo, direccion, descripcion, ciudadano }) {
-  const guardadas = leerGuardadas()
-
-  const solicitud = {
-    id: 'nueva-' + (guardadas.length + 1),
-    folio: nuevoFolio(guardadas.length + 1),
-    fecha: fechaDeHoy(),
-    tipo,
-    descripcion,
-    descripcionMovil: descripcion.length > 22 ? descripcion.slice(0, 22) + '...' : descripcion,
-    ubicacion: direccion,
-    ciudadano: ciudadano || 'Vecino',
-    estado: 'En revisión',
+  return {
+    ...solicitud,
+    fecha: `${dia}/${mes}/${fecha.getFullYear()}`,
+    descripcionMovil:
+      solicitud.descripcion.length > 22
+        ? solicitud.descripcion.slice(0, 22) + '...'
+        : solicitud.descripcion,
+    ubicacion: solicitud.direccion
   }
-
-  localStorage.setItem(CLAVE, JSON.stringify([solicitud, ...guardadas]))
-  return solicitud
 }
 
-// Las solicitudes nuevas van primero para que se vean al tiro
-export function obtenerMisSolicitudes() {
-  return [...leerGuardadas(), ...misSolicitudes]
-}
-
-export function obtenerSolicitudesRecientes() {
-  return [...leerGuardadas(), ...solicitudes].slice(0, 3)
-}
-
-export function obtenerSolicitudesAdmin() {
-  return [...leerGuardadas(), ...solicitudesAdmin]
-}
-
-// Filtro que usa el funcionario en la bandeja de solicitudes
-export function buscarSolicitudesAdmin(busqueda, estado) {
-  const texto = busqueda.toLowerCase()
-
-  return obtenerSolicitudesAdmin().filter((item) => {
-    const ciudadano = item.ciudadano || ''
-    const coincideBusqueda =
-      item.folio.toLowerCase().includes(texto) ||
-      ciudadano.toLowerCase().includes(texto) ||
-      item.tipo.toLowerCase().includes(texto) ||
-      item.descripcion.toLowerCase().includes(texto)
-
-    const coincideEstado = !estado || item.estado === estado
-
-    return coincideBusqueda && coincideEstado
+export async function crearSolicitud({ tipo, descripcion, direccion }) {
+  const creada = await pedir('/solicitudes', {
+    method: 'POST',
+    body: JSON.stringify({ tipo, descripcion, direccion })
   })
+  return acomodar(creada)
 }
 
-// Busca una solicitud puntual para la pantalla de detalle
-export function obtenerSolicitudPorId(id) {
-  const todas = [...leerGuardadas(), ...misSolicitudes, ...solicitudes, ...solicitudesAdmin]
-  return todas.find((item) => String(item.id) === String(id))
+export async function obtenerMisSolicitudes() {
+  const solicitudes = await pedir('/solicitudes/mias')
+  return solicitudes.map(acomodar)
+}
+
+export async function obtenerSolicitudesRecientes() {
+  const solicitudes = await obtenerMisSolicitudes()
+  return solicitudes.slice(0, 3)
+}
+
+export async function obtenerSolicitudPorId(id) {
+  const solicitud = await pedir(`/solicitudes/${id}`)
+  return acomodar(solicitud)
+}
+
+export async function obtenerSolicitudesAdmin() {
+  const solicitudes = await pedir('/solicitudes')
+  return solicitudes.map(acomodar)
+}
+
+// Los filtros de la bandeja del funcionario viajan en la url
+export async function buscarSolicitudesAdmin(busqueda, estado) {
+  const filtros = new URLSearchParams()
+  if (busqueda) filtros.set('busqueda', busqueda)
+  if (estado) filtros.set('estado', estado)
+
+  const query = filtros.toString()
+  const solicitudes = await pedir('/solicitudes' + (query ? `?${query}` : ''))
+  return solicitudes.map(acomodar)
 }
