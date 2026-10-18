@@ -30,4 +30,4 @@ dist-ssr
 .env
 
 # carpeta con el reparto de tareas del equipo
-tareas-equipo/
+tareas-equipo*
