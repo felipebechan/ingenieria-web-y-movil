@@ -20,6 +20,3 @@ router.get('/:id', obtener)
 router.patch('/:id/estado', soloFuncionario, cambiarEstado)
 
 export default router
-
-
-

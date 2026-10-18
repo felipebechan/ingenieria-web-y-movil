@@ -79,7 +79,3 @@ export async function cambiarEstado(id, estado) {
   )
   return rows[0]
 }
-
-
-
-

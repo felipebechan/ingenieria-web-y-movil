@@ -9,9 +9,6 @@ import { validarSolicitud } from '../validaciones.js'
 
 const ESTADOS_VALIDOS = ['En revisión', 'En proceso', 'Resuelto', 'Rechazado']
 
-
-
-
 export async function crear(req, res, next) {
   try {
     const errores = validarSolicitud(req.body)
@@ -85,7 +82,3 @@ export async function cambiarEstado(req, res, next) {
     next(error)
   }
 }
-
-
-
-
