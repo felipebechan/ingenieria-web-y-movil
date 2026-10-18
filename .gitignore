@@ -25,3 +25,6 @@ dist-ssr
 
 # la pauta del ramo no va al repositorio
 *.pdf
+
+# variables locales
+.env
