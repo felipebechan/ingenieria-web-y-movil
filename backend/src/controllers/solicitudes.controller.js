@@ -1,5 +1,12 @@
-import { crearSolicitud, listarPorUsuario, buscarPorId } from '../services/solicitudes.service.js'
+import {
+  crearSolicitud,
+  listarPorUsuario,
+  buscarPorId,
+  listarTodas as listarTodasService
+} from '../services/solicitudes.service.js'
 import { validarSolicitud } from '../validaciones.js'
+
+
 
 export async function crear(req, res, next) {
   try {
@@ -42,3 +49,14 @@ export async function obtener(req, res, next) {
     next(error)
   }
 }
+
+export async function listarTodas(req, res, next) {
+  try {
+    const solicitudes = await listarTodasService()
+    res.json(solicitudes)
+  } catch (error) {
+    next(error)
+  }
+}
+
+

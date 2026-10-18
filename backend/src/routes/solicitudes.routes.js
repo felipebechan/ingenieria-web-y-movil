@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { crear, listarMias, obtener } from '../controllers/solicitudes.controller.js'
-import { verificarToken } from '../middlewares/auth.middleware.js'
+import { crear, listarMias, obtener, listarTodas } from '../controllers/solicitudes.controller.js'
+import { verificarToken, soloFuncionario } from '../middlewares/auth.middleware.js'
 
 const router = Router()
 
@@ -8,9 +8,10 @@ const router = Router()
 router.use(verificarToken)
 
 router.post('/', crear)
+router.get('/', soloFuncionario, listarTodas)
 router.get('/mias', listarMias)
 router.get('/:id', obtener)
 
-// PENDIENTE (Giovani): GET / con filtros para el funcionario y PATCH /:id/estado
-
 export default router
+
+

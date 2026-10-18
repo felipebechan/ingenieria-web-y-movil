@@ -40,5 +40,14 @@ export async function buscarPorId(id) {
   return rows[0]
 }
 
-// PENDIENTE (Giovani): listarTodas con filtros de estado y busqueda, y cambiarEstado.
-// Revisa tareas-equipo/giovani/instrucciones.txt
+export async function listarTodas() {
+  const { rows } = await consultar(
+    `SELECT s.*, u.nombre AS ciudadano
+     FROM solicitudes s
+     JOIN usuarios u ON u.id = s.usuario_id
+     ORDER BY s.creada_en DESC`
+  )
+  return rows
+}
+
+
