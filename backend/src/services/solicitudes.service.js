@@ -40,14 +40,34 @@ export async function buscarPorId(id) {
   return rows[0]
 }
 
-export async function listarTodas() {
-  const { rows } = await consultar(
-    `SELECT s.*, u.nombre AS ciudadano
+export async function listarTodas(filtros = {}) {
+  const { estado, busqueda } = filtros
+  const condiciones = []
+  const valores = []
+
+  if (estado) {
+    valores.push(estado)
+    condiciones.push(`s.estado = $${valores.length}`)
+  }
+
+  if (busqueda) {
+    valores.push(`%${busqueda}%`)
+    condiciones.push(`(s.folio ILIKE $${valores.length} OR u.nombre ILIKE $${valores.length})`)
+  }
+
+  let sql = `SELECT s.*, u.nombre AS ciudadano
      FROM solicitudes s
-     JOIN usuarios u ON u.id = s.usuario_id
-     ORDER BY s.creada_en DESC`
-  )
+     JOIN usuarios u ON u.id = s.usuario_id`
+
+  if (condiciones.length > 0) {
+    sql += ` WHERE ${condiciones.join(' AND ')}`
+  }
+
+  sql += ' ORDER BY s.creada_en DESC'
+
+  const { rows } = await consultar(sql, valores)
   return rows
 }
+
 
 

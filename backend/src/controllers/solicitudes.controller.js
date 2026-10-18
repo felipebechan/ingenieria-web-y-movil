@@ -52,11 +52,13 @@ export async function obtener(req, res, next) {
 
 export async function listarTodas(req, res, next) {
   try {
-    const solicitudes = await listarTodasService()
+    const { estado, busqueda } = req.query
+    const solicitudes = await listarTodasService({ estado, busqueda })
     res.json(solicitudes)
   } catch (error) {
     next(error)
   }
 }
+
 
 
