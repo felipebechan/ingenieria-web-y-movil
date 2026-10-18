@@ -20,7 +20,7 @@ function Register() {
   const [password2, setPassword2] = useState('')
   const [terminos, setTerminos] = useState(false)
   const [error, setError] = useState('')
-  const [cuentaCreada, setCuentaCreada] = useState(false)
+  const [cargando, setCargando] = useState(false)
 
   // validaciones simples de formato
   const correoValido = (valor) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)
@@ -46,7 +46,7 @@ function Register() {
     return esperado === dv.toUpperCase()
   }
 
-  const crearCuenta = () => {
+  const crearCuenta = async () => {
     if (!nombre || !correo || !rut || !telefono || !password) {
       setError('Completa todos los campos obligatorios')
       return
@@ -72,17 +72,18 @@ function Register() {
       return
     }
 
-    // por ahora la cuenta queda guardada en el navegador, en la EP2 va al backend
-    const resultado = registrarUsuario({ nombre, correo, rut, telefono })
-    if (!resultado.ok) {
-      setError(resultado.mensaje)
-      return
-    }
-
     setError('')
-    setCuentaCreada(true)
-    iniciarSesion('usuario', nombre)
-    router.push('/inicio')
+    setCargando(true)
+
+    try {
+      const respuesta = await registrarUsuario({ nombre, correo, rut, telefono, password })
+      iniciarSesion(respuesta.usuario.rol, respuesta.usuario.nombre, respuesta.token)
+      router.push('/inicio')
+    } catch (problema) {
+      setError(problema.message)
+    } finally {
+      setCargando(false)
+    }
   }
 
   return (
@@ -105,12 +106,11 @@ function Register() {
         </div>
 
         {error && <p className="mensaje-error">{error}</p>}
-        {cuentaCreada && (
-          <p className="mensaje-ok">Cuenta creada. Ya puedes iniciar sesión con tu correo.</p>
-        )}
 
         <div className="botones">
-          <IonButton className="boton boton-azul" onClick={crearCuenta}>Crear cuenta</IonButton>
+          <IonButton className="boton boton-azul" onClick={crearCuenta} disabled={cargando}>
+            {cargando ? 'Creando...' : 'Crear cuenta'}
+          </IonButton>
           <IonButton className="boton boton-gris" onClick={() => router.push('/login', 'back')}>Volver</IonButton>
         </div>
       </div>

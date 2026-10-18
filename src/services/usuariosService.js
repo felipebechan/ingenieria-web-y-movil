@@ -1,25 +1,17 @@
-// Cuentas creadas desde el registro. Por ahora quedan en localStorage,
-// en la EP2 esto pasa a la tabla de usuarios del backend.
+import { pedir } from './api'
 
-const CLAVE = 'usuarios'
+// Las dos devuelven { usuario, token }
 
-function leerUsuarios() {
-  const guardados = localStorage.getItem(CLAVE)
-  return guardados ? JSON.parse(guardados) : []
+export function registrarUsuario(datos) {
+  return pedir('/auth/registro', {
+    method: 'POST',
+    body: JSON.stringify(datos)
+  })
 }
 
-export function registrarUsuario({ nombre, correo, rut, telefono }) {
-  const usuarios = leerUsuarios()
-
-  if (usuarios.some((u) => u.correo === correo)) {
-    return { ok: false, mensaje: 'Ya existe una cuenta con ese correo' }
-  }
-
-  usuarios.push({ nombre, correo, rut, telefono })
-  localStorage.setItem(CLAVE, JSON.stringify(usuarios))
-  return { ok: true }
-}
-
-export function buscarUsuarioPorCorreo(correo) {
-  return leerUsuarios().find((u) => u.correo === correo)
+export function iniciarSesion(correo, password) {
+  return pedir('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ correo, password })
+  })
 }
