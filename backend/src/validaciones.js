@@ -2,6 +2,30 @@
 
 const correoValido = (valor) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)
 
+// Valida formato 12.345.678-9 y digito verificador con algoritmo modulo 11
+function rutValido(valor) {
+  if (!/^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/.test(valor)) {
+    return false
+  }
+
+  const limpio = valor.replace(/\./g, '')
+  const [numero, dv] = limpio.split('-')
+
+  let suma = 0
+  let multiplo = 2
+  for (let i = numero.length - 1; i >= 0; i--) {
+    suma += Number(numero[i]) * multiplo
+    multiplo = multiplo === 7 ? 2 : multiplo + 1
+  }
+
+  const resto = 11 - (suma % 11)
+  let esperado = String(resto)
+  if (resto === 11) esperado = '0'
+  if (resto === 10) esperado = 'K'
+
+  return esperado === dv.toUpperCase()
+}
+
 export function validarRegistro(datos = {}) {
   const errores = []
 
@@ -13,7 +37,13 @@ export function validarRegistro(datos = {}) {
     errores.push('El correo no tiene un formato válido')
   }
 
-  if (!datos.rut) errores.push('El RUT es obligatorio')
+  if (!datos.rut) {
+    errores.push('El RUT es obligatorio')
+  } else if (!/^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/.test(datos.rut)) {
+    errores.push('El RUT debe tener el formato 12.345.678-9')
+  } else if (!rutValido(datos.rut)) {
+    errores.push('El RUT no es válido')
+  }
 
   if (!datos.password) {
     errores.push('La contraseña es obligatoria')
