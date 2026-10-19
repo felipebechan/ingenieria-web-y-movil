@@ -1,0 +1,50 @@
+{
+  "info": {
+    "_postman_id": "ea33aebb-bc21-408e-a984-07783f49e80e",
+    "name": "Santo Domingo Responde",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "59069607",
+    "_collection_link": "https://go.postman.co/collection/59069607-ea33aebb-bc21-408e-a984-07783f49e80e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "1. Login Exitoso",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. Obtener Solicitudes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. Crear Solicitud",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": ""
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}
