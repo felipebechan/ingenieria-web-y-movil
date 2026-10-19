@@ -1,5 +1,7 @@
 // Todo lo que llega del frontend se valida aca antes de tocar la base de datos.
 
+const TIPOS_SOLICITUD = ['Alumbrado', 'Aseo y limpieza', 'Vialidad']
+
 const correoValido = (valor) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)
 
 // Valida formato 12.345.678-9 y digito verificador con algoritmo modulo 11
@@ -75,8 +77,17 @@ export function validarLogin(datos = {}) {
 export function validarSolicitud(datos = {}) {
   const errores = []
 
-  if (!datos.tipo) errores.push('El tipo de solicitud es obligatorio')
-  if (!datos.descripcion) errores.push('La descripción es obligatoria')
+  if (!datos.tipo) {
+    errores.push('El tipo de solicitud es obligatorio')
+  } else if (!TIPOS_SOLICITUD.includes(datos.tipo)) {
+    errores.push('El tipo de solicitud debe ser: Alumbrado, Aseo y limpieza o Vialidad')
+  }
+
+  if (!datos.descripcion) {
+    errores.push('La descripción es obligatoria')
+  } else if (datos.descripcion.trim().length < 10 || datos.descripcion.length > 500) {
+    errores.push('La descripción debe tener entre 10 y 500 caracteres')
+  }
 
   return errores
 }
