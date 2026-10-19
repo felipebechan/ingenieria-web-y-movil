@@ -19,6 +19,11 @@ export async function buscarPorCorreo(correo) {
   return rows[0]
 }
 
+export async function buscarPorRut(rut) {
+  const { rows } = await consultar('SELECT id FROM usuarios WHERE rut = $1', [rut])
+  return rows[0]
+}
+
 export function compararPassword(password, hash) {
   return bcrypt.compare(password, hash)
 }

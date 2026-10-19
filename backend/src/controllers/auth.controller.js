@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { crearUsuario, buscarPorCorreo, compararPassword } from '../services/usuarios.service.js'
+import { crearUsuario, buscarPorCorreo, buscarPorRut, compararPassword } from '../services/usuarios.service.js'
 import { validarRegistro, validarLogin } from '../validaciones.js'
 
 function generarToken(usuario) {
@@ -20,6 +20,12 @@ export async function registrar(req, res, next) {
     const existe = await buscarPorCorreo(req.body.correo)
     if (existe) {
       return res.status(409).json({ error: 'Ya existe una cuenta con ese correo' })
+    }
+
+    // el rut tambien es unico en la base, si no lo revisamos aca el insert se cae con un 500
+    const existeRut = await buscarPorRut(req.body.rut)
+    if (existeRut) {
+      return res.status(409).json({ error: 'Ya existe una cuenta con ese RUT' })
     }
 
     // el rol no se toma del body, lo pone la base como ciudadano
