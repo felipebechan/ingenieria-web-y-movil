@@ -24,6 +24,3 @@ export async function pedir(ruta, opciones = {}) {
 
   return datos
 }
-
-// PENDIENTE (Felipe): cambiar solicitudesService y usuariosService para que usen
-// pedir() en vez de localStorage, y guardar el token al iniciar sesion.

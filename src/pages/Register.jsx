@@ -24,9 +24,9 @@ function Register() {
 
   // validaciones simples de formato
   const correoValido = (valor) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)
-  // valida el formato y ademas el digito verificador (modulo 11)
+  // valida el formato (el mismo que pide el backend) y el digito verificador (modulo 11)
   const rutValido = (valor) => {
-    if (!/^[0-9.]{7,12}-[0-9kK]$/.test(valor)) return false
+    if (!/^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/.test(valor)) return false
 
     const limpio = valor.replace(/\./g, '')
     const [numero, dv] = limpio.split('-')
