@@ -83,6 +83,12 @@ export function validarSolicitud(datos = {}) {
     errores.push('El tipo de solicitud debe ser: Alumbrado, Aseo y limpieza o Vialidad')
   }
 
+  if (!datos.direccion) {
+    errores.push('La dirección es obligatoria')
+  } else if (datos.direccion.length > 150) {
+    errores.push('La dirección no puede tener más de 150 caracteres')
+  }
+
   if (!datos.descripcion) {
     errores.push('La descripción es obligatoria')
   } else if (datos.descripcion.trim().length < 10 || datos.descripcion.length > 500) {
