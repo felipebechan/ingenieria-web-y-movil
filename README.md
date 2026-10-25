@@ -184,15 +184,24 @@ Estos supuestos deberán validarse con usuarios reales en etapas posteriores del
 Un requerimiento funcional (RF) describe qué debe hacer el sistema, representando las funcionalidades, servicios y acciones que la plataforma debe proporcionar a los distintos roles.
 
 ### Requerimientos Funcionales por Rol
-| ID | Requerimiento funcional | Rol |
-| :--- | :--- | :--- |
-| **RF-01** | El sistema deberá permitir al ciudadano ingresar una presentación o reclamo clasificándolo por tipo (consulta, sugerencia, reclamo o denuncia), temática, descripción detallada, ubicación geográfica y archivos de respaldo. | Ciudadano |
-| **RF-02** | El sistema deberá generar y asignar automáticamente un número de folio único e irrepetible para cada requerimiento ingresado, permitiendo su trazabilidad pública y autenticada. | Ciudadano |
-| **RF-03** | El sistema deberá permitir al ciudadano consultar el estado y avance de sus solicitudes mediante su cuenta o a través del módulo de consulta por folio. | Ciudadano |
-| **RF-04** | El sistema deberá permitir al funcionario OIRS visualizar la bandeja general de requerimientos, filtrando por estado, categoría, fecha de ingreso y plazo restante de respuesta. | Funcionario |
-| **RF-05** | El sistema deberá permitir al funcionario derivar el requerimiento a la unidad técnica correspondiente (Obras, Tránsito, Aseo, etc.) y registrar observaciones internas. | Funcionario |
-| **RF-06** | El sistema deberá permitir al funcionario redactar y registrar la respuesta formal al ciudadano, adjuntar informes técnicos y cambiar el estado del requerimiento a "Respondido / Cerrado". | Funcionario |
-| **RF-07** | El sistema deberá permitir al administrador gestionar cuentas de usuarios, configurar los departamentos municipales y consultar métricas globales de tiempos de respuesta. | Administrador |
+Cada requerimiento describe una sola acción, con la forma *el sistema deberá permitir a `<rol>` `<verbo>` `<necesidad>`*. La última columna indica en qué etapa quedó implementado.
+
+| ID | Requerimiento funcional | Rol | Estado |
+| :--- | :--- | :--- | :--- |
+| **RF-01** | El sistema deberá permitir al ciudadano ingresar una solicitud indicando su tipo, dirección y descripción. | Ciudadano | Implementado en EP2 |
+| **RF-02** | El sistema deberá asignar a cada solicitud ingresada un número de folio único e irrepetible. | Ciudadano | Implementado en EP2 |
+| **RF-03** | El sistema deberá permitir al ciudadano consultar el listado de sus propias solicitudes con el estado de cada una. | Ciudadano | Implementado en EP2 |
+| **RF-04** | El sistema deberá permitir al ciudadano consultar el detalle de una solicitud suya a partir de su folio. | Ciudadano | Implementado en EP2 |
+| **RF-05** | El sistema deberá permitir al ciudadano eliminar una solicitud propia mientras no haya sido tomada por un funcionario. | Ciudadano | Implementado en EP2 |
+| **RF-06** | El sistema deberá permitir al funcionario visualizar la bandeja con todas las solicitudes ingresadas. | Funcionario | Implementado en EP2 |
+| **RF-07** | El sistema deberá permitir al funcionario filtrar la bandeja por estado y buscar por folio o por nombre del ciudadano. | Funcionario | Implementado en EP2 |
+| **RF-08** | El sistema deberá permitir al funcionario cambiar el estado de una solicitud entre En revisión, En proceso, Resuelto y Rechazado. | Funcionario | Implementado en EP2 |
+| **RF-09** | El sistema deberá registrar cada cambio de estado con su fecha y su comentario, conformando el historial de la solicitud. | Funcionario | Implementado en EP2 |
+| **RF-10** | El sistema deberá permitir al funcionario derivar una solicitud a la unidad técnica correspondiente (Obras, Tránsito, Aseo y Ornato o Seguridad Ciudadana). | Funcionario | Planificado para la Entrega Final |
+| **RF-11** | El sistema deberá permitir al funcionario redactar y enviar la respuesta formal dirigida al ciudadano. | Funcionario | Planificado para la Entrega Final |
+| **RF-12** | El sistema deberá advertir al funcionario cuando una solicitud esté próxima a vencer el plazo de respuesta comprometido. | Funcionario | Planificado para la Entrega Final |
+| **RF-13** | El sistema deberá permitir al administrador asignar el rol de funcionario a una cuenta existente. | Administrador | Planificado para la Entrega Final |
+| **RF-14** | El sistema deberá permitir al administrador consultar el tiempo promedio de respuesta de las solicitudes cerradas. | Administrador | Planificado para la Entrega Final |
 
 ### Funcionalidades Transversales
 Las siguientes funcionalidades son necesarias para el funcionamiento general de la plataforma, pero complementan los requerimientos funcionales principales del dominio:
@@ -206,24 +215,24 @@ Las siguientes funcionalidades son necesarias para el funcionamiento general de 
 Los requerimientos no funcionales establecen las condiciones de calidad, rendimiento, accesibilidad y seguridad que debe satisfacer la plataforma:
 
 #### UX y Usabilidad
-* **RNF-UX-01 — Diseño adaptable:** La interfaz deberá adaptarse responsive a dispositivos móviles, tablets y computadores de escritorio, manteniendo accesibles todas las funciones principales.
+* **RNF-UX-01 — Diseño adaptable:** La interfaz deberá funcionar sin desplazamiento horizontal desde los 360 px de ancho y hasta los 1920 px, manteniendo accesibles todas las funciones principales en ambos extremos.
 * **RNF-UX-02 — Navegación consistente:** La aplicación deberá mantener patrones de navegación uniformes y predecibles en todas sus vistas.
-* **RNF-UX-03 — Reducción de carga cognitiva:** Los formularios deberán segmentarse de manera progresiva y clara, evitando saturar al usuario con campos innecesarios.
-* **RNF-UX-04 — Retroalimentación al usuario:** Todas las acciones del usuario deberán contar con retroalimentación visual inmediata (confirmaciones, indicadores de carga y alertas de error).
+* **RNF-UX-03 — Reducción de carga cognitiva:** Ningún formulario deberá presentar más de seis campos obligatorios en una misma pantalla, y cada campo deberá indicar si es obligatorio y qué formato espera.
+* **RNF-UX-04 — Retroalimentación al usuario:** Toda acción que envíe datos al servidor deberá mostrar un indicador de carga mientras se procesa y un mensaje de confirmación o de error al terminar. El botón que originó la acción deberá quedar deshabilitado hasta recibir la respuesta, para evitar envíos duplicados.
 
 #### Accesibilidad
 * **RNF-ACC-01 — Claridad del contenido:** Los textos e instrucciones deberán expresarse en un lenguaje ciudadano directo y accesible, facilitando su comprensión por personas de todas las edades.
-* **RNF-ACC-02 — Jerarquía visual:** Las pantallas deberán mantener una jerarquía visual estructurada, con contrastes de color adecuados y tamaños de texto legibles.
+* **RNF-ACC-02 — Jerarquía visual:** El texto de contenido deberá mantener un contraste mínimo de 4.5:1 contra su fondo y un tamaño base de 16 px, y los botones deberán tener un área mínima de 44 x 44 px en móvil.
 
 #### Seguridad y Privacidad
-* **RNF-SEG-01 — Protección de contraseñas:** Las contraseñas deberán almacenarse en la base de datos utilizando mecanismos seguros de derivación criptográfica (hash bcrypt) y nunca en texto plano.
-* **RNF-SEG-02 — Autenticación y control de acceso por roles:** Las rutas protegidas deberán verificar la identidad y permisos del usuario antes de desplegar información reservada.
+* **RNF-SEG-01 — Protección de contraseñas:** Las contraseñas deberán almacenarse con hash bcrypt de al menos 10 rondas y nunca en texto plano. La contraseña no deberá aparecer en ninguna respuesta de la API ni en los registros del servidor.
+* **RNF-SEG-02 — Autenticación y control de acceso por roles:** Toda ruta protegida deberá exigir un token JWT válido y responder 401 si falta o venció, y 403 si el rol no corresponde. Un ciudadano no deberá poder leer una solicitud de otro aunque conozca su identificador.
 * **RNF-SEG-03 — Privacidad de datos personales:** Los datos de contacto del ciudadano deberán resguardarse bajo confidencialidad en cumplimiento de la Ley Nº 19.628 y el Art. 47 de la Ordenanza Municipal.
 
 #### Rendimiento, Compatibilidad y Escalabilidad
-* **RNF-01: Tiempo de respuesta:** Las operaciones de consulta y guardado deberán ejecutarse en tiempos promedio inferiores a 2 segundos en condiciones estándar de conectividad.
+* **RNF-01: Tiempo de respuesta:** El 95% de las consultas y guardados deberá responder en menos de 2 segundos, medido con la base de datos local y una conexión de al menos 5 Mbps.
 * **RNF-02: Compatibilidad:** La plataforma deberá funcionar de manera consistente en las versiones actuales de Google Chrome, Mozilla Firefox, Microsoft Edge y Safari.
-* **RNF-03: Escalabilidad:** La arquitectura modular deberá permitir incorporar nuevas dependencias municipales o un incremento en el volumen de reclamos sin afectar el rendimiento global.
+* **RNF-03: Escalabilidad:** La plataforma deberá mantener el tiempo de respuesta definido en RNF-01 con al menos 10.000 solicitudes almacenadas y 50 usuarios consultando a la vez. Incorporar una nueva unidad municipal no deberá requerir cambios en el esquema de la base de datos.
 
 ---
 
@@ -505,7 +514,7 @@ La separación en `pages`, `components`, `routes` y `services` permite agregar v
 ## 8. Instalación y Ejecución
 
 ### Requisitos previos
-- Node.js (v18 o superior)
+- Node.js **20.19 o superior** (o 22.12 en adelante). Es lo que pide Vite 8; con Node 18 la instalación falla.
 - Git
 
 ### Pasos para ejecutar el proyecto localmente
