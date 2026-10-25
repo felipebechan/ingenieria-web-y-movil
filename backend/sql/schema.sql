@@ -64,7 +64,10 @@ INSERT INTO solicitudes (folio, usuario_id, tipo, direccion, descripcion, estado
 ('#SD-2026-0004', 2, 'Alumbrado', 'Pasaje Este 8', 'Foco roto en el pasaje', 'Rechazado', '2026-10-13 18:20'),
 ('#SD-2026-0005', 1, 'Aseo y limpieza', 'Avenida Mar 99', 'Escombros botados en la vereda', 'En revisión', '2026-10-18 11:30');
 
-INSERT INTO historial_estados (solicitud_id, estado, comentario) VALUES
-(2, 'En proceso', 'Se derivó a obras públicas'),
-(3, 'Resuelto', 'Limpieza completada por el camión de aseo'),
-(4, 'Rechazado', 'El poste pertenece a condominio privado');
+-- La fecha va escrita para que cada movimiento quede despues de la solicitud
+-- a la que pertenece y no en el momento en que se carga este archivo.
+INSERT INTO historial_estados (solicitud_id, estado, comentario, registrado_en) VALUES
+(2, 'En proceso', 'Se derivó a obras públicas', '2026-10-05 09:30'),
+(3, 'En proceso', 'Se asignó al camión de aseo', '2026-10-08 11:45'),
+(3, 'Resuelto', 'Limpieza completada por el camión de aseo', '2026-10-10 15:10'),
+(4, 'Rechazado', 'El poste pertenece a un condominio privado', '2026-10-15 12:00');
