@@ -696,13 +696,38 @@ Lista de lo que sigue, en orden de prioridad:
 - [x] Autenticación real con JWT y contraseñas cifradas con bcrypt, en vez de decidir el rol por el correo.
 - [x] Probar los endpoints en Postman y guardar la evidencia.
 
-### Pantallas que faltan
-- [ ] Notificaciones, Mi perfil y Ayuda: hoy aparecen atenuadas en el menú.
-- [ ] Consulta pública por folio, sin necesidad de iniciar sesión.
-- [ ] Gestión de la solicitud para el funcionario: derivar a una unidad y responder formalmente.
+### Entrega Final
 
-### Mejoras pendientes
+Organizado según los criterios de la pauta:
+
+**EF1 — Funcionalidades completas e integración**
+- [ ] Derivar una solicitud a la unidad técnica correspondiente (**RF-10**).
+- [ ] Redactar y enviar la respuesta formal al ciudadano (**RF-11**).
+- [ ] Pantalla de notificaciones, con su contador real (**RF-12** incluido: aviso de plazo por vencer).
+- [ ] Vistas de administrador: asignar el rol de funcionario y ver tiempos de respuesta (**RF-13** y **RF-14**).
+- [ ] Mi perfil y Ayuda, que hoy aparecen atenuadas en el menú.
+- [ ] Consulta pública por folio, sin necesidad de iniciar sesión.
+
+**EF2 — UI/UX y rendimiento**
 - [ ] Subir fotografías y ubicación en el formulario de reclamo.
-- [ ] Semáforo del plazo de 20 días hábiles en la bandeja del funcionario.
-- [ ] Revisar la aplicación en tamaños de tablet, hoy está probada en escritorio y móvil.
+- [ ] Revisar la aplicación en tamaños de tablet; hoy está probada en escritorio y móvil.
+- [ ] Dos pantallas más en el prototipo de Figma, en web y móvil, conectadas al flujo.
+
+**EF3 — Seguridad avanzada**
+- [ ] Sanitizar la entrada contra XSS además de la validación que ya existe.
+- [ ] Revisar la configuración de CORS para el entorno de despliegue, hoy apunta al servidor de desarrollo.
+
+**EF4 — Consultas y eficiencia**
+- [ ] Paginar el listado de la bandeja cuando crezca el volumen.
+- [ ] Devolver solo las columnas necesarias en los listados.
+
+**EF5 — Servicio externo**
+- [ ] Integrar un servicio de terceros que aporte al problema, por ejemplo correo de aviso al cambiar el estado o un mapa para la ubicación del reclamo.
+
+**EF6 — Despliegue con Docker**
+- [ ] `Dockerfile` para el frontend y para el backend.
+- [ ] `docker-compose` que levante la API, la base de datos y el frontend.
+- [ ] Probar el despliegue local y documentarlo.
+
+### Otras cosas pendientes
 - [ ] Validar las proto-personas con usuarios reales.
