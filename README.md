@@ -572,10 +572,10 @@ Si se intenta abrir una ruta privada sin haber iniciado sesión, la aplicación 
 src/
 ├── components/   Componentes reutilizables (AppLayout, AuthLayout, MenuLateral, CampoTexto, EstadoBadge, OpcionCard, Campana, InfoTarjeta)
 ├── context/      PerfilContext: guarda la sesión y el rol del usuario
-├── data/         Datos de prueba mientras no exista backend
+├── data/         Opciones fijas de la interfaz (accesos rápidos del inicio)
 ├── pages/        Una carpeta por vista: Login, Register, Inicio, IngresoReclamo, MisSolicitudes, DetalleSolicitud, RevisarSolicitudes
 ├── routes/       RutaProtegida: control de sesión y de rol en las rutas privadas
-├── services/     solicitudesService: acceso a los datos; aquí irán las llamadas a la API
+├── services/     api.js y los servicios que hablan con el backend (usuarios, solicitudes)
 ├── theme/        Variables de color y tipografía
 └── App.jsx       Definición de todas las rutas de la aplicación
 ```
