@@ -14,12 +14,18 @@ La URL base es `http://localhost:3000/api`. El token se manda en la cabecera
 | **GET** | `/api/solicitudes/:id` | Sí | Ninguno | `200 OK` (Detalle de la solicitud) | `401 Unauthorized`, `403 Forbidden` (No es suya), `404 Not Found` |
 | **GET** | `/api/solicitudes/:id/historial` | Sí | Ninguno | `200 OK` (Array con los cambios de estado) | `401 Unauthorized`, `403 Forbidden` (No es suya), `404 Not Found` |
 | **PATCH** | `/api/solicitudes/:id/estado` | Sí (Funcionario) | `{"estado": "En proceso", "comentario": "..."}` | `200 OK` (Solicitud actualizada) | `400 Bad Request` (Estado inválido), `403 Forbidden`, `404 Not Found` |
+| **PATCH** | `/api/solicitudes/:id/derivar` | Sí (Funcionario) | `{"unidad": "Tránsito", "observacion": "..."}` | `200 OK` (Solicitud derivada y En proceso) | `400 Bad Request` (Unidad inválida), `403 Forbidden`, `404 Not Found`, `409 Conflict` (Ya cerrada) |
+| **PATCH** | `/api/solicitudes/:id/responder` | Sí (Funcionario) | `{"respuesta": "..."}` | `200 OK` (Solicitud Resuelta con su respuesta) | `400 Bad Request` (Respuesta muy corta), `403 Forbidden`, `404 Not Found`, `409 Conflict` (Ya respondida) |
 | **DELETE** | `/api/solicitudes/:id` | Sí | Ninguno | `200 OK` (Confirmación con el folio) | `403 Forbidden` (No es suya), `404 Not Found`, `409 Conflict` (Ya está en trámite) |
 
 El listado del funcionario acepta además los filtros `?busqueda=` y `?estado=`,
 que son los que usa la bandeja del panel de gestión.
 
 Un `id` que no sea un número responde `400` y no llega a consultar la base de datos.
+
+Las unidades válidas para derivar son `Dirección de Obras Municipales`, `Aseo y Ornato`,
+`Tránsito` y `Seguridad Ciudadana`. Derivar deja la solicitud `En proceso` y responder la
+deja `Resuelto`; las dos acciones escriben en el historial.
 
 **Sobre el PATCH y el DELETE:** cada cambio de estado se guarda en la tabla
 `historial_estados`, que es lo que devuelve el endpoint del historial. El vecino

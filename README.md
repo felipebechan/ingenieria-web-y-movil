@@ -200,8 +200,8 @@ Cada requerimiento describe una sola acción, con la forma *el sistema deberá p
 | **RF-07** | El sistema deberá permitir al funcionario filtrar la bandeja por estado y buscar por folio o por nombre del ciudadano. | Funcionario | Implementado en EP2 |
 | **RF-08** | El sistema deberá permitir al funcionario cambiar el estado de una solicitud entre En revisión, En proceso, Resuelto y Rechazado. | Funcionario | Implementado en EP2 |
 | **RF-09** | El sistema deberá registrar cada cambio de estado con su fecha y su comentario, conformando el historial de la solicitud. | Funcionario | Implementado en EP2 |
-| **RF-10** | El sistema deberá permitir al funcionario derivar una solicitud a la unidad técnica correspondiente (Obras, Tránsito, Aseo y Ornato o Seguridad Ciudadana). | Funcionario | Planificado para la Entrega Final |
-| **RF-11** | El sistema deberá permitir al funcionario redactar y enviar la respuesta formal dirigida al ciudadano. | Funcionario | Planificado para la Entrega Final |
+| **RF-10** | El sistema deberá permitir al funcionario derivar una solicitud a la unidad técnica correspondiente (Obras, Tránsito, Aseo y Ornato o Seguridad Ciudadana). | Funcionario | Implementado en EP2 |
+| **RF-11** | El sistema deberá permitir al funcionario redactar y enviar la respuesta formal dirigida al ciudadano. | Funcionario | Implementado en EP2 |
 | **RF-12** | El sistema deberá advertir al funcionario cuando una solicitud esté próxima a vencer el plazo de respuesta comprometido. | Funcionario | Planificado para la Entrega Final |
 | **RF-13** | El sistema deberá permitir al administrador asignar el rol de funcionario a una cuenta existente. | Administrador | Planificado para la Entrega Final |
 | **RF-14** | El sistema deberá permitir al administrador consultar el tiempo promedio de respuesta de las solicitudes cerradas. | Administrador | Planificado para la Entrega Final |
@@ -265,7 +265,9 @@ La aplicación considera rutas públicas y rutas protegidas según el perfil aut
 | Ruta | Vista | Estado | Descripción |
 | :--- | :--- | :--- | :--- |
 | `/revisar-solicitudes` | Bandeja de solicitudes | Implementada en EP1 | Listado de requerimientos con buscador por folio o ciudadano y filtro por estado. |
-| `/revisar-solicitudes/:id` | Gestión de Solicitud | Planificada | Interfaz para derivar internamente, adjuntar informes técnicos y responder formalmente. |
+| `/derivar/:id` | Derivar solicitud | Implementada en EP2 | Permite asignar la solicitud a una unidad municipal y dejar una observación interna (**RF-10**). |
+| `/responder/:id` | Responder solicitud | Implementada en EP2 | Muestra el historial y permite registrar la respuesta formal al ciudadano (**RF-11**). |
+| `/revisar-solicitudes/:id` | Adjuntar informes técnicos | Planificada | Carga de informes y archivos de respaldo de la unidad técnica. |
 
 #### Rutas protegidas del Administrador
 Estas vistas corresponden a la arquitectura propuesta y se implementarán en las siguientes entregas, cuando exista backend y gestión real de cuentas.
@@ -647,14 +649,14 @@ La aplicación está publicada en **https://felipebechan.github.io/ingenieria-we
 ### Implementado en esta entrega
 * **Servidor** en Node.js con Express, separado en rutas, controladores, servicios y middlewares.
 * **Base de datos PostgreSQL** con tres tablas (`usuarios`, `solicitudes`, `historial_estados`), claves primarias y foráneas, restricciones `CHECK` y `UNIQUE`, y el archivo `schema.sql` que la reproduce completa con datos de prueba.
-* **API REST** con los ocho endpoints de la tabla de `backend/postman/endpoints.md`, cubriendo GET, POST, PATCH y DELETE, con códigos HTTP y respuestas JSON consistentes.
+* **API REST** con los diez endpoints de la tabla de `backend/postman/endpoints.md`, cubriendo GET, POST, PATCH y DELETE, con códigos HTTP y respuestas JSON consistentes.
 * **Autenticación con JWT**: registro, inicio de sesión, token con expiración, rutas protegidas y diferenciación entre ciudadano y funcionario.
 * **Seguridad**: contraseñas con bcrypt, validación de todos los datos que entran, consultas parametrizadas y verificación de que un vecino solo pueda ver o modificar lo suyo.
 * **Integración con el frontend**: las pantallas consumen la API con `fetch`, guardan el token y muestran los errores que devuelve el servidor.
-* **Pruebas**: colección de Postman con 14 requests, documentación de los endpoints y capturas de las respuestas.
+* **Gestión completa del funcionario**: derivar una solicitud a la unidad municipal correspondiente (**RF-10**) y registrar la respuesta formal al ciudadano (**RF-11**), con las dos acciones guardadas en el historial y visibles para el vecino en el detalle de su solicitud.
+* **Pruebas**: colección de Postman con 18 requests, documentación de los endpoints y capturas de las respuestas.
 
 ### Planificado para la Entrega Final
-* Derivación a la unidad técnica y respuesta formal al ciudadano (**RF-10** y **RF-11**).
 * Aviso de plazo por vencer en la bandeja (**RF-12**).
 * Vistas de administrador: asignar roles y ver tiempos de respuesta (**RF-13** y **RF-14**).
 * Pantallas de notificaciones, perfil y ayuda, que en el menú aparecen atenuadas.
@@ -662,7 +664,7 @@ La aplicación está publicada en **https://felipebechan.github.io/ingenieria-we
 
 ### Correcciones incorporadas desde la entrega anterior
 
-Las observaciones de la Entrega Parcial 1 se resolvieron dentro de esta entrega, para no arrastrarlas:
+Las observaciones de la Entrega Parcial 1 se resolvieron dentro de esta entrega. La Entrega Parcial 1 ya está evaluada y estas correcciones no modifican ese puntaje: se hicieron porque los errores detectados eran reales y se habrían arrastrado al resto del proyecto, no para recuperar nota.
 
 | Observación | Qué se hizo |
 | :--- | :--- |
@@ -671,7 +673,7 @@ Las observaciones de la Entrega Parcial 1 se resolvieron dentro de esta entrega,
 | Faltaba trazabilidad de las fuentes y el sustento del plazo de respuesta | Las fuentes quedaron enlazadas e indicando qué necesidad respalda cada una. El plazo se corrigió: la Ley N° 18.695 fija un techo de 30 días y delega el plazo en la ordenanza comunal, así que los 20 días hábiles se declaran como meta de servicio del proyecto. |
 | La bandeja móvil no tenía filtro por estado | Se agregó, con las mismas opciones que la versión de escritorio. |
 | El requisito de Node estaba desactualizado | Corregido a 20.19 o superior, que es lo que pide Vite 8. |
-| Faltaban dos pantallas funcionales en el prototipo | Corresponden a derivación y respuesta formal (**RF-10** y **RF-11**), planificadas para la Entrega Final. |
+| Faltaban dos pantallas funcionales en el prototipo | Se diseñaron en Figma las pantallas de derivación y respuesta formal, en versión web y móvil, y quedaron implementadas en la aplicación como **RF-10** y **RF-11**. |
 
 También se revisaron de nuevo las pantallas ya entregadas. En el detalle de solicitud, el seguimiento trataba una solicitud rechazada igual que una resuelta, y mostraba la línea de tiempo completa; ahora cada estado muestra su propio recorrido y debajo van los movimientos reales que registra el backend. El contador de notificaciones mostraba un número fijo que no provenía de ningún dato, así que se quitó hasta que exista la funcionalidad.
 
@@ -705,8 +707,8 @@ Lista de lo que sigue, en orden de prioridad:
 Organizado según los criterios de la pauta:
 
 **EF1 — Funcionalidades completas e integración**
-- [ ] Derivar una solicitud a la unidad técnica correspondiente (**RF-10**).
-- [ ] Redactar y enviar la respuesta formal al ciudadano (**RF-11**).
+- [x] Derivar una solicitud a la unidad técnica correspondiente (**RF-10**).
+- [x] Redactar y enviar la respuesta formal al ciudadano (**RF-11**).
 - [ ] Pantalla de notificaciones, con su contador real (**RF-12** incluido: aviso de plazo por vencer).
 - [ ] Vistas de administrador: asignar el rol de funcionario y ver tiempos de respuesta (**RF-13** y **RF-14**).
 - [ ] Mi perfil y Ayuda, que hoy aparecen atenuadas en el menú.
@@ -715,7 +717,7 @@ Organizado según los criterios de la pauta:
 **EF2 — UI/UX y rendimiento**
 - [ ] Subir fotografías y ubicación en el formulario de reclamo.
 - [ ] Revisar la aplicación en tamaños de tablet; hoy está probada en escritorio y móvil.
-- [ ] Dos pantallas más en el prototipo de Figma, en web y móvil, conectadas al flujo.
+- [ ] Conectar en el prototipo de Figma los flujos hacia las pantallas de derivación y respuesta.
 
 **EF3 — Seguridad avanzada**
 - [ ] Sanitizar la entrada contra XSS además de la validación que ya existe.

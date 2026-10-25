@@ -488,6 +488,170 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "15. Derivar a una Unidad",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_funcionario}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/solicitudes/1/derivar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "solicitudes",
+            "1",
+            "derivar"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"unidad\": \"Tránsito\", \"observacion\": \"Se solicita inspeccion en terreno\" }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "16. Error - Unidad Invalida",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_funcionario}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/solicitudes/1/derivar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "solicitudes",
+            "1",
+            "derivar"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"unidad\": \"Bomberos\" }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "17. Responder al Ciudadano",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_funcionario}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/solicitudes/1/responder",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "solicitudes",
+            "1",
+            "responder"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"respuesta\": \"Se realizo la reparacion del poste el 25 de octubre y el alumbrado quedo operativo.\" }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "18. Error - Ya Respondida",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_funcionario}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/solicitudes/1/responder",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "solicitudes",
+            "1",
+            "responder"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"respuesta\": \"Esta solicitud ya fue cerrada anteriormente por la unidad.\" }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
     }
   ],
   "variable": [
