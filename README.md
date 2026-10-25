@@ -658,6 +658,21 @@ La aplicación está publicada en **https://felipebechan.github.io/ingenieria-we
 * Pantallas de notificaciones, perfil y ayuda, que en el menú aparecen atenuadas.
 * Carga de fotografías y geolocalización en el formulario.
 
+### Correcciones incorporadas desde la entrega anterior
+
+Las observaciones de la Entrega Parcial 1 se resolvieron dentro de esta entrega, para no arrastrarlas:
+
+| Observación | Qué se hizo |
+| :--- | :--- |
+| Los requerimientos funcionales agrupaban varias acciones en uno solo | Se separaron en catorce, uno por acción, con la forma rol–verbo–necesidad y el estado de cada uno. |
+| Los no funcionales usaban expresiones no comprobables | Se reemplazaron por umbrales observables (ancho mínimo, contraste, percentil de tiempo de respuesta, volumen soportado). |
+| Faltaba trazabilidad de las fuentes y el sustento del plazo de respuesta | Las fuentes quedaron enlazadas e indicando qué necesidad respalda cada una. El plazo se corrigió: la Ley N° 18.695 fija un techo de 30 días y delega el plazo en la ordenanza comunal, así que los 20 días hábiles se declaran como meta de servicio del proyecto. |
+| La bandeja móvil no tenía filtro por estado | Se agregó, con las mismas opciones que la versión de escritorio. |
+| El requisito de Node estaba desactualizado | Corregido a 20.19 o superior, que es lo que pide Vite 8. |
+| Faltaban dos pantallas funcionales en el prototipo | Corresponden a derivación y respuesta formal (**RF-10** y **RF-11**), planificadas para la Entrega Final. |
+
+También se revisaron de nuevo las pantallas ya entregadas. En el detalle de solicitud, el seguimiento trataba una solicitud rechazada igual que una resuelta, y mostraba la línea de tiempo completa; ahora cada estado muestra su propio recorrido y debajo van los movimientos reales que registra el backend. El contador de notificaciones mostraba un número fijo que no provenía de ningún dato, así que se quitó hasta que exista la funcionalidad.
+
 ### Organización del repositorio
 
 | Rama | Qué contiene |
@@ -681,13 +696,38 @@ Lista de lo que sigue, en orden de prioridad:
 - [x] Autenticación real con JWT y contraseñas cifradas con bcrypt, en vez de decidir el rol por el correo.
 - [x] Probar los endpoints en Postman y guardar la evidencia.
 
-### Pantallas que faltan
-- [ ] Notificaciones, Mi perfil y Ayuda: hoy aparecen atenuadas en el menú.
-- [ ] Consulta pública por folio, sin necesidad de iniciar sesión.
-- [ ] Gestión de la solicitud para el funcionario: derivar a una unidad y responder formalmente.
+### Entrega Final
 
-### Mejoras pendientes
+Organizado según los criterios de la pauta:
+
+**EF1 — Funcionalidades completas e integración**
+- [ ] Derivar una solicitud a la unidad técnica correspondiente (**RF-10**).
+- [ ] Redactar y enviar la respuesta formal al ciudadano (**RF-11**).
+- [ ] Pantalla de notificaciones, con su contador real (**RF-12** incluido: aviso de plazo por vencer).
+- [ ] Vistas de administrador: asignar el rol de funcionario y ver tiempos de respuesta (**RF-13** y **RF-14**).
+- [ ] Mi perfil y Ayuda, que hoy aparecen atenuadas en el menú.
+- [ ] Consulta pública por folio, sin necesidad de iniciar sesión.
+
+**EF2 — UI/UX y rendimiento**
 - [ ] Subir fotografías y ubicación en el formulario de reclamo.
-- [ ] Semáforo del plazo de 20 días hábiles en la bandeja del funcionario.
-- [ ] Revisar la aplicación en tamaños de tablet, hoy está probada en escritorio y móvil.
+- [ ] Revisar la aplicación en tamaños de tablet; hoy está probada en escritorio y móvil.
+- [ ] Dos pantallas más en el prototipo de Figma, en web y móvil, conectadas al flujo.
+
+**EF3 — Seguridad avanzada**
+- [ ] Sanitizar la entrada contra XSS además de la validación que ya existe.
+- [ ] Revisar la configuración de CORS para el entorno de despliegue, hoy apunta al servidor de desarrollo.
+
+**EF4 — Consultas y eficiencia**
+- [ ] Paginar el listado de la bandeja cuando crezca el volumen.
+- [ ] Devolver solo las columnas necesarias en los listados.
+
+**EF5 — Servicio externo**
+- [ ] Integrar un servicio de terceros que aporte al problema, por ejemplo correo de aviso al cambiar el estado o un mapa para la ubicación del reclamo.
+
+**EF6 — Despliegue con Docker**
+- [ ] `Dockerfile` para el frontend y para el backend.
+- [ ] `docker-compose` que levante la API, la base de datos y el frontend.
+- [ ] Probar el despliegue local y documentarlo.
+
+### Otras cosas pendientes
 - [ ] Validar las proto-personas con usuarios reales.

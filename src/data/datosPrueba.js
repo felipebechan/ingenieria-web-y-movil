@@ -1,9 +1,7 @@
 import { add, documentTextOutline, notifications } from 'ionicons/icons'
 
-// Las solicitudes ahora vienen del backend. Aca solo quedan las cosas fijas
-// de la interfaz y el contador de notificaciones, que todavia no existe.
-
-export const notificaciones = 3
+// Las solicitudes vienen del backend. Aca solo quedan las opciones fijas
+// de la interfaz.
 
 // Las 3 tarjetas de accesos rapidos de la pantalla Inicio
 export const opcionesInicio = [

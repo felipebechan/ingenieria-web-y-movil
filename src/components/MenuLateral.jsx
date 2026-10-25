@@ -10,7 +10,6 @@ import {
   logOutOutline
 } from 'ionicons/icons'
 import { usePerfil } from '../context/PerfilContext'
-import { notificaciones } from '../data/datosPrueba'
 import './MenuLateral.css'
 
 function MenuLateral() {
@@ -23,7 +22,7 @@ function MenuLateral() {
     ? [
         { nombre: 'Inicio', icono: homeOutline, ruta: '/revisar-solicitudes' },
         { nombre: 'Revisar solicitudes', icono: documentTextOutline, ruta: '/revisar-solicitudes' },
-        { nombre: 'Notificaciones', icono: notificationsOutline, badge: notificaciones },
+        { nombre: 'Notificaciones', icono: notificationsOutline },
         { nombre: 'Mi perfil', icono: personOutline },
         { nombre: 'Cerrar sesión', icono: logOutOutline, accion: 'salir' },
       ]
@@ -31,7 +30,7 @@ function MenuLateral() {
         { nombre: 'Inicio', icono: homeOutline, ruta: '/inicio' },
         { nombre: 'Mis solicitudes', icono: documentTextOutline, ruta: '/mis-solicitudes' },
         { nombre: 'Nueva solicitud', icono: createOutline, ruta: '/ingreso-reclamo' },
-        { nombre: 'Notificaciones', icono: notificationsOutline, badge: notificaciones },
+        { nombre: 'Notificaciones', icono: notificationsOutline },
         { nombre: 'Mi perfil', icono: personOutline },
         { nombre: 'Ayuda', icono: helpCircleOutline },
         { nombre: 'Cerrar sesión', icono: logOutOutline, accion: 'salir' },
@@ -75,7 +74,6 @@ function MenuLateral() {
           >
             <IonIcon icon={opcion.icono} />
             <span>{opcion.nombre}</span>
-            {opcion.badge > 0 && <span className="badge">{opcion.badge}</span>}
           </button>
         )
       })}

@@ -10,7 +10,7 @@ import {
 } from 'ionicons/icons'
 import AppLayout from '../components/AppLayout'
 import EstadoBadge from '../components/EstadoBadge'
-import { obtenerSolicitudPorId } from '../services/solicitudesService'
+import { obtenerSolicitudPorId, obtenerHistorial } from '../services/solicitudesService'
 import { usePerfil } from '../context/PerfilContext'
 import './DetalleSolicitud.css'
 
@@ -37,15 +37,27 @@ function DetalleSolicitud() {
   const textoVolver = esAdmin ? 'Volver a revisar solicitudes' : 'Volver a mis solicitudes'
 
   const [solicitud, setSolicitud] = useState(null)
+  const [movimientos, setMovimientos] = useState([])
   const [error, setError] = useState('')
 
   const cargar = async () => {
     try {
       setSolicitud(await obtenerSolicitudPorId(id))
+      setMovimientos(await obtenerHistorial(id))
       setError('')
     } catch (problema) {
       setError(problema.message)
     }
+  }
+
+  // el backend guarda la fecha completa y aca solo mostramos el dia y la hora
+  const momento = (fecha) => {
+    const f = new Date(fecha)
+    const dia = String(f.getDate()).padStart(2, '0')
+    const mes = String(f.getMonth() + 1).padStart(2, '0')
+    const hora = String(f.getHours()).padStart(2, '0')
+    const minutos = String(f.getMinutes()).padStart(2, '0')
+    return `${dia}/${mes}/${f.getFullYear()} a las ${hora}:${minutos}`
   }
 
   useIonViewWillEnter(() => { cargar() })
@@ -146,6 +158,26 @@ function DetalleSolicitud() {
               )
             })}
           </ol>
+
+          {/* los movimientos de verdad, que el backend guarda cada vez que
+              el funcionario cambia el estado */}
+          {movimientos.length > 0 ? (
+            <ul className="movimientos">
+              {movimientos.map((movimiento) => (
+                <li key={movimiento.id}>
+                  <span className="movimiento-estado">{movimiento.estado}</span>
+                  <span className="movimiento-fecha">{momento(movimiento.registrado_en)}</span>
+                  {movimiento.comentario && (
+                    <span className="movimiento-comentario">{movimiento.comentario}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="sin-movimientos">
+              Todavía no hay cambios registrados: la solicitud sigue como se ingresó.
+            </p>
+          )}
         </div>
 
         <button className="volver-link" onClick={() => router.push(rutaVolver, 'back')}>

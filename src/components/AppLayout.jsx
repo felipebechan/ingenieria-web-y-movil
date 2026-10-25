@@ -3,7 +3,6 @@ import { personOutline, chevronDown } from 'ionicons/icons'
 import MenuLateral from './MenuLateral'
 import Campana from './Campana'
 import { usePerfil } from '../context/PerfilContext'
-import { notificaciones } from '../data/datosPrueba'
 import './AppLayout.css'
 
 // Layout de las pantallas con sesion iniciada (menu, header y footer)
@@ -28,7 +27,7 @@ function AppLayout({ children }) {
                 <>Santo Domingo:<br />Responde</>
               )}
             </p>
-            <Campana cantidad={notificaciones} />
+            <Campana />
           </div>
           <div className="app-ola ola-movil-app"></div>
 
@@ -55,7 +54,7 @@ function AppLayout({ children }) {
                 <div className="app-ola"></div>
 
                 <div className="header-acciones">
-                  <Campana cantidad={notificaciones} />
+                  <Campana />
                   
                   <div className="usuario">
                     <div className="avatar">
