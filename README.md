@@ -45,6 +45,7 @@ La versión publicada muestra la interfaz, pero para usarla con datos reales hay
    * [La aplicación funcionando](#la-aplicación-funcionando)
 7. [Tecnologías y Librerías Utilizadas](#7-tecnologías-y-librerías-utilizadas)
 8. [Instalación y Ejecución](#8-instalación-y-ejecución)
+   * [Modelo de la base de datos](#modelo-de-la-base-de-datos)
 9. [Estructura del proyecto](#9-estructura-del-proyecto)
 10. [Estado de la entrega (EP2)](#10-estado-de-la-entrega-ep2)
 11. [Cosas por hacer](#11-cosas-por-hacer)
@@ -380,64 +381,38 @@ Los flujos de tareas representan la secuencia de pasos e interacciones que reali
 * **Rol:** Ciudadano
 * **Objetivo:** Registrar una nueva solicitud o reclamo con antecedentes y obtener el comprobante con código de folio para su seguimiento.
 
-```text
-Inicio de sesión o acceso como vecino
-        ↓
-Inicio del ciudadano
-        ↓
-Seleccionar "Nuevo Requerimiento"
-        ↓
-Ingresar tipo (reclamo, consulta, sugerencia) y temática
-        ↓
-Describir situación y adjuntar ubicación/evidencia
-        ↓
-Revisar resumen de la solicitud
-        ↓
-¿Datos completos y válidos?
-        ↓                       ↓
-       No                       Sí
-        ↓                       ↓
-Mostrar alertas          Registrar solicitud
-de validación                   ↓
-                         Generar código de folio único
-                                ↓
-                         Mostrar pantalla de confirmación con folio
-                                ↓
-                         Redirigir a "Mis Solicitudes" con estado "Enviado"
+```mermaid
+flowchart TD
+    A[Inicio de sesión] --> B[Inicio del ciudadano]
+    B --> C[Nueva solicitud]
+    C --> D[Elegir tipo y escribir dirección y descripción]
+    D --> E[Aceptar términos y enviar]
+    E --> F{¿Los datos están completos?}
+    F -- No --> G[Mostrar el mensaje de error]
+    G --> D
+    F -- Sí --> H[El backend guarda la solicitud]
+    H --> I[Se genera el folio único]
+    I --> J[Confirmación con el folio]
+    J --> K[Mis solicitudes, con estado En revisión]
 ```
 
 #### Task Flow 2: Gestión, derivación y respuesta oficial de requerimiento
 * **Rol:** Funcionario
 * **Objetivo:** Evaluar un requerimiento asignado, canalizarlo a la dirección técnica correspondiente y redactar la respuesta oficial dentro del plazo comprometido.
 
-```text
-Inicio de sesión del funcionario
-        ↓
-Panel de control OIRS
-        ↓
-Acceder a "Bandeja de Reclamos"
-        ↓
-Filtrar por reclamos pendientes / próximos a vencer (plazo 20 días hábiles)
-        ↓
-Seleccionar requerimiento a gestionar
-        ↓
-Revisar antecedentes y evidencias del ciudadano
-        ↓
-¿Corresponde a su unidad técnica?
-        ↓                               ↓
-       No                               Sí
-        ↓                               ↓
-Derivar a unidad competente      Elaborar informe técnico / respuesta
-        ↓                               ↓
-Actualizar estado a "Derivado"   ¿Requiere prórroga legal (10 días)?
-                                        ↓                 ↓
-                                       Sí                 No
-                                        ↓                 ↓
-                               Registrar prórroga   Redactar respuesta
-                               y notificar vecino          ↓
-                                                    Cambiar a "Resuelto"
-                                                           ↓
-                                                    Notificar al ciudadano
+```mermaid
+flowchart TD
+    A[Inicio de sesión del funcionario] --> B[Bandeja de solicitudes]
+    B --> C[Buscar por folio o ciudadano, filtrar por estado]
+    C --> D[Abrir el detalle de una solicitud]
+    D --> E{¿Corresponde a una unidad técnica?}
+    E -- Sí --> F[Derivar a la unidad]
+    F --> G[Queda En proceso y se escribe en el historial]
+    G --> H[Responder al ciudadano]
+    E -- No --> H
+    H --> I[Escribir la respuesta formal]
+    I --> J[Queda Resuelto y se escribe en el historial]
+    J --> K[El vecino ve la respuesta en su detalle]
 ```
 
 ---
@@ -612,6 +587,47 @@ psql -d santo_domingo -c "UPDATE usuarios SET rol = 'funcionario' WHERE correo =
 ```
 
 Hay que volver a iniciar sesión para que el token traiga el rol nuevo.
+
+### Modelo de la base de datos
+
+El archivo `backend/sql/schema.sql` crea estas tres tablas:
+
+```mermaid
+erDiagram
+    USUARIOS ||--o{ SOLICITUDES : ingresa
+    SOLICITUDES ||--o{ HISTORIAL_ESTADOS : registra
+
+    USUARIOS {
+        serial id PK
+        varchar nombre
+        varchar correo UK
+        varchar rut UK
+        varchar telefono
+        varchar password_hash
+        varchar rol "ciudadano o funcionario"
+    }
+    SOLICITUDES {
+        serial id PK
+        varchar folio UK
+        integer usuario_id FK
+        varchar tipo
+        text descripcion
+        varchar direccion
+        varchar estado "En revisión, En proceso, Resuelto o Rechazado"
+        varchar unidad "la unidad a la que fue derivada"
+        text respuesta "la respuesta formal al ciudadano"
+        timestamp creada_en
+    }
+    HISTORIAL_ESTADOS {
+        serial id PK
+        integer solicitud_id FK
+        varchar estado
+        text comentario
+        timestamp registrado_en
+    }
+```
+
+Un usuario puede tener muchas solicitudes y una solicitud guarda todos sus cambios de estado en el historial. Las contraseñas se guardan como hash de bcrypt, nunca en texto plano. El estado, el rol y la unidad están limitados por restricciones `CHECK`, así que la base rechaza un valor que no corresponda aunque la petición logre pasar las validaciones del backend.
 
 ### Variables de entorno
 
