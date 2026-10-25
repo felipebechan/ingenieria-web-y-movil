@@ -7,6 +7,8 @@ import {
   pricetagOutline,
   locationOutline,
   calendarOutline,
+  gitBranchOutline,
+  mailOutline,
 } from 'ionicons/icons'
 import AppLayout from '../components/AppLayout'
 import EstadoBadge from '../components/EstadoBadge'
@@ -128,6 +130,16 @@ function DetalleSolicitud() {
                 <span className="dato-valor">{solicitud.ubicacion || 'Av. España 001'}</span>
               </div>
             </div>
+
+            {solicitud.unidad && (
+              <div className="dato">
+                <IonIcon icon={gitBranchOutline} />
+                <div>
+                  <span className="dato-titulo">Unidad responsable</span>
+                  <span className="dato-valor">{solicitud.unidad}</span>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="detalle-card">
@@ -179,6 +191,25 @@ function DetalleSolicitud() {
             </p>
           )}
         </div>
+
+        {solicitud.respuesta && (
+          <div className="detalle-card respuesta-municipal">
+            <h2><IonIcon icon={mailOutline} /> Respuesta de la municipalidad</h2>
+            <p className="detalle-descripcion">{solicitud.respuesta}</p>
+          </div>
+        )}
+
+        {/* el funcionario gestiona la solicitud desde aca, el vecino solo la mira */}
+        {esAdmin && solicitud.estado !== 'Resuelto' && solicitud.estado !== 'Rechazado' && (
+          <div className="acciones-funcionario">
+            <button className="boton-azul" onClick={() => router.push(`/derivar/${solicitud.id}`)}>
+              Derivar a una unidad
+            </button>
+            <button className="boton-azul" onClick={() => router.push(`/responder/${solicitud.id}`)}>
+              Responder al ciudadano
+            </button>
+          </div>
+        )}
 
         <button className="volver-link" onClick={() => router.push(rutaVolver, 'back')}>
           {textoVolver}

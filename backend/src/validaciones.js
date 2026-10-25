@@ -2,6 +2,13 @@
 
 const TIPOS_SOLICITUD = ['Alumbrado', 'Aseo y limpieza', 'Vialidad']
 
+const UNIDADES = [
+  'Dirección de Obras Municipales',
+  'Aseo y Ornato',
+  'Tránsito',
+  'Seguridad Ciudadana'
+]
+
 const correoValido = (valor) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)
 
 // Valida formato 12.345.678-9 y digito verificador con algoritmo modulo 11
@@ -93,6 +100,35 @@ export function validarSolicitud(datos = {}) {
     errores.push('La descripción es obligatoria')
   } else if (datos.descripcion.trim().length < 10 || datos.descripcion.length > 500) {
     errores.push('La descripción debe tener entre 10 y 500 caracteres')
+  }
+
+  return errores
+}
+
+export function validarDerivacion(datos = {}) {
+  const errores = []
+
+  if (!datos.unidad) {
+    errores.push('La unidad municipal es obligatoria')
+  } else if (!UNIDADES.includes(datos.unidad)) {
+    errores.push(`La unidad debe ser: ${UNIDADES.join(', ')}`)
+  }
+
+  // la observacion es interna, asi que no se le exige al funcionario
+  if (datos.observacion && datos.observacion.length > 500) {
+    errores.push('La observación no puede tener más de 500 caracteres')
+  }
+
+  return errores
+}
+
+export function validarRespuesta(datos = {}) {
+  const errores = []
+
+  if (!datos.respuesta) {
+    errores.push('La respuesta es obligatoria')
+  } else if (datos.respuesta.trim().length < 20 || datos.respuesta.length > 1000) {
+    errores.push('La respuesta debe tener entre 20 y 1000 caracteres')
   }
 
   return errores

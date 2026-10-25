@@ -9,6 +9,8 @@ import IngresoReclamo from './pages/IngresoReclamo'
 import MisSolicitudes from './pages/MisSolicitudes'
 import RevisarSolicitudes from './pages/RevisarSolicitudes'
 import DetalleSolicitud from './pages/DetalleSolicitud'
+import DerivarSolicitud from './pages/DerivarSolicitud'
+import ResponderSolicitud from './pages/ResponderSolicitud'
 import RutaProtegida from './routes/RutaProtegida'
 import { PerfilProvider } from './context/PerfilContext'
 
@@ -57,6 +59,15 @@ function App() {
             />
 
             {/* Cualquier otra ruta manda al login */}
+            <Route
+              path="/derivar/:id"
+              element={<RutaProtegida rol="funcionario"><DerivarSolicitud /></RutaProtegida>}
+            />
+            <Route
+              path="/responder/:id"
+              element={<RutaProtegida rol="funcionario"><ResponderSolicitud /></RutaProtegida>}
+            />
+
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </IonRouterOutlet>
