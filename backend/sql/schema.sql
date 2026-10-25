@@ -48,12 +48,12 @@ CREATE TABLE historial_estados (
 CREATE INDEX idx_historial_solicitud ON historial_estados(solicitud_id);
 
 -- DATOS DE PRUEBA
--- Nota: El hash corresponde a la contraseña '123456'
+-- Las tres cuentas quedan con la contraseña '123456'
 
 INSERT INTO usuarios (nombre, correo, rut, password_hash, rol) VALUES
-('Carlos Ciudadano', 'carlos@correo.cl', '11111111-1', '$2a$10$wN/a0B3uP6.HOn6G1g3Pyeu5uJzU3iM6P6K3R4f8y0yO6b5gR6AOS', 'ciudadano'),
-('Ana Vecina', 'ana@correo.cl', '22222222-2', '$2a$10$wN/a0B3uP6.HOn6G1g3Pyeu5uJzU3iM6P6K3R4f8y0yO6b5gR6AOS', 'ciudadano'),
-('Luis Funcionario', 'luis@muni.cl', '33333333-3', '$2a$10$wN/a0B3uP6.HOn6G1g3Pyeu5uJzU3iM6P6K3R4f8y0yO6b5gR6AOS', 'funcionario');
+('Carlos Ciudadano', 'carlos@correo.cl', '11111111-1', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'ciudadano'),
+('Ana Vecina', 'ana@correo.cl', '22222222-2', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'ciudadano'),
+('Luis Funcionario', 'luis@muni.cl', '33333333-3', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'funcionario');
 
 INSERT INTO solicitudes (usuario_id, tipo, direccion, descripcion, estado) VALUES
 (1, 'alumbrado', 'Av. Central 123', 'Poste apagado', 'En revisión'),
