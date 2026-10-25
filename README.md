@@ -658,6 +658,21 @@ La aplicación está publicada en **https://felipebechan.github.io/ingenieria-we
 * Pantallas de notificaciones, perfil y ayuda, que en el menú aparecen atenuadas.
 * Carga de fotografías y geolocalización en el formulario.
 
+### Correcciones incorporadas desde la entrega anterior
+
+Las observaciones de la Entrega Parcial 1 se resolvieron dentro de esta entrega, para no arrastrarlas:
+
+| Observación | Qué se hizo |
+| :--- | :--- |
+| Los requerimientos funcionales agrupaban varias acciones en uno solo | Se separaron en catorce, uno por acción, con la forma rol–verbo–necesidad y el estado de cada uno. |
+| Los no funcionales usaban expresiones no comprobables | Se reemplazaron por umbrales observables (ancho mínimo, contraste, percentil de tiempo de respuesta, volumen soportado). |
+| Faltaba trazabilidad de las fuentes y el sustento del plazo de respuesta | Las fuentes quedaron enlazadas e indicando qué necesidad respalda cada una. El plazo se corrigió: la Ley N° 18.695 fija un techo de 30 días y delega el plazo en la ordenanza comunal, así que los 20 días hábiles se declaran como meta de servicio del proyecto. |
+| La bandeja móvil no tenía filtro por estado | Se agregó, con las mismas opciones que la versión de escritorio. |
+| El requisito de Node estaba desactualizado | Corregido a 20.19 o superior, que es lo que pide Vite 8. |
+| Faltaban dos pantallas funcionales en el prototipo | Corresponden a derivación y respuesta formal (**RF-10** y **RF-11**), planificadas para la Entrega Final. |
+
+También se revisaron de nuevo las pantallas ya entregadas. En el detalle de solicitud, el seguimiento trataba una solicitud rechazada igual que una resuelta, y mostraba la línea de tiempo completa; ahora cada estado muestra su propio recorrido y debajo van los movimientos reales que registra el backend. El contador de notificaciones mostraba un número fijo que no provenía de ningún dato, así que se quitó hasta que exista la funcionalidad.
+
 ### Organización del repositorio
 
 | Rama | Qué contiene |
