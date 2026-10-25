@@ -56,3 +56,20 @@ export async function buscarSolicitudesAdmin(busqueda, estado) {
   const solicitudes = await pedir('/solicitudes' + (query ? `?${query}` : ''))
   return solicitudes.map(acomodar)
 }
+
+// Solo el funcionario puede cambiar el estado; el backend lo guarda en el historial
+export async function cambiarEstadoSolicitud(id, estado, comentario) {
+  const solicitud = await pedir(`/solicitudes/${id}/estado`, {
+    method: 'PATCH',
+    body: JSON.stringify({ estado, comentario })
+  })
+  return acomodar(solicitud)
+}
+
+export async function obtenerHistorial(id) {
+  return pedir(`/solicitudes/${id}/historial`)
+}
+
+export async function eliminarSolicitud(id) {
+  return pedir(`/solicitudes/${id}`, { method: 'DELETE' })
+}

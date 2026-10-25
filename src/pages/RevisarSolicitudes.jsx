@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import { IonIcon, useIonRouter } from '@ionic/react'
-import { ellipsisHorizontal, chevronDown } from 'ionicons/icons'
+import { useIonRouter } from '@ionic/react'
 import AppLayout from '../components/AppLayout'
 import EstadoBadge from '../components/EstadoBadge'
-import { buscarSolicitudesAdmin } from '../services/solicitudesService'
+import { buscarSolicitudesAdmin, cambiarEstadoSolicitud } from '../services/solicitudesService'
 import './RevisarSolicitudes.css'
+
+const ESTADOS = ['En revisión', 'En proceso', 'Resuelto', 'Rechazado']
 
 function RevisarSolicitudes() {
   const router = useIonRouter()
@@ -14,19 +15,28 @@ function RevisarSolicitudes() {
   const [solicitudes, setSolicitudes] = useState([])
   const [error, setError] = useState('')
 
+  const cargar = async () => {
+    try {
+      setSolicitudes(await buscarSolicitudesAdmin(busqueda, filtroEstado))
+      setError('')
+    } catch (problema) {
+      setError(problema.message)
+    }
+  }
+
   // cada vez que cambia el buscador o el filtro le preguntamos al backend
   useEffect(() => {
-    const cargar = async () => {
-      try {
-        setSolicitudes(await buscarSolicitudesAdmin(busqueda, filtroEstado))
-        setError('')
-      } catch (problema) {
-        setError(problema.message)
-      }
-    }
-
     cargar()
   }, [busqueda, filtroEstado])
+
+  const cambiarEstado = async (id, estado) => {
+    try {
+      await cambiarEstadoSolicitud(id, estado)
+      cargar()
+    } catch (problema) {
+      setError(problema.message)
+    }
+  }
 
   return (
     <AppLayout>
@@ -78,6 +88,16 @@ function RevisarSolicitudes() {
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
           />
+          <select
+            className="filtro-input-movil filtro-select"
+            value={filtroEstado}
+            onChange={(e) => setFiltroEstado(e.target.value)}
+          >
+            <option value="">Filtrar por Estado:</option>
+            {ESTADOS.map((estado) => (
+              <option key={estado} value={estado}>{estado}</option>
+            ))}
+          </select>
         </div>
 
         {error && <p className="mensaje-error">{error}</p>}
@@ -106,7 +126,16 @@ function RevisarSolicitudes() {
                     <EstadoBadge estado={item.estado} />
                   </td>
                   <td className="td-accion">
-                    <IonIcon icon={ellipsisHorizontal} className="icono-puntos" />
+                    <select
+                      className="select-estado"
+                      value={item.estado}
+                      onClick={(e) => e.stopPropagation()}
+                      onChange={(e) => cambiarEstado(item.id, e.target.value)}
+                    >
+                      {ESTADOS.map((estado) => (
+                        <option key={estado} value={estado}>{estado}</option>
+                      ))}
+                    </select>
                   </td>
                 </tr>
               ))}
@@ -130,10 +159,17 @@ function RevisarSolicitudes() {
                 <span className="tarjeta-campo">Tipo:</span> {item.tipo}
               </p>
               <div className="tarjeta-badge-wrapper">
-                <div className="badge-con-flecha">
-                  <EstadoBadge estado={item.estado} />
-                  <IonIcon icon={chevronDown} className="badge-flecha-icono" />
-                </div>
+                <EstadoBadge estado={item.estado} />
+                <select
+                  className="select-estado"
+                  value={item.estado}
+                  onClick={(e) => e.stopPropagation()}
+                  onChange={(e) => cambiarEstado(item.id, e.target.value)}
+                >
+                  {ESTADOS.map((estado) => (
+                    <option key={estado} value={estado}>{estado}</option>
+                  ))}
+                </select>
               </div>
             </div>
           ))}
