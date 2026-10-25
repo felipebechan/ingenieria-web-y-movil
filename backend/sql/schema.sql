@@ -32,6 +32,9 @@ CREATE TABLE solicitudes (
 
 CREATE INDEX idx_solicitudes_usuario ON solicitudes(usuario_id);
 
+-- La bandeja del funcionario filtra por estado, por eso el indice
+CREATE INDEX idx_solicitudes_estado ON solicitudes(estado);
+
 -- El folio queda nulo al insertar y el backend lo completa con el id recien creado
 
 -- Tabla para guardar por qué estados fue pasando una solicitud.
