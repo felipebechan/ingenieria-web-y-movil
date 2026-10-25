@@ -139,6 +139,11 @@
   border-color: var(--azul);
 }
 
+.paso.rechazado .punto {
+  background: #d93025;
+  border-color: #d93025;
+}
+
 .volver-link {
   background: none;
   border: none;

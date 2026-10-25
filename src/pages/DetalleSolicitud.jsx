@@ -14,13 +14,17 @@ import { obtenerSolicitudPorId } from '../services/solicitudesService'
 import { usePerfil } from '../context/PerfilContext'
 import './DetalleSolicitud.css'
 
-// Pasos del seguimiento, se van pintando segun el estado de la solicitud
-const pasos = ['Solicitud ingresada', 'En revisión', 'Derivada a unidad', 'Respuesta unidad', 'Resuelto']
+// Los pasos del seguimiento dependen de como termino la solicitud, porque
+// una rechazada no pasa por los mismos que una que se resolvio
+const PASOS = ['Solicitud ingresada', 'En revisión', 'Derivada a unidad', 'Respuesta unidad', 'Resuelto']
 
-function pasosCompletados(estado) {
-  if (estado === 'Resuelto' || estado === 'Rechazado') return 5
-  if (estado === 'En proceso') return 3
-  return 2
+function seguimiento(estado) {
+  if (estado === 'Rechazado') {
+    return { pasos: ['Solicitud ingresada', 'En revisión', 'Rechazado'], avance: 3 }
+  }
+  if (estado === 'Resuelto') return { pasos: PASOS, avance: 5 }
+  if (estado === 'En proceso') return { pasos: PASOS, avance: 3 }
+  return { pasos: PASOS, avance: 2 }
 }
 
 function DetalleSolicitud() {
@@ -60,7 +64,8 @@ function DetalleSolicitud() {
     )
   }
 
-  const avance = pasosCompletados(solicitud.estado)
+  const { pasos, avance } = seguimiento(solicitud.estado)
+  const fueRechazada = solicitud.estado === 'Rechazado'
 
   return (
     <AppLayout>
@@ -129,12 +134,17 @@ function DetalleSolicitud() {
         <div className="detalle-card historial">
           <h2>Historial de seguimiento</h2>
           <ol className="linea-tiempo">
-            {pasos.map((paso, i) => (
-              <li key={paso} className={i < avance ? 'paso hecho' : 'paso'}>
+            {pasos.map((paso, i) => {
+              let clases = i < avance ? 'paso hecho' : 'paso'
+              if (fueRechazada && i === pasos.length - 1) clases += ' rechazado'
+
+              return (
+              <li key={paso} className={clases}>
                 <span className="punto"></span>
                 <span className="paso-nombre">{paso}</span>
               </li>
-            ))}
+              )
+            })}
           </ol>
         </div>
 
