@@ -159,10 +159,10 @@ Las tres proto-personas anteriores **no corresponden a usuarios reales ni a resu
 
 | Fuente | Qué necesidad respalda |
 | :--- | :--- |
-| [Ley N° 18.695, Art. 98](https://www.bcn.cl/leychile/navegar?idNorma=251693) — Orgánica Constitucional de Municipalidades | Obliga a cada municipio a tener una OIRS y deja en la ordenanza de participación ciudadana la fijación de los plazos de respuesta, con un tope de 30 días. Es el fundamento de **RF-04** (bandeja con control de plazos) y del seguimiento por folio. |
+| [Ley N° 18.695, Art. 98](https://www.bcn.cl/leychile/navegar?idNorma=251693) — Orgánica Constitucional de Municipalidades | Obliga a cada municipio a tener una OIRS y deja en la ordenanza de participación ciudadana la fijación de los plazos de respuesta, con un tope de 30 días. Es el fundamento de **RF-06** (bandeja del funcionario) y **RF-12** (aviso de plazo por vencer). |
 | [Ley N° 19.880, Art. 26](https://www.bcn.cl/leychile/navegar?idNorma=210676) — Bases de los procedimientos administrativos | Permite prorrogar los plazos hasta la mitad de su duración. Sustenta que el control de plazos sea una alerta y no un bloqueo automático. |
 | [Ley N° 19.628](https://www.bcn.cl/leychile/navegar?idNorma=141599) — Protección de la vida privada | Fundamenta el tratamiento reservado del RUT, el correo y el teléfono del vecino (**RNF-SEG-03**) y que el funcionario no vea más datos de los necesarios. |
-| [Municipalidad de Santo Domingo](https://www.santodomingo.cl/) — sitio institucional y canales de atención | Identifica las unidades técnicas reales (Obras, Tránsito, Aseo y Ornato, Seguridad Ciudadana) y los tipos de requerimiento que se reciben hoy. Sustenta **RF-05** (derivación). |
+| [Municipalidad de Santo Domingo](https://www.santodomingo.cl/) — sitio institucional y canales de atención | Identifica las unidades técnicas reales (Obras, Tránsito, Aseo y Ornato, Seguridad Ciudadana) y los tipos de requerimiento que se reciben hoy. Sustenta **RF-10** (derivación a la unidad técnica). |
 | [Plataforma OIRS de la Municipalidad de Santiago](https://oirs.munistgo.cl/) y [SIAC de ChileAtiende](https://www.chileatiende.gob.cl/) | Referencia de funcionalidades esperadas en plataformas equivalentes: ingreso con folio, seguimiento en línea y derivación interna. |
 | [Plazos de respuesta en OIRS de servicios públicos (MINSAL)](https://www.minsal.cl/informacion-de-apoyo/) | De aquí sale el plazo de **20 días hábiles** que usa el proyecto. |
 
