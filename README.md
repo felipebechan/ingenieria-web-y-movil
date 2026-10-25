@@ -162,7 +162,7 @@ Las tres proto-personas anteriores **no corresponden a usuarios reales ni a resu
 | :--- | :--- |
 | [Ley N° 18.695, Art. 98](https://www.bcn.cl/leychile/navegar?idNorma=251693) — Orgánica Constitucional de Municipalidades | Obliga a cada municipio a tener una OIRS y deja en la ordenanza de participación ciudadana la fijación de los plazos de respuesta, con un tope de 30 días. Es el fundamento de **RF-06** (bandeja del funcionario) y **RF-12** (aviso de plazo por vencer). |
 | [Ley N° 19.880, Art. 26](https://www.bcn.cl/leychile/navegar?idNorma=210676) — Bases de los procedimientos administrativos | Permite prorrogar los plazos hasta la mitad de su duración. Sustenta que el control de plazos sea una alerta y no un bloqueo automático. |
-| [Ley N° 19.628](https://www.bcn.cl/leychile/navegar?idNorma=141599) — Protección de la vida privada | Fundamenta el tratamiento reservado del RUT, el correo y el teléfono del vecino (**RNF-SEG-03**) y que el funcionario no vea más datos de los necesarios. |
+| [Ley N° 19.628](https://www.bcn.cl/leychile/navegar?idLey=19628) — Protección de la vida privada, modificada por la [Ley N° 21.719](https://www.bcn.cl/leychile/navegar?idLey=21719) | Fundamenta el tratamiento reservado del RUT, el correo y el teléfono del vecino (**RNF-SEG-03**) y que el funcionario no vea más datos de los necesarios. |
 | [Municipalidad de Santo Domingo](https://www.santodomingo.cl/) — sitio institucional y canales de atención | Identifica las unidades técnicas reales (Obras, Tránsito, Aseo y Ornato, Seguridad Ciudadana) y los tipos de requerimiento que se reciben hoy. Sustenta **RF-10** (derivación a la unidad técnica). |
 | [Plataforma OIRS de la Municipalidad de Santiago](https://oirs.munistgo.cl/) y [SIAC de ChileAtiende](https://www.chileatiende.gob.cl/) | Referencia de funcionalidades esperadas en plataformas equivalentes: ingreso con folio, seguimiento en línea y derivación interna. |
 | [Plazos de respuesta en OIRS de servicios públicos (MINSAL)](https://www.minsal.cl/informacion-de-apoyo/) | De aquí sale el plazo de **20 días hábiles** que usa el proyecto. |
@@ -228,7 +228,7 @@ Los requerimientos no funcionales establecen las condiciones de calidad, rendimi
 #### Seguridad y Privacidad
 * **RNF-SEG-01 — Protección de contraseñas:** Las contraseñas deberán almacenarse con hash bcrypt de al menos 10 rondas y nunca en texto plano. La contraseña no deberá aparecer en ninguna respuesta de la API ni en los registros del servidor.
 * **RNF-SEG-02 — Autenticación y control de acceso por roles:** Toda ruta protegida deberá exigir un token JWT válido y responder 401 si falta o venció, y 403 si el rol no corresponde. Un ciudadano no deberá poder leer una solicitud de otro aunque conozca su identificador.
-* **RNF-SEG-03 — Privacidad de datos personales:** Los datos de contacto del ciudadano deberán resguardarse bajo confidencialidad en cumplimiento de la Ley Nº 19.628 y el Art. 47 de la Ordenanza Municipal.
+* **RNF-SEG-03 — Privacidad de datos personales:** El RUT, el correo y el teléfono del ciudadano solo deberán ser visibles para su propio dueño y para el funcionario que atiende su solicitud, conforme a la [Ley Nº 19.628](https://www.bcn.cl/leychile/navegar?idLey=19628). Ningún listado ni respuesta de la API deberá exponer datos de contacto de terceros.
 
 #### Rendimiento, Compatibilidad y Escalabilidad
 * **RNF-01: Tiempo de respuesta:** El 95% de las consultas y guardados deberá responder en menos de 2 segundos, medido con la base de datos local y una conexión de al menos 5 Mbps.
