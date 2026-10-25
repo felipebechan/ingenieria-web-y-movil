@@ -539,13 +539,28 @@ cp .env.example .env     # VITE_API_URL=http://localhost:3000/api
 npm run dev              # queda en http://localhost:5173
 ```
 
-Después se crea una cuenta desde el registro de la aplicación. Todas las cuentas nuevas entran como ciudadano. Para convertir una en funcionario y ver el panel de gestión:
+El `schema.sql` deja cargadas tres cuentas de prueba, todas con la contraseña `123456`:
+
+| Correo | Rol | Para qué sirve |
+|--------|-----|----------------|
+| `carlos@correo.cl` | Ciudadano | Tiene tres solicitudes ingresadas |
+| `ana@correo.cl` | Ciudadano | Tiene dos solicitudes, una resuelta y una rechazada |
+| `luis@muni.cl` | Funcionario | Entra al panel de gestión y ve la bandeja completa |
+
+También se puede crear una cuenta desde el registro, pero todas las cuentas nuevas entran como ciudadano. Para convertir una en funcionario:
 
 ```bash
 psql -d santo_domingo -c "UPDATE usuarios SET rol = 'funcionario' WHERE correo = 'tucorreo@muni.cl';"
 ```
 
 Hay que volver a iniciar sesión para que el token traiga el rol nuevo.
+
+### Pruebas de la API
+
+En `backend/postman/` está la colección de Postman con los endpoints, la tabla
+de referencia en `endpoints.md` y las capturas de las respuestas. Se importa la
+colección en Postman y se corre de arriba hacia abajo: los dos logins guardan el
+token solos, así que el resto de los request salen autenticados.
 
 Si se intenta abrir una ruta privada sin haber iniciado sesión, la aplicación redirige a `/login`. Si un ciudadano intenta entrar a la bandeja del funcionario (o al revés), la aplicación lo devuelve a la vista que sí le corresponde.
 
@@ -557,10 +572,10 @@ Si se intenta abrir una ruta privada sin haber iniciado sesión, la aplicación 
 src/
 ├── components/   Componentes reutilizables (AppLayout, AuthLayout, MenuLateral, CampoTexto, EstadoBadge, OpcionCard, Campana, InfoTarjeta)
 ├── context/      PerfilContext: guarda la sesión y el rol del usuario
-├── data/         Datos de prueba mientras no exista backend
+├── data/         Opciones fijas de la interfaz (accesos rápidos del inicio)
 ├── pages/        Una carpeta por vista: Login, Register, Inicio, IngresoReclamo, MisSolicitudes, DetalleSolicitud, RevisarSolicitudes
 ├── routes/       RutaProtegida: control de sesión y de rol en las rutas privadas
-├── services/     solicitudesService: acceso a los datos; aquí irán las llamadas a la API
+├── services/     api.js y los servicios que hablan con el backend (usuarios, solicitudes)
 ├── theme/        Variables de color y tipografía
 └── App.jsx       Definición de todas las rutas de la aplicación
 ```

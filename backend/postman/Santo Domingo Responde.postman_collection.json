@@ -9,6 +9,18 @@
   "item": [
     {
       "name": "1. Login Funcionario",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// guarda el token para los requests que vienen despues",
+              "pm.collectionVariables.set(\"token\", pm.response.json().token);"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
@@ -151,6 +163,18 @@
     },
     {
       "name": "6. Login Ciudadano",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// guarda el token para los requests que vienen despues",
+              "pm.collectionVariables.set(\"token\", pm.response.json().token);"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [],
