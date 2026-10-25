@@ -23,7 +23,7 @@ export async function crearSolicitud(usuarioId, { tipo, descripcion, direccion }
 
 export async function listarPorUsuario(usuarioId) {
   const { rows } = await consultar(
-    'SELECT * FROM solicitudes WHERE usuario_id = $1 ORDER BY creada_en DESC',
+    'SELECT * FROM solicitudes WHERE usuario_id = $1 ORDER BY creada_en DESC, id DESC',
     [usuarioId]
   )
   return rows
@@ -63,7 +63,7 @@ export async function listarTodas(filtros = {}) {
     sql += ` WHERE ${condiciones.join(' AND ')}`
   }
 
-  sql += ' ORDER BY s.creada_en DESC'
+  sql += ' ORDER BY s.creada_en DESC, s.id DESC'
 
   const { rows } = await consultar(sql, valores)
   return rows

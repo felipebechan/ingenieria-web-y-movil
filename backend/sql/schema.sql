@@ -55,13 +55,14 @@ INSERT INTO usuarios (nombre, correo, rut, password_hash, rol) VALUES
 ('Ana Vecina', 'ana@correo.cl', '22.222.222-2', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'ciudadano'),
 ('Luis Funcionario', 'luis@muni.cl', '33.333.333-3', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'funcionario');
 
--- El folio va escrito aca porque el backend solo lo arma cuando la solicitud entra por la API
-INSERT INTO solicitudes (folio, usuario_id, tipo, direccion, descripcion, estado) VALUES
-('#SD-2026-0001', 1, 'Alumbrado', 'Av. Central 123', 'Poste apagado hace una semana', 'En revisión'),
-('#SD-2026-0002', 1, 'Vialidad', 'Calle Sur 45', 'Hoyo grande en la calle', 'En proceso'),
-('#SD-2026-0003', 2, 'Aseo y limpieza', 'Plaza Norte', 'Basura acumulada en la plaza', 'Resuelto'),
-('#SD-2026-0004', 2, 'Alumbrado', 'Pasaje Este 8', 'Foco roto en el pasaje', 'Rechazado'),
-('#SD-2026-0005', 1, 'Aseo y limpieza', 'Avenida Mar 99', 'Escombros botados en la vereda', 'En revisión');
+-- El folio va escrito aca porque el backend solo lo arma cuando la solicitud entra por la API.
+-- Las fechas van distintas para que la lista se ordene y no queden todas el mismo dia.
+INSERT INTO solicitudes (folio, usuario_id, tipo, direccion, descripcion, estado, creada_en) VALUES
+('#SD-2026-0001', 1, 'Alumbrado', 'Av. Central 123', 'Poste apagado hace una semana', 'En revisión', '2026-09-28 10:15'),
+('#SD-2026-0002', 1, 'Vialidad', 'Calle Sur 45', 'Hoyo grande en la calle', 'En proceso', '2026-10-02 16:40'),
+('#SD-2026-0003', 2, 'Aseo y limpieza', 'Plaza Norte', 'Basura acumulada en la plaza', 'Resuelto', '2026-10-07 09:05'),
+('#SD-2026-0004', 2, 'Alumbrado', 'Pasaje Este 8', 'Foco roto en el pasaje', 'Rechazado', '2026-10-13 18:20'),
+('#SD-2026-0005', 1, 'Aseo y limpieza', 'Avenida Mar 99', 'Escombros botados en la vereda', 'En revisión', '2026-10-18 11:30');
 
 INSERT INTO historial_estados (solicitud_id, estado, comentario) VALUES
 (2, 'En proceso', 'Se derivó a obras públicas'),
