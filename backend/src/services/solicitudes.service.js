@@ -101,3 +101,11 @@ export async function listarHistorial(solicitudId) {
   )
   return rows
 }
+
+export async function eliminarSolicitud(id) {
+  // primero el historial, porque apunta a la solicitud con una clave foranea
+  await consultar('DELETE FROM historial_estados WHERE solicitud_id = $1', [id])
+
+  const { rows } = await consultar('DELETE FROM solicitudes WHERE id = $1 RETURNING *', [id])
+  return rows[0]
+}

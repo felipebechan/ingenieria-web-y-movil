@@ -5,7 +5,8 @@ import {
   obtener,
   listarTodas,
   cambiarEstado,
-  historial
+  historial,
+  eliminar
 } from '../controllers/solicitudes.controller.js'
 import { verificarToken, soloFuncionario } from '../middlewares/auth.middleware.js'
 
@@ -20,5 +21,6 @@ router.get('/mias', listarMias)
 router.get('/:id', obtener)
 router.get('/:id/historial', historial)
 router.patch('/:id/estado', soloFuncionario, cambiarEstado)
+router.delete('/:id', eliminar)
 
 export default router
