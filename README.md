@@ -42,6 +42,7 @@ La versión publicada muestra la interfaz, pero para usarla con datos reales hay
    * [6. Justificación Técnica](#6-justificación-técnica)
    * [7. Coherencia entre dispositivos](#coherencia-de-la-experiencia-entre-dispositivos)
 6. [Bocetos UI/UX](#6-bocetos-uiux)
+   * [La aplicación funcionando](#la-aplicación-funcionando)
 7. [Tecnologías y Librerías Utilizadas](#7-tecnologías-y-librerías-utilizadas)
 8. [Instalación y Ejecución](#8-instalación-y-ejecución)
 9. [Estructura del proyecto](#9-estructura-del-proyecto)
@@ -488,6 +489,42 @@ La separación en `pages`, `components`, `routes` y `services` permite agregar v
 ## 6. Bocetos UI/UX
 
 [Figma - Prototipo de UI/UX (Municipalidad Santo Domingo)](https://www.figma.com/design/JikLataPUhoOYYd2Q8mXPN/Municipalidad---Ingenier%C3%ADa-Web-y-M%C3%B3vil?node-id=0-1&t=Vqj4RTxgDktNZwDX-1)
+
+### La aplicación funcionando
+
+Las siguientes capturas están tomadas de la aplicación con el backend corriendo y los datos de prueba del `schema.sql`.
+
+**Inicio de sesión**
+
+![Pantalla de inicio de sesión](docs/capturas/login-escritorio.png)
+
+**Vistas del ciudadano**
+
+| Inicio | Mis solicitudes |
+| :--- | :--- |
+| ![Inicio del ciudadano](docs/capturas/inicio-ciudadano.png) | ![Listado de mis solicitudes](docs/capturas/mis-solicitudes.png) |
+
+El detalle muestra el seguimiento de la solicitud, los movimientos que registró el funcionario y la respuesta formal de la municipalidad:
+
+![Detalle de una solicitud resuelta](docs/capturas/detalle-solicitud.png)
+
+**Vistas del funcionario**
+
+La bandeja permite buscar por folio o ciudadano, filtrar por estado y cambiar el estado de cada solicitud sin salir de la lista:
+
+![Bandeja del funcionario](docs/capturas/bandeja-funcionario.png)
+
+| Derivar a una unidad (RF-10) | Responder al ciudadano (RF-11) |
+| :--- | :--- |
+| ![Pantalla de derivación](docs/capturas/derivar-solicitud.png) | ![Pantalla de respuesta formal](docs/capturas/responder-solicitud.png) |
+
+**Versión móvil**
+
+Las mismas vistas en pantalla de celular, con el menú desplegable y las tarjetas apiladas:
+
+| Inicio | Bandeja del funcionario |
+| :--- | :--- |
+| ![Inicio en móvil](docs/capturas/inicio-movil.png) | ![Bandeja en móvil](docs/capturas/bandeja-movil.png) |
 
 ---
 
