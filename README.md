@@ -45,7 +45,8 @@ La versión publicada muestra la interfaz, pero para usarla con datos reales hay
 7. [Tecnologías y Librerías Utilizadas](#7-tecnologías-y-librerías-utilizadas)
 8. [Instalación y Ejecución](#8-instalación-y-ejecución)
 9. [Estructura del proyecto](#9-estructura-del-proyecto)
-10. [Estado de la entrega (EP1)](#10-estado-de-la-entrega-ep1)
+10. [Estado de la entrega (EP2)](#10-estado-de-la-entrega-ep2)
+11. [Cosas por hacer](#11-cosas-por-hacer)
 
 ---
 
@@ -571,6 +572,26 @@ psql -d santo_domingo -c "UPDATE usuarios SET rol = 'funcionario' WHERE correo =
 
 Hay que volver a iniciar sesión para que el token traiga el rol nuevo.
 
+### Variables de entorno
+
+Ninguno de los dos archivos `.env` se sube al repositorio, por eso están los `.env.example`. El backend necesita:
+
+| Variable | Para qué sirve | Ejemplo |
+| :--- | :--- | :--- |
+| `PORT` | Puerto del servidor | `3000` |
+| `DB_HOST` / `DB_PORT` | Dónde está PostgreSQL | `localhost` / `5432` |
+| `DB_NAME` | Nombre de la base | `santo_domingo` |
+| `DB_USER` / `DB_PASSWORD` | Credenciales de la base | `postgres` / `tu_clave` |
+| `JWT_SECRET` | Clave con la que se firman los tokens | una cadena larga y propia |
+| `JWT_EXPIRA` | Duración del token | `2h` |
+| `ORIGEN_FRONTEND` | Origen autorizado por CORS | `http://localhost:5173` |
+
+Y el frontend solo necesita una:
+
+| Variable | Para qué sirve | Ejemplo |
+| :--- | :--- | :--- |
+| `VITE_API_URL` | Dirección de la API | `http://localhost:3000/api` |
+
 ### Pruebas de la API
 
 En `backend/postman/` está la colección de Postman con los endpoints, la tabla
@@ -596,27 +617,56 @@ src/
 └── App.jsx       Definición de todas las rutas de la aplicación
 ```
 
+```text
+backend/
+├── sql/
+│   └── schema.sql          Tablas, claves, restricciones y datos de prueba
+├── postman/
+│   ├── Santo Domingo Responde.postman_collection.json
+│   ├── endpoints.md        Tabla de referencia de la API
+│   └── capturas/           Evidencia de las pruebas
+└── src/
+    ├── config/db.js        Pool de conexión a PostgreSQL
+    ├── controllers/        Reciben la petición y responden con el código HTTP
+    ├── services/           Las consultas a la base de datos
+    ├── routes/             Definición de las rutas de la API
+    ├── middlewares/        Verificación del token y del rol
+    ├── validaciones.js     Revisión de los datos que llegan del frontend
+    ├── app.js              Configuración de Express
+    └── server.js           Levanta el servidor
+```
+
 ---
 
-## 10. Estado de la entrega (EP1)
+## 10. Estado de la entrega (EP2)
 
-La aplicación está publicada en **https://felipebechan.github.io/ingenieria-web-y-movil/login**, así que se puede revisar sin instalar nada. Cada vez que se sube un cambio a `main`, GitHub Actions compila el proyecto y actualiza el sitio (ver `.github/workflows/deploy.yml`).
-
+La aplicación está publicada en **https://felipebechan.github.io/ingenieria-web-y-movil/login**. Esa versión muestra las pantallas, pero para usarla de verdad hay que levantar el backend en el computador, porque GitHub Pages solo sirve archivos estáticos y no puede alojar el servidor ni la base de datos.
 
 ### Implementado en esta entrega
-* Siete pantallas en Figma (login, registro, inicio, mis solicitudes, ingreso de reclamo, panel del funcionario y detalle de solicitud), en versión web y móvil.
-* Seis vistas funcionando en Ionic con React: login, registro, inicio, ingreso de reclamo, mis solicitudes, detalle de solicitud y bandeja del funcionario.
-* Rutas públicas y protegidas con React Router, con redirección al login y diferenciación por rol.
-* Validaciones de formulario con mensajes de error visibles, RUT con dígito verificador y confirmación con folio al enviar un reclamo.
-* Ingreso de reclamos que quedan guardados y aparecen en "Mis solicitudes" y en la bandeja del funcionario, con folio y fecha generados automáticamente (RF-02).
-* Backend en Node.js con Express, base de datos PostgreSQL, API REST, autenticación con JWT y contraseñas con bcrypt. El frontend consume esa API: ya no hay datos en el navegador.
-* Diseño responsivo para escritorio y móvil, con menú lateral en escritorio y menú desplegable en móvil.
+* **Servidor** en Node.js con Express, separado en rutas, controladores, servicios y middlewares.
+* **Base de datos PostgreSQL** con tres tablas (`usuarios`, `solicitudes`, `historial_estados`), claves primarias y foráneas, restricciones `CHECK` y `UNIQUE`, y el archivo `schema.sql` que la reproduce completa con datos de prueba.
+* **API REST** con los ocho endpoints de la tabla de `backend/postman/endpoints.md`, cubriendo GET, POST, PATCH y DELETE, con códigos HTTP y respuestas JSON consistentes.
+* **Autenticación con JWT**: registro, inicio de sesión, token con expiración, rutas protegidas y diferenciación entre ciudadano y funcionario.
+* **Seguridad**: contraseñas con bcrypt, validación de todos los datos que entran, consultas parametrizadas y verificación de que un vecino solo pueda ver o modificar lo suyo.
+* **Integración con el frontend**: las pantallas consumen la API con `fetch`, guardan el token y muestran los errores que devuelve el servidor.
+* **Pruebas**: colección de Postman con 14 requests, documentación de los endpoints y capturas de las respuestas.
 
-### Planificado para las siguientes entregas
-* Endpoints del funcionario para derivar y responder formalmente una solicitud.
-* Consulta pública por folio, perfil de usuario, notificaciones, ayuda y las vistas de administrador.
-* Carga de fotografías y geolocalización en el formulario de reclamo.
-* Pantallas de notificaciones, ayuda y perfil: en el menú aparecen atenuadas porque todavía no existen.
+### Planificado para la Entrega Final
+* Derivación a la unidad técnica y respuesta formal al ciudadano (**RF-10** y **RF-11**).
+* Aviso de plazo por vencer en la bandeja (**RF-12**).
+* Vistas de administrador: asignar roles y ver tiempos de respuesta (**RF-13** y **RF-14**).
+* Pantallas de notificaciones, perfil y ayuda, que en el menú aparecen atenuadas.
+* Carga de fotografías y geolocalización en el formulario.
+
+### Organización del repositorio
+
+| Rama | Qué contiene |
+| :--- | :--- |
+| `main` | La versión integrada del proyecto, que es la que se publica. |
+| `frontend` | El código de la interfaz y la documentación de los requerimientos. |
+| `backend` | El servidor, la API, la conexión a la base de datos y el `schema.sql`. |
+
+El trabajo se hizo en ramas por tarea (`validaciones`, `bandeja-funcionario`, `frontend-con-api`, `sql-y-pruebas`, entre otras), cada una integrada con su pull request. El historial de commits y los pull requests cerrados quedan como evidencia del trabajo de cada integrante.
 
 ---
 
@@ -624,12 +674,12 @@ La aplicación está publicada en **https://felipebechan.github.io/ingenieria-we
 
 Lista de lo que sigue, en orden de prioridad:
 
-### Entrega Parcial 2
-- [ ] Levantar el backend en Node.js con Express y conectarlo a una base de datos relacional.
-- [ ] Escribir el archivo `.sql` con las tablas, claves primarias y foráneas, en la rama `backend`.
-- [ ] Crear los endpoints REST de solicitudes y usuarios, y reemplazar el `localStorage` por llamadas a la API dentro de `services/`.
-- [ ] Autenticación real con JWT y contraseñas cifradas con bcrypt, en vez de decidir el rol por el correo.
-- [ ] Probar los endpoints en Postman y guardar la evidencia.
+### Entrega Parcial 2 (listo)
+- [x] Levantar el backend en Node.js con Express y conectarlo a una base de datos relacional.
+- [x] Escribir el archivo `.sql` con las tablas, claves primarias y foráneas, en la rama `backend`.
+- [x] Crear los endpoints REST de solicitudes y usuarios, y reemplazar el `localStorage` por llamadas a la API dentro de `services/`.
+- [x] Autenticación real con JWT y contraseñas cifradas con bcrypt, en vez de decidir el rol por el correo.
+- [x] Probar los endpoints en Postman y guardar la evidencia.
 
 ### Pantallas que faltan
 - [ ] Notificaciones, Mi perfil y Ayuda: hoy aparecen atenuadas en el menú.
