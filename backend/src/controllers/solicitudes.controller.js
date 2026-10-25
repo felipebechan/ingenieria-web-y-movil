@@ -3,7 +3,8 @@ import {
   listarPorUsuario,
   buscarPorId,
   listarTodas as listarTodasService,
-  cambiarEstado as cambiarEstadoService
+  cambiarEstado as cambiarEstadoService,
+  listarHistorial
 } from '../services/solicitudes.service.js'
 import { validarSolicitud } from '../validaciones.js'
 
@@ -64,7 +65,7 @@ export async function listarTodas(req, res, next) {
 export async function cambiarEstado(req, res, next) {
   try {
     const { id } = req.params
-    const { estado } = req.body
+    const { estado, comentario } = req.body
 
     if (!estado || !ESTADOS_VALIDOS.includes(estado)) {
       return res.status(400).json({
@@ -72,12 +73,30 @@ export async function cambiarEstado(req, res, next) {
       })
     }
 
-    const solicitud = await cambiarEstadoService(id, estado)
+    const solicitud = await cambiarEstadoService(id, estado, comentario)
     if (!solicitud) {
       return res.status(404).json({ error: 'La solicitud no existe' })
     }
 
     res.json(solicitud)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export async function historial(req, res, next) {
+  try {
+    const solicitud = await buscarPorId(req.params.id)
+    if (!solicitud) {
+      return res.status(404).json({ error: 'La solicitud no existe' })
+    }
+
+    const esDueño = solicitud.usuario_id === req.usuario.id
+    if (!esDueño && req.usuario.rol !== 'funcionario') {
+      return res.status(403).json({ error: 'No tienes permiso para ver esta solicitud' })
+    }
+
+    res.json(await listarHistorial(req.params.id))
   } catch (error) {
     next(error)
   }

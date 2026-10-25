@@ -69,7 +69,7 @@ export async function listarTodas(filtros = {}) {
   return rows
 }
 
-export async function cambiarEstado(id, estado) {
+export async function cambiarEstado(id, estado, comentario) {
   const { rows } = await consultar(
     `UPDATE solicitudes
      SET estado = $1
@@ -77,5 +77,27 @@ export async function cambiarEstado(id, estado) {
      RETURNING *`,
     [estado, id]
   )
+
+  if (!rows[0]) {
+    return null
+  }
+
+  // cada cambio queda guardado para poder mostrar el seguimiento despues
+  await consultar(
+    'INSERT INTO historial_estados (solicitud_id, estado, comentario) VALUES ($1, $2, $3)',
+    [id, estado, comentario || null]
+  )
+
   return rows[0]
+}
+
+export async function listarHistorial(solicitudId) {
+  const { rows } = await consultar(
+    `SELECT id, estado, comentario, registrado_en
+     FROM historial_estados
+     WHERE solicitud_id = $1
+     ORDER BY registrado_en`,
+    [solicitudId]
+  )
+  return rows
 }
