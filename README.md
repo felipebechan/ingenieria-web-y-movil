@@ -53,7 +53,7 @@ La versión publicada muestra la interfaz, pero para usarla con datos reales hay
 
 **Santo Domingo Responde** es una plataforma web y móvil para la Oficina de Informaciones, Reclamos y Sugerencias (OIRS) de la Municipalidad de Santo Domingo. Permite a los vecinos ingresar solicitudes, reclamos y sugerencias con fotos y ubicación, entregando un número de folio único para conocer el estado del trámite en tiempo real. Al mismo tiempo, permite a los funcionarios derivar requerimientos a las direcciones correspondientes (Obras, Aseo y Ornato, Tránsito, etc.) y controlar los plazos de respuesta.
 
-En la gestión comunal, la falta de canales claros y los tiempos de espera prolongados generan desconfianza en los vecinos. Además, según la **Ley Nº 18.695 (Orgánica Constitucional de Municipalidades)** y la Ordenanza OIRS, los municipios deben responder formalmente en un plazo máximo de **20 días corridos**. Actualmente muchas gestiones se hacen en papel o planillas dispersas, lo que provoca demoras y pérdida de solicitudes. La plataforma busca resolver este problema centralizando los trámites de forma simple y accesible para cualquier vecino.
+En la gestión comunal, la falta de canales claros y los tiempos de espera prolongados generan desconfianza en los vecinos. El [Art. 98 de la Ley Nº 18.695](https://www.bcn.cl/leychile/navegar?idNorma=251693), Orgánica Constitucional de Municipalidades, obliga a cada municipio a mantener una OIRS y establece que la ordenanza de participación ciudadana fija los plazos de respuesta, los que **en ningún caso pueden superar los 30 días**, conforme a la [Ley Nº 19.880](https://www.bcn.cl/leychile/navegar?idNorma=210676) de procedimientos administrativos. Actualmente muchas gestiones se hacen en papel o planillas dispersas, lo que provoca demoras y pérdida de solicitudes. La plataforma busca resolver este problema centralizando los trámites de forma simple y accesible para cualquier vecino.
 
 ---
 
@@ -65,7 +65,7 @@ Desarrollar una plataforma web y móvil accesible para la gestión, derivación 
 ### Objetivos Específicos
 * Diseñar prototipos accesibles en Figma adaptados a las necesidades de vecinos y funcionarios.
 * Implementar el frontend responsivo utilizando React y componentes de Ionic Framework.
-* Incorporar trazabilidad mediante folios únicos y control visual del plazo legal de 20 días.
+* Incorporar trazabilidad mediante folios únicos y control visual del plazo de respuesta comprometido.
 
 ---
 
@@ -141,7 +141,7 @@ Dentro de este grupo se encuentran:
 * **Características generales:** Funcionario administrativo de 42 años de la Oficina OIRS Municipal. Cuenta con experiencia en atención al público y manejo de sistemas de gestión documental. Recibe requerimientos desde múltiples vías (web, ventanilla presencial y vía telefónica) y debe canalizarlos a las direcciones pertinentes.
 * **Necesidades principales:**
   * Bandeja de entrada centralizada con filtros avanzados por unidad técnica, fecha y estado.
-  * Alerta visual preventiva del plazo legal de 20 días corridos para evitar faltas al principio de celeridad.
+  * Alerta visual preventiva del plazo comprometido de 20 días hábiles, para evitar faltas al principio de celeridad.
   * Herramienta ágil para derivar el caso a otras direcciones (Obras, Tránsito, Medioambiente) y adjuntar antecedentes técnicos.
 * **Objetivos de uso:** Gestionar con eficacia el flujo de requerimientos vecinales, coordinar respuestas interdepartamentales y dar cumplimiento oportuno a las exigencias normativas de la LOCM.
 * **Dificultades o puntos de frustración:**
@@ -156,10 +156,17 @@ Dentro de este grupo se encuentran:
 Las tres proto-personas anteriores **no corresponden a usuarios reales ni a resultados de entrevistas**. Son una caracterización preliminar construida a partir de fuentes secundarias y de supuestos razonados por el equipo, tal como permite esta etapa del proyecto.
 
 **Fuentes consultadas**
-* Ley N° 18.695, Orgánica Constitucional de Municipalidades, y la Ordenanza OIRS, de donde se toman el plazo legal de respuesta de 20 días corridos y las obligaciones de respuesta formal del municipio.
-* Ley N° 19.628 sobre protección de la vida privada, que fundamenta el tratamiento reservado de los datos de contacto del vecino.
-* Sitio institucional de la Municipalidad de Santo Domingo y sus canales de atención actuales, para identificar las unidades técnicas (Obras, Tránsito, Aseo y Ornato, Seguridad Ciudadana) y los tipos de requerimiento existentes.
-* Revisión de plataformas OIRS de otros municipios chilenos, usadas como referencia de las funcionalidades esperadas: ingreso con folio, seguimiento en línea y derivación interna.
+
+| Fuente | Qué necesidad respalda |
+| :--- | :--- |
+| [Ley N° 18.695, Art. 98](https://www.bcn.cl/leychile/navegar?idNorma=251693) — Orgánica Constitucional de Municipalidades | Obliga a cada municipio a tener una OIRS y deja en la ordenanza de participación ciudadana la fijación de los plazos de respuesta, con un tope de 30 días. Es el fundamento de **RF-04** (bandeja con control de plazos) y del seguimiento por folio. |
+| [Ley N° 19.880, Art. 26](https://www.bcn.cl/leychile/navegar?idNorma=210676) — Bases de los procedimientos administrativos | Permite prorrogar los plazos hasta la mitad de su duración. Sustenta que el control de plazos sea una alerta y no un bloqueo automático. |
+| [Ley N° 19.628](https://www.bcn.cl/leychile/navegar?idNorma=141599) — Protección de la vida privada | Fundamenta el tratamiento reservado del RUT, el correo y el teléfono del vecino (**RNF-SEG-03**) y que el funcionario no vea más datos de los necesarios. |
+| [Municipalidad de Santo Domingo](https://www.santodomingo.cl/) — sitio institucional y canales de atención | Identifica las unidades técnicas reales (Obras, Tránsito, Aseo y Ornato, Seguridad Ciudadana) y los tipos de requerimiento que se reciben hoy. Sustenta **RF-05** (derivación). |
+| [Plataforma OIRS de la Municipalidad de Santiago](https://oirs.munistgo.cl/) y [SIAC de ChileAtiende](https://www.chileatiende.gob.cl/) | Referencia de funcionalidades esperadas en plataformas equivalentes: ingreso con folio, seguimiento en línea y derivación interna. |
+| [Plazos de respuesta en OIRS de servicios públicos (MINSAL)](https://www.minsal.cl/informacion-de-apoyo/) | De aquí sale el plazo de **20 días hábiles** que usa el proyecto. |
+
+**Sobre el plazo de 20 días hábiles.** Es una meta de servicio que adopta el proyecto, no una obligación específica para municipios. La ley municipal solo fija el techo de 30 días y delega el plazo concreto en la ordenanza de cada comuna. Los 20 días hábiles corresponden al estándar que aplican otros servicios públicos del Estado a sus OIRS, y se eligió porque deja margen para la prórroga del Art. 26 de la Ley N° 19.880 sin pasarse del tope legal. Si la ordenanza de Santo Domingo fijara un plazo distinto, el valor tendría que ajustarse.
 
 **Supuestos asumidos**
 * Que una parte relevante de los vecinos accede principalmente desde el teléfono, por lo que el diseño parte por la versión móvil.
@@ -308,7 +315,7 @@ La plataforma controla el acceso a las vistas de acuerdo con el perfil del usuar
 | Visualizar bandeja general de requerimientos municipales | — | ✓ | ✓ |
 | Derivar requerimientos a direcciones técnicas | — | ✓ | — |
 | Cargar informes técnicos y redactar respuesta oficial | — | ✓ | — |
-| Monitorear semáforo de plazos legales (20 días corridos) | — | ✓ | ✓ |
+| Monitorear semáforo de plazos (20 días hábiles) | — | ✓ | ✓ |
 | Crear y administrar cuentas de funcionarios | — | — | ✓ |
 | Configurar unidades municipales y parámetros del sistema | — | — | ✓ |
 
@@ -386,7 +393,7 @@ de validación                   ↓
 
 #### Task Flow 2: Gestión, derivación y respuesta oficial de requerimiento
 * **Rol:** Funcionario
-* **Objetivo:** Evaluar un requerimiento asignado, canalizarlo a la dirección técnica correspondiente y redactar la respuesta oficial dentro del plazo legal.
+* **Objetivo:** Evaluar un requerimiento asignado, canalizarlo a la dirección técnica correspondiente y redactar la respuesta oficial dentro del plazo comprometido.
 
 ```text
 Inicio de sesión del funcionario
@@ -395,7 +402,7 @@ Panel de control OIRS
         ↓
 Acceder a "Bandeja de Reclamos"
         ↓
-Filtrar por reclamos pendientes / próximos a vencer (plazo 20 días)
+Filtrar por reclamos pendientes / próximos a vencer (plazo 20 días hábiles)
         ↓
 Seleccionar requerimiento a gestionar
         ↓
@@ -427,7 +434,7 @@ Los puntos críticos de interacción corresponden a aquellos momentos del sistem
 1. **Autenticación y direccionamiento seguro según rol:** El sistema deberá validar de forma estricta las credenciales y redirigir inmediatamente a la vista autorizada de cada rol, bloqueando cualquier intento de manipulación manual de rutas URL.
 2. **Carga y compresión de evidencias fotográficas en móviles:** Al subir imágenes desde la cámara o galería de un dispositivo móvil, el proceso no debe bloquear la interfaz ni fallar ante conexiones lentas. Se requerirá compresión previa y retroalimentación mediante barra de progreso.
 3. **Generación y resguardo del código de folio único:** Al finalizar el envío de un reclamo, la pantalla de confirmación debe exhibir claramente el folio asignado y permitir su copiado o descarga inmediata, enviando además un respaldo por correo para evitar la pérdida del número de trámite.
-4. **Alerta y control de plazos legales de respuesta (20 días corridos):** La bandeja del funcionario debe advertir de forma notoria la proximidad del vencimiento del plazo legal estipulado en la Ordenanza OIRS (semáforo visual: verde > 10 días, amarillo entre 5 y 10 días, rojo < 5 días), asegurando que no se incurra en retrasos injustificados.
+4. **Alerta y control del plazo de respuesta (20 días hábiles):** La bandeja del funcionario debe advertir de forma notoria la proximidad del vencimiento del plazo comprometido (semáforo visual: verde > 10 días, amarillo entre 5 y 10 días, rojo < 5 días), asegurando que no se incurra en retrasos injustificados.
 5. **Claridad del estado del trámite para el ciudadano:** Las fases del expediente deben presentarse con lenguaje pedagógico y visual (ej. *Ingresado → En revisión técnica → En ejecución de solución → Respuesta emitida*), eliminando abreviaturas burocráticas confusas.
 6. **Consistencia de interacción entre versión web y móvil:** La experiencia de registro y consulta debe mantener los mismos pasos, botones y etiquetas tanto si el vecino interactúa desde un teléfono en la calle como si lo hace desde un computador en su hogar.
 
@@ -622,6 +629,6 @@ Lista de lo que sigue, en orden de prioridad:
 
 ### Mejoras pendientes
 - [ ] Subir fotografías y ubicación en el formulario de reclamo.
-- [ ] Semáforo del plazo legal de 20 días en la bandeja del funcionario.
+- [ ] Semáforo del plazo de 20 días hábiles en la bandeja del funcionario.
 - [ ] Revisar la aplicación en tamaños de tablet, hoy está probada en escritorio y móvil.
 - [ ] Validar las proto-personas con usuarios reales.
