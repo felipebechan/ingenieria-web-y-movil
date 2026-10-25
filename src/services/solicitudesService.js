@@ -73,3 +73,19 @@ export async function obtenerHistorial(id) {
 export async function eliminarSolicitud(id) {
   return pedir(`/solicitudes/${id}`, { method: 'DELETE' })
 }
+
+export async function derivarSolicitud(id, unidad, observacion) {
+  const solicitud = await pedir(`/solicitudes/${id}/derivar`, {
+    method: 'PATCH',
+    body: JSON.stringify({ unidad, observacion })
+  })
+  return acomodar(solicitud)
+}
+
+export async function responderSolicitud(id, respuesta) {
+  const solicitud = await pedir(`/solicitudes/${id}/responder`, {
+    method: 'PATCH',
+    body: JSON.stringify({ respuesta })
+  })
+  return acomodar(solicitud)
+}

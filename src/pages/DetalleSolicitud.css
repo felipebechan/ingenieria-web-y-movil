@@ -235,3 +235,33 @@
   font-size: 13px;
   color: #6b7280;
 }
+
+/* la respuesta formal y los botones de gestion del funcionario */
+.respuesta-municipal {
+  margin-top: 20px;
+}
+
+.acciones-funcionario {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.acciones-funcionario .boton-azul {
+  height: 42px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 8px;
+  background: var(--azul);
+  color: white;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .acciones-funcionario {
+    flex-direction: column;
+  }
+}

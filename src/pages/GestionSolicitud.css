@@ -1,0 +1,249 @@
+/* Estilos compartidos por las dos pantallas de gestion del funcionario:
+   derivar una solicitud y responderla formalmente. */
+
+.gestion-seccion {
+  padding: 0 40px 40px;
+}
+
+.gestion-titulo {
+  color: var(--azul);
+  font-size: 30px;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.gestion-bajada {
+  color: #4a5568;
+  font-size: 14px;
+  margin: 0 0 22px;
+}
+
+.gestion-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.gestion-tarjetas.tres {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.gestion-card {
+  background: white;
+  border: 1px solid #e3e6ee;
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.gestion-card h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--azul);
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+/* ---------- Datos en modo lectura ---------- */
+.fila-dato {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  font-size: 14px;
+}
+
+.fila-dato span {
+  color: #1c2230;
+  font-weight: 600;
+}
+
+.fila-dato strong {
+  color: #4a5568;
+  font-weight: 400;
+  text-align: right;
+}
+
+.bloque-descripcion {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.bloque-descripcion span {
+  color: #1c2230;
+  font-weight: 600;
+}
+
+.bloque-descripcion p {
+  color: #4a5568;
+  margin: 6px 0 0;
+}
+
+/* ---------- Formulario ---------- */
+.campo-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1c2230;
+  margin: 12px 0 6px;
+}
+
+.campo-select,
+.campo-area {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1.5px solid #8e9db3;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #1c2230;
+  background: white;
+}
+
+.campo-select {
+  height: 42px;
+  cursor: pointer;
+}
+
+.campo-area {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.campo-area.alta {
+  min-height: 130px;
+}
+
+.campo-select:focus,
+.campo-area:focus {
+  outline: none;
+  border-color: var(--azul);
+}
+
+.campo-ayuda {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 8px 0 0;
+}
+
+/* ---------- Botones ---------- */
+.gestion-botones {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.boton-azul,
+.boton-gris {
+  flex: 1;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.boton-azul {
+  background: var(--azul);
+  color: white;
+}
+
+.boton-azul:disabled {
+  background: #8aa5cf;
+  cursor: default;
+}
+
+.boton-gris {
+  background: var(--gris-boton);
+  color: #3b4453;
+}
+
+/* ---------- Linea de tiempo vertical ---------- */
+.linea-vertical {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hito {
+  position: relative;
+  padding: 0 0 20px 24px;
+  font-size: 14px;
+}
+
+.hito:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 5px;
+  width: 2px;
+  height: 100%;
+  background: #cfd8e8;
+}
+
+.punto-hito {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #cfd8e8;
+  z-index: 1;
+}
+
+.hito.hecho .punto-hito {
+  background: var(--azul);
+  border-color: var(--azul);
+}
+
+.hito-nombre {
+  display: block;
+  font-weight: 600;
+  color: #8a8f99;
+}
+
+.hito.hecho .hito-nombre {
+  color: #1c2230;
+}
+
+.hito-fecha {
+  display: block;
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.hito-comentario {
+  display: block;
+  font-size: 12px;
+  color: #4a5568;
+  margin-top: 4px;
+}
+
+/* ---------- Movil ---------- */
+@media (max-width: 768px) {
+  .gestion-seccion {
+    padding: 0 16px 30px;
+  }
+
+  .gestion-titulo {
+    font-size: 24px;
+  }
+
+  .gestion-tarjetas,
+  .gestion-tarjetas.tres {
+    grid-template-columns: 1fr;
+  }
+
+  .gestion-botones {
+    flex-direction: column;
+  }
+}
