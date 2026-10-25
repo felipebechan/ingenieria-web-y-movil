@@ -1,6 +1,18 @@
+# Endpoints de la API
+
+La URL base es `http://localhost:3000/api`. El token se manda en la cabecera
+`Authorization: Bearer <token>` y se obtiene del login.
+
 | Método | Ruta | Requiere Token | Body / Payload | Respuesta Exitosa | Posibles Errores |
 |--------|------|----------------|----------------|-------------------|------------------|
-| **POST** | `/api/auth/login` | No | `{"correo": "...", "password": "..."}` | `200 OK` (Devuelve el Token JWT) | `401 Unauthorized` (Credenciales inválidas) |
-| **GET** | `/api/solicitudes` | Sí | Ninguno | `200 OK` (Array con solicitudes) | `401 Unauthorized`, `403 Forbidden` |
-| **GET** | `/api/solicitudes/:id` | Sí | Ninguno | `200 OK` (Detalle de la solicitud) | `404 Not Found` (La solicitud no existe) |
-| **POST** | `/api/solicitudes` | Sí (Ciudadano) | `{"tipo": "...", "direccion": "...", "descripcion": "..."}` | `201 Created` (Solicitud creada) | `400 Bad Request` (Falta descripción u otro campo) |
+| **POST** | `/api/auth/registro` | No | `{"nombre": "...", "correo": "...", "rut": "...", "telefono": "...", "password": "..."}` | `201 Created` (Usuario y Token JWT) | `400 Bad Request` (Datos inválidos), `409 Conflict` (Correo o RUT ya registrado) |
+| **POST** | `/api/auth/login` | No | `{"correo": "...", "password": "..."}` | `200 OK` (Devuelve el Token JWT) | `400 Bad Request` (Faltan datos), `401 Unauthorized` (Credenciales inválidas) |
+| **GET** | `/api/auth/yo` | Sí | Ninguno | `200 OK` (Datos del usuario de la sesión) | `401 Unauthorized` (Sin token o token vencido) |
+| **POST** | `/api/solicitudes` | Sí | `{"tipo": "...", "direccion": "...", "descripcion": "..."}` | `201 Created` (Solicitud creada con su folio) | `400 Bad Request` (Falta descripción u otro campo), `401 Unauthorized` |
+| **GET** | `/api/solicitudes` | Sí (Funcionario) | Ninguno | `200 OK` (Array con todas las solicitudes) | `401 Unauthorized`, `403 Forbidden` (Es ciudadano) |
+| **GET** | `/api/solicitudes/mias` | Sí | Ninguno | `200 OK` (Array con las solicitudes del usuario) | `401 Unauthorized` |
+| **GET** | `/api/solicitudes/:id` | Sí | Ninguno | `200 OK` (Detalle de la solicitud) | `401 Unauthorized`, `403 Forbidden` (No es suya), `404 Not Found` |
+| **PATCH** | `/api/solicitudes/:id/estado` | Sí (Funcionario) | `{"estado": "En proceso"}` | `200 OK` (Solicitud actualizada) | `400 Bad Request` (Estado inválido), `403 Forbidden`, `404 Not Found` |
+
+El listado del funcionario acepta además los filtros `?busqueda=` y `?estado=`,
+que son los que usa la bandeja del panel de gestión.
