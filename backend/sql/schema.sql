@@ -26,8 +26,12 @@ CREATE TABLE solicitudes (
   descripcion TEXT NOT NULL,
   direccion VARCHAR(150),
   estado VARCHAR(20) NOT NULL DEFAULT 'En revisión',
+  -- unidad y respuesta quedan nulas hasta que el funcionario deriva y responde
+  unidad VARCHAR(60),
+  respuesta TEXT,
   creada_en TIMESTAMP NOT NULL DEFAULT NOW(),
-  CONSTRAINT estado_valido CHECK (estado IN ('En revisión', 'En proceso', 'Resuelto', 'Rechazado'))
+  CONSTRAINT estado_valido CHECK (estado IN ('En revisión', 'En proceso', 'Resuelto', 'Rechazado')),
+  CONSTRAINT unidad_valida CHECK (unidad IS NULL OR unidad IN ('Dirección de Obras Municipales', 'Aseo y Ornato', 'Tránsito', 'Seguridad Ciudadana'))
 );
 
 CREATE INDEX idx_solicitudes_usuario ON solicitudes(usuario_id);
@@ -60,12 +64,12 @@ INSERT INTO usuarios (nombre, correo, rut, password_hash, rol) VALUES
 
 -- El folio va escrito aca porque el backend solo lo arma cuando la solicitud entra por la API.
 -- Las fechas van distintas para que la lista se ordene y no queden todas el mismo dia.
-INSERT INTO solicitudes (folio, usuario_id, tipo, direccion, descripcion, estado, creada_en) VALUES
-('#SD-2026-0001', 1, 'Alumbrado', 'Av. Central 123', 'Poste apagado hace una semana', 'En revisión', '2026-09-28 10:15'),
-('#SD-2026-0002', 1, 'Vialidad', 'Calle Sur 45', 'Hoyo grande en la calle', 'En proceso', '2026-10-02 16:40'),
-('#SD-2026-0003', 2, 'Aseo y limpieza', 'Plaza Norte', 'Basura acumulada en la plaza', 'Resuelto', '2026-10-07 09:05'),
-('#SD-2026-0004', 2, 'Alumbrado', 'Pasaje Este 8', 'Foco roto en el pasaje', 'Rechazado', '2026-10-13 18:20'),
-('#SD-2026-0005', 1, 'Aseo y limpieza', 'Avenida Mar 99', 'Escombros botados en la vereda', 'En revisión', '2026-10-18 11:30');
+INSERT INTO solicitudes (folio, usuario_id, tipo, direccion, descripcion, estado, unidad, respuesta, creada_en) VALUES
+('#SD-2026-0001', 1, 'Alumbrado', 'Av. Central 123', 'Poste apagado hace una semana', 'En revisión', NULL, NULL, '2026-09-28 10:15'),
+('#SD-2026-0002', 1, 'Vialidad', 'Calle Sur 45', 'Hoyo grande en la calle', 'En proceso', 'Dirección de Obras Municipales', NULL, '2026-10-02 16:40'),
+('#SD-2026-0003', 2, 'Aseo y limpieza', 'Plaza Norte', 'Basura acumulada en la plaza', 'Resuelto', 'Aseo y Ornato', 'Se realizó el retiro de la basura acumulada el 10 de octubre. La plaza quedó despejada y se reforzó la frecuencia de recolección en el sector.', '2026-10-07 09:05'),
+('#SD-2026-0004', 2, 'Alumbrado', 'Pasaje Este 8', 'Foco roto en el pasaje', 'Rechazado', NULL, NULL, '2026-10-13 18:20'),
+('#SD-2026-0005', 1, 'Aseo y limpieza', 'Avenida Mar 99', 'Escombros botados en la vereda', 'En revisión', NULL, NULL, '2026-10-18 11:30');
 
 -- La fecha va escrita para que cada movimiento quede despues de la solicitud
 -- a la que pertenece y no en el momento en que se carga este archivo.

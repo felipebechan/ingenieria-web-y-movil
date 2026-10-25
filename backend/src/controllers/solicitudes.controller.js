@@ -5,9 +5,11 @@ import {
   listarTodas as listarTodasService,
   cambiarEstado as cambiarEstadoService,
   listarHistorial,
-  eliminarSolicitud
+  eliminarSolicitud,
+  derivarSolicitud,
+  responderSolicitud
 } from '../services/solicitudes.service.js'
-import { validarSolicitud } from '../validaciones.js'
+import { validarSolicitud, validarDerivacion, validarRespuesta } from '../validaciones.js'
 
 const ESTADOS_VALIDOS = ['En revisión', 'En proceso', 'Resuelto', 'Rechazado']
 
@@ -145,6 +147,59 @@ export async function eliminar(req, res, next) {
 
     await eliminarSolicitud(req.params.id)
     res.json({ mensaje: 'Solicitud eliminada', folio: solicitud.folio })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export async function derivar(req, res, next) {
+  try {
+    if (!idValido(req.params.id)) {
+      return res.status(400).json({ error: 'El id de la solicitud tiene que ser un número' })
+    }
+
+    const errores = validarDerivacion(req.body)
+    if (errores.length > 0) {
+      return res.status(400).json({ error: errores[0] })
+    }
+
+    const solicitud = await buscarPorId(req.params.id)
+    if (!solicitud) {
+      return res.status(404).json({ error: 'La solicitud no existe' })
+    }
+
+    // una solicitud ya resuelta o rechazada no se vuelve a derivar
+    if (solicitud.estado === 'Resuelto' || solicitud.estado === 'Rechazado') {
+      return res.status(409).json({ error: 'La solicitud ya está cerrada y no se puede derivar' })
+    }
+
+    res.json(await derivarSolicitud(req.params.id, req.body.unidad, req.body.observacion))
+  } catch (error) {
+    next(error)
+  }
+}
+
+export async function responder(req, res, next) {
+  try {
+    if (!idValido(req.params.id)) {
+      return res.status(400).json({ error: 'El id de la solicitud tiene que ser un número' })
+    }
+
+    const errores = validarRespuesta(req.body)
+    if (errores.length > 0) {
+      return res.status(400).json({ error: errores[0] })
+    }
+
+    const solicitud = await buscarPorId(req.params.id)
+    if (!solicitud) {
+      return res.status(404).json({ error: 'La solicitud no existe' })
+    }
+
+    if (solicitud.estado === 'Resuelto' || solicitud.estado === 'Rechazado') {
+      return res.status(409).json({ error: 'La solicitud ya fue respondida o rechazada' })
+    }
+
+    res.json(await responderSolicitud(req.params.id, req.body.respuesta))
   } catch (error) {
     next(error)
   }

@@ -91,6 +91,50 @@ export async function cambiarEstado(id, estado, comentario) {
   return rows[0]
 }
 
+// Derivar deja la solicitud en manos de una unidad y la pasa a En proceso
+export async function derivarSolicitud(id, unidad, observacion) {
+  const { rows } = await consultar(
+    `UPDATE solicitudes
+     SET unidad = $1, estado = 'En proceso'
+     WHERE id = $2
+     RETURNING *`,
+    [unidad, id]
+  )
+
+  if (!rows[0]) {
+    return null
+  }
+
+  await consultar(
+    'INSERT INTO historial_estados (solicitud_id, estado, comentario) VALUES ($1, $2, $3)',
+    [id, 'En proceso', `Derivada a ${unidad}` + (observacion ? `. ${observacion}` : '')]
+  )
+
+  return rows[0]
+}
+
+// La respuesta formal cierra la solicitud
+export async function responderSolicitud(id, respuesta) {
+  const { rows } = await consultar(
+    `UPDATE solicitudes
+     SET respuesta = $1, estado = 'Resuelto'
+     WHERE id = $2
+     RETURNING *`,
+    [respuesta, id]
+  )
+
+  if (!rows[0]) {
+    return null
+  }
+
+  await consultar(
+    'INSERT INTO historial_estados (solicitud_id, estado, comentario) VALUES ($1, $2, $3)',
+    [id, 'Resuelto', respuesta]
+  )
+
+  return rows[0]
+}
+
 export async function listarHistorial(solicitudId) {
   const { rows } = await consultar(
     `SELECT id, estado, comentario, registrado_en
