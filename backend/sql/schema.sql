@@ -51,16 +51,17 @@ CREATE INDEX idx_historial_solicitud ON historial_estados(solicitud_id);
 -- Las tres cuentas quedan con la contraseña '123456'
 
 INSERT INTO usuarios (nombre, correo, rut, password_hash, rol) VALUES
-('Carlos Ciudadano', 'carlos@correo.cl', '11111111-1', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'ciudadano'),
-('Ana Vecina', 'ana@correo.cl', '22222222-2', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'ciudadano'),
-('Luis Funcionario', 'luis@muni.cl', '33333333-3', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'funcionario');
+('Carlos Ciudadano', 'carlos@correo.cl', '11.111.111-1', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'ciudadano'),
+('Ana Vecina', 'ana@correo.cl', '22.222.222-2', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'ciudadano'),
+('Luis Funcionario', 'luis@muni.cl', '33.333.333-3', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'funcionario');
 
-INSERT INTO solicitudes (usuario_id, tipo, direccion, descripcion, estado) VALUES
-(1, 'alumbrado', 'Av. Central 123', 'Poste apagado', 'En revisión'),
-(1, 'bache', 'Calle Sur 45', 'Hoyo en la calle', 'En proceso'),
-(2, 'basura', 'Plaza Norte', 'Basura acumulada', 'Resuelto'),
-(2, 'alumbrado', 'Pasaje Este 8', 'Foco roto', 'Rechazado'),
-(1, 'basura', 'Avenida Mar 99', 'Escombros', 'En revisión');
+-- El folio va escrito aca porque el backend solo lo arma cuando la solicitud entra por la API
+INSERT INTO solicitudes (folio, usuario_id, tipo, direccion, descripcion, estado) VALUES
+('#SD-2026-0001', 1, 'Alumbrado', 'Av. Central 123', 'Poste apagado hace una semana', 'En revisión'),
+('#SD-2026-0002', 1, 'Vialidad', 'Calle Sur 45', 'Hoyo grande en la calle', 'En proceso'),
+('#SD-2026-0003', 2, 'Aseo y limpieza', 'Plaza Norte', 'Basura acumulada en la plaza', 'Resuelto'),
+('#SD-2026-0004', 2, 'Alumbrado', 'Pasaje Este 8', 'Foco roto en el pasaje', 'Rechazado'),
+('#SD-2026-0005', 1, 'Aseo y limpieza', 'Avenida Mar 99', 'Escombros botados en la vereda', 'En revisión');
 
 INSERT INTO historial_estados (solicitud_id, estado, comentario) VALUES
 (2, 'En proceso', 'Se derivó a obras públicas'),
