@@ -681,6 +681,8 @@ También se revisaron de nuevo las pantallas ya entregadas. En el detalle de sol
 | `frontend` | El código de la interfaz y la documentación de los requerimientos. |
 | `backend` | El servidor, la API, la conexión a la base de datos y el `schema.sql`. |
 
+Las tres ramas se mantienen sincronizadas y apuntan al mismo commit: `frontend` y `backend` se actualizan desde `main` cada vez que se integra un cambio, así que son vistas del mismo proyecto y no ramas detenidas en el tiempo. El proyecto es un solo repositorio con el frontend en la raíz y el backend en `backend/`, de modo que cualquiera de las tres ramas se puede clonar y ejecutar completa siguiendo las instrucciones de este README.
+
 El trabajo se hizo en ramas por tarea (`validaciones`, `bandeja-funcionario`, `frontend-con-api`, `sql-y-pruebas`, entre otras), cada una integrada con su pull request. El historial de commits y los pull requests cerrados quedan como evidencia del trabajo de cada integrante.
 
 ---
