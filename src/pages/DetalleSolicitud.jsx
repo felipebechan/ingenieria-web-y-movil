@@ -1,4 +1,5 @@
-import { IonIcon, useIonRouter } from '@ionic/react'
+import { useState } from 'react'
+import { IonIcon, useIonRouter, useIonViewWillEnter } from '@ionic/react'
 import { useParams } from 'react-router-dom'
 import {
   documentTextOutline,
@@ -30,14 +31,27 @@ function DetalleSolicitud() {
   // el funcionario vuelve a su bandeja y el vecino a sus solicitudes
   const rutaVolver = esAdmin ? '/revisar-solicitudes' : '/mis-solicitudes'
   const textoVolver = esAdmin ? 'Volver a revisar solicitudes' : 'Volver a mis solicitudes'
-  const solicitud = obtenerSolicitudPorId(id)
+
+  const [solicitud, setSolicitud] = useState(null)
+  const [error, setError] = useState('')
+
+  const cargar = async () => {
+    try {
+      setSolicitud(await obtenerSolicitudPorId(id))
+      setError('')
+    } catch (problema) {
+      setError(problema.message)
+    }
+  }
+
+  useIonViewWillEnter(() => { cargar() })
 
   if (!solicitud) {
     return (
       <AppLayout>
         <div className="detalle-seccion">
           <h1 className="detalle-titulo">Detalle de solicitud</h1>
-          <p>No encontramos esa solicitud.</p>
+          <p>{error || 'Cargando...'}</p>
           <button className="volver-link" onClick={() => router.push(rutaVolver)}>
             {textoVolver}
           </button>

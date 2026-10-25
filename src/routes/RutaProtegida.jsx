@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom'
 import { usePerfil } from '../context/PerfilContext'
 
-// Envuelve las vistas privadas: si no hay sesion manda al login y si el rol
-// no corresponde manda a la vista de inicio que si le toca a ese usuario.
+// Envuelve las vistas privadas: sin token manda al login y si el rol no
+// corresponde manda a la vista de inicio que si le toca a ese usuario.
 function RutaProtegida({ children, rol }) {
   const { haySesion, esAdmin } = usePerfil()
 
@@ -10,11 +10,11 @@ function RutaProtegida({ children, rol }) {
     return <Navigate to="/login" replace />
   }
 
-  if (rol === 'admin' && !esAdmin) {
+  if (rol === 'funcionario' && !esAdmin) {
     return <Navigate to="/inicio" replace />
   }
 
-  if (rol === 'usuario' && esAdmin) {
+  if (rol === 'ciudadano' && esAdmin) {
     return <Navigate to="/revisar-solicitudes" replace />
   }
 

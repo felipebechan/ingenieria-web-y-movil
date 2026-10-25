@@ -140,6 +140,23 @@
   vertical-align: middle;
 }
 
+/* el funcionario cambia el estado desde la misma lista */
+.select-estado {
+  height: 32px;
+  border: 1.5px solid #8e9db3;
+  border-radius: 8px;
+  background: white;
+  padding: 0 8px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #333842;
+  cursor: pointer;
+}
+
+.select-estado:hover {
+  border-color: #1f4e8c;
+}
+
 /* ---------- Móvil (Tarjetas) ---------- */
 .solicitudes-movil-contenedor {
   display: none;
@@ -223,20 +240,14 @@
 
   .tarjeta-badge-wrapper {
     display: flex;
+    align-items: center;
+    gap: 8px;
     margin-top: 10px;
   }
 
-  .badge-con-flecha {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .badge-flecha-icono {
-    font-size: 15px;
-    color: #718096;
-    margin-left: -6px;
-    margin-right: 4px;
+  .tarjeta-badge-wrapper .select-estado {
+    flex: 1;
+    min-width: 0;
   }
 }
 

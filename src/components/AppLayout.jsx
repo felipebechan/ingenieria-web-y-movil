@@ -3,14 +3,14 @@ import { personOutline, chevronDown } from 'ionicons/icons'
 import MenuLateral from './MenuLateral'
 import Campana from './Campana'
 import { usePerfil } from '../context/PerfilContext'
-import { usuario } from '../data/datosPrueba'
+import { notificaciones } from '../data/datosPrueba'
 import './AppLayout.css'
 
 // Layout de las pantallas con sesion iniciada (menu, header y footer)
 function AppLayout({ children }) {
   // El rol viene de la sesion, no de la ruta
   const { esAdmin, nombre } = usePerfil()
-  const nombreUsuario = nombre || (esAdmin ? 'Administrador' : usuario.nombre)
+  const nombreUsuario = nombre || (esAdmin ? 'Administrador' : 'Vecino')
 
   return (
     <IonPage>
@@ -28,7 +28,7 @@ function AppLayout({ children }) {
                 <>Santo Domingo:<br />Responde</>
               )}
             </p>
-            <Campana cantidad={usuario.notificaciones} />
+            <Campana cantidad={notificaciones} />
           </div>
           <div className="app-ola ola-movil-app"></div>
 
@@ -55,7 +55,7 @@ function AppLayout({ children }) {
                 <div className="app-ola"></div>
 
                 <div className="header-acciones">
-                  <Campana cantidad={usuario.notificaciones} />
+                  <Campana cantidad={notificaciones} />
                   
                   <div className="usuario">
                     <div className="avatar">

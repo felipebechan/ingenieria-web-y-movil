@@ -8,7 +8,7 @@ import { useIonRouter } from '@ionic/react';
 import AppLayout from '../components/AppLayout';
 import TerminosLink from '../components/TerminosLink';
 import { crearSolicitud } from '../services/solicitudesService';
-import { usePerfil } from '../context/PerfilContext'; 
+
 import './IngresoReclamo.css';
 
 // para guardar el tipo con el nombre que se ve en las tablas
@@ -20,7 +20,6 @@ const TIPOS = {
 
 const IngresoReclamo = () => {
   const router = useIonRouter();
-  const { nombre } = usePerfil();
   const [formulario, setFormulario] = useState({
     tipo: '',
     direccion: '',
@@ -37,7 +36,7 @@ const IngresoReclamo = () => {
     });
   };
 
-  const enviarReclamo = () => {
+  const enviarReclamo = async () => {
     if (!formulario.tipo || !formulario.direccion || !formulario.descripcion || !formulario.terminos) {
       presentToast({
         message: 'Por favor, completa todos los campos y acepta los términos.',
@@ -47,24 +46,30 @@ const IngresoReclamo = () => {
       return;
     }
 
-    // se guarda en el navegador hasta que exista el backend
-    const solicitud = crearSolicitud({
-      ...formulario,
-      tipo: TIPOS[formulario.tipo] || formulario.tipo,
-      ciudadano: nombre
-    });
+    try {
+      const solicitud = await crearSolicitud({
+        ...formulario,
+        tipo: TIPOS[formulario.tipo] || formulario.tipo
+      });
 
-    presentToast({
-      message: `Reclamo enviado. Tu folio es ${solicitud.folio}`,
-      duration: 3000,
-      color: 'success',
-      icon: 'checkmark-circle-outline'
-    });
+      presentToast({
+        message: `Reclamo enviado. Tu folio es ${solicitud.folio}`,
+        duration: 3000,
+        color: 'success',
+        icon: 'checkmark-circle-outline'
+      });
 
-    setFormulario({ tipo: '', direccion: '', descripcion: '', terminos: false });
+      setFormulario({ tipo: '', direccion: '', descripcion: '', terminos: false });
 
-    // despues de enviar lo mandamos a ver el listado de sus solicitudes
-    router.push('/mis-solicitudes');
+      // despues de enviar lo mandamos a ver el listado de sus solicitudes
+      router.push('/mis-solicitudes');
+    } catch (problema) {
+      presentToast({
+        message: problema.message,
+        duration: 3000,
+        color: 'danger'
+      });
+    }
   };
 
   return (

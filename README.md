@@ -5,7 +5,7 @@ Plataforma web y móvil para la gestión y seguimiento de reclamos ciudadanos (O
 
 **Aplicación en línea:** https://felipebechan.github.io/ingenieria-web-y-movil/login
 
-Se puede revisar sin instalar nada. Para entrar como ciudadano basta con cualquier correo (por ejemplo `juan@correo.cl`) y cualquier contraseña; para entrar como funcionario, un correo terminado en `@muni.cl` (por ejemplo `carlos@muni.cl`). Ver [Cómo probar la aplicación](#cómo-probar-la-aplicación).
+La versión publicada muestra la interfaz, pero para usarla con datos reales hay que levantar también el backend en el computador. Las instrucciones están en [Cómo probar la aplicación](#cómo-probar-la-aplicación) y en [backend/README.md](backend/README.md).
 
 ---
 
@@ -45,7 +45,8 @@ Se puede revisar sin instalar nada. Para entrar como ciudadano basta con cualqui
 7. [Tecnologías y Librerías Utilizadas](#7-tecnologías-y-librerías-utilizadas)
 8. [Instalación y Ejecución](#8-instalación-y-ejecución)
 9. [Estructura del proyecto](#9-estructura-del-proyecto)
-10. [Estado de la entrega (EP1)](#10-estado-de-la-entrega-ep1)
+10. [Estado de la entrega (EP2)](#10-estado-de-la-entrega-ep2)
+11. [Cosas por hacer](#11-cosas-por-hacer)
 
 ---
 
@@ -53,7 +54,7 @@ Se puede revisar sin instalar nada. Para entrar como ciudadano basta con cualqui
 
 **Santo Domingo Responde** es una plataforma web y móvil para la Oficina de Informaciones, Reclamos y Sugerencias (OIRS) de la Municipalidad de Santo Domingo. Permite a los vecinos ingresar solicitudes, reclamos y sugerencias con fotos y ubicación, entregando un número de folio único para conocer el estado del trámite en tiempo real. Al mismo tiempo, permite a los funcionarios derivar requerimientos a las direcciones correspondientes (Obras, Aseo y Ornato, Tránsito, etc.) y controlar los plazos de respuesta.
 
-En la gestión comunal, la falta de canales claros y los tiempos de espera prolongados generan desconfianza en los vecinos. Además, según la **Ley Nº 18.695 (Orgánica Constitucional de Municipalidades)** y la Ordenanza OIRS, los municipios deben responder formalmente en un plazo máximo de **20 días corridos**. Actualmente muchas gestiones se hacen en papel o planillas dispersas, lo que provoca demoras y pérdida de solicitudes. La plataforma busca resolver este problema centralizando los trámites de forma simple y accesible para cualquier vecino.
+En la gestión comunal, la falta de canales claros y los tiempos de espera prolongados generan desconfianza en los vecinos. El [Art. 98 de la Ley Nº 18.695](https://www.bcn.cl/leychile/navegar?idNorma=251693), Orgánica Constitucional de Municipalidades, obliga a cada municipio a mantener una OIRS y establece que la ordenanza de participación ciudadana fija los plazos de respuesta, los que **en ningún caso pueden superar los 30 días**, conforme a la [Ley Nº 19.880](https://www.bcn.cl/leychile/navegar?idNorma=210676) de procedimientos administrativos. Actualmente muchas gestiones se hacen en papel o planillas dispersas, lo que provoca demoras y pérdida de solicitudes. La plataforma busca resolver este problema centralizando los trámites de forma simple y accesible para cualquier vecino.
 
 ---
 
@@ -65,7 +66,7 @@ Desarrollar una plataforma web y móvil accesible para la gestión, derivación 
 ### Objetivos Específicos
 * Diseñar prototipos accesibles en Figma adaptados a las necesidades de vecinos y funcionarios.
 * Implementar el frontend responsivo utilizando React y componentes de Ionic Framework.
-* Incorporar trazabilidad mediante folios únicos y control visual del plazo legal de 20 días.
+* Incorporar trazabilidad mediante folios únicos y control visual del plazo de respuesta comprometido.
 
 ---
 
@@ -141,7 +142,7 @@ Dentro de este grupo se encuentran:
 * **Características generales:** Funcionario administrativo de 42 años de la Oficina OIRS Municipal. Cuenta con experiencia en atención al público y manejo de sistemas de gestión documental. Recibe requerimientos desde múltiples vías (web, ventanilla presencial y vía telefónica) y debe canalizarlos a las direcciones pertinentes.
 * **Necesidades principales:**
   * Bandeja de entrada centralizada con filtros avanzados por unidad técnica, fecha y estado.
-  * Alerta visual preventiva del plazo legal de 20 días corridos para evitar faltas al principio de celeridad.
+  * Alerta visual preventiva del plazo comprometido de 20 días hábiles, para evitar faltas al principio de celeridad.
   * Herramienta ágil para derivar el caso a otras direcciones (Obras, Tránsito, Medioambiente) y adjuntar antecedentes técnicos.
 * **Objetivos de uso:** Gestionar con eficacia el flujo de requerimientos vecinales, coordinar respuestas interdepartamentales y dar cumplimiento oportuno a las exigencias normativas de la LOCM.
 * **Dificultades o puntos de frustración:**
@@ -156,10 +157,17 @@ Dentro de este grupo se encuentran:
 Las tres proto-personas anteriores **no corresponden a usuarios reales ni a resultados de entrevistas**. Son una caracterización preliminar construida a partir de fuentes secundarias y de supuestos razonados por el equipo, tal como permite esta etapa del proyecto.
 
 **Fuentes consultadas**
-* Ley N° 18.695, Orgánica Constitucional de Municipalidades, y la Ordenanza OIRS, de donde se toman el plazo legal de respuesta de 20 días corridos y las obligaciones de respuesta formal del municipio.
-* Ley N° 19.628 sobre protección de la vida privada, que fundamenta el tratamiento reservado de los datos de contacto del vecino.
-* Sitio institucional de la Municipalidad de Santo Domingo y sus canales de atención actuales, para identificar las unidades técnicas (Obras, Tránsito, Aseo y Ornato, Seguridad Ciudadana) y los tipos de requerimiento existentes.
-* Revisión de plataformas OIRS de otros municipios chilenos, usadas como referencia de las funcionalidades esperadas: ingreso con folio, seguimiento en línea y derivación interna.
+
+| Fuente | Qué necesidad respalda |
+| :--- | :--- |
+| [Ley N° 18.695, Art. 98](https://www.bcn.cl/leychile/navegar?idNorma=251693) — Orgánica Constitucional de Municipalidades | Obliga a cada municipio a tener una OIRS y deja en la ordenanza de participación ciudadana la fijación de los plazos de respuesta, con un tope de 30 días. Es el fundamento de **RF-06** (bandeja del funcionario) y **RF-12** (aviso de plazo por vencer). |
+| [Ley N° 19.880, Art. 26](https://www.bcn.cl/leychile/navegar?idNorma=210676) — Bases de los procedimientos administrativos | Permite prorrogar los plazos hasta la mitad de su duración. Sustenta que el control de plazos sea una alerta y no un bloqueo automático. |
+| [Ley N° 19.628](https://www.bcn.cl/leychile/navegar?idNorma=141599) — Protección de la vida privada | Fundamenta el tratamiento reservado del RUT, el correo y el teléfono del vecino (**RNF-SEG-03**) y que el funcionario no vea más datos de los necesarios. |
+| [Municipalidad de Santo Domingo](https://www.santodomingo.cl/) — sitio institucional y canales de atención | Identifica las unidades técnicas reales (Obras, Tránsito, Aseo y Ornato, Seguridad Ciudadana) y los tipos de requerimiento que se reciben hoy. Sustenta **RF-10** (derivación a la unidad técnica). |
+| [Plataforma OIRS de la Municipalidad de Santiago](https://oirs.munistgo.cl/) y [SIAC de ChileAtiende](https://www.chileatiende.gob.cl/) | Referencia de funcionalidades esperadas en plataformas equivalentes: ingreso con folio, seguimiento en línea y derivación interna. |
+| [Plazos de respuesta en OIRS de servicios públicos (MINSAL)](https://www.minsal.cl/informacion-de-apoyo/) | De aquí sale el plazo de **20 días hábiles** que usa el proyecto. |
+
+**Sobre el plazo de 20 días hábiles.** Es una meta de servicio que adopta el proyecto, no una obligación específica para municipios. La ley municipal solo fija el techo de 30 días y delega el plazo concreto en la ordenanza de cada comuna. Los 20 días hábiles corresponden al estándar que aplican otros servicios públicos del Estado a sus OIRS, y se eligió porque deja margen para la prórroga del Art. 26 de la Ley N° 19.880 sin pasarse del tope legal. Si la ordenanza de Santo Domingo fijara un plazo distinto, el valor tendría que ajustarse.
 
 **Supuestos asumidos**
 * Que una parte relevante de los vecinos accede principalmente desde el teléfono, por lo que el diseño parte por la versión móvil.
@@ -177,15 +185,24 @@ Estos supuestos deberán validarse con usuarios reales en etapas posteriores del
 Un requerimiento funcional (RF) describe qué debe hacer el sistema, representando las funcionalidades, servicios y acciones que la plataforma debe proporcionar a los distintos roles.
 
 ### Requerimientos Funcionales por Rol
-| ID | Requerimiento funcional | Rol |
-| :--- | :--- | :--- |
-| **RF-01** | El sistema deberá permitir al ciudadano ingresar una presentación o reclamo clasificándolo por tipo (consulta, sugerencia, reclamo o denuncia), temática, descripción detallada, ubicación geográfica y archivos de respaldo. | Ciudadano |
-| **RF-02** | El sistema deberá generar y asignar automáticamente un número de folio único e irrepetible para cada requerimiento ingresado, permitiendo su trazabilidad pública y autenticada. | Ciudadano |
-| **RF-03** | El sistema deberá permitir al ciudadano consultar el estado y avance de sus solicitudes mediante su cuenta o a través del módulo de consulta por folio. | Ciudadano |
-| **RF-04** | El sistema deberá permitir al funcionario OIRS visualizar la bandeja general de requerimientos, filtrando por estado, categoría, fecha de ingreso y plazo restante de respuesta. | Funcionario |
-| **RF-05** | El sistema deberá permitir al funcionario derivar el requerimiento a la unidad técnica correspondiente (Obras, Tránsito, Aseo, etc.) y registrar observaciones internas. | Funcionario |
-| **RF-06** | El sistema deberá permitir al funcionario redactar y registrar la respuesta formal al ciudadano, adjuntar informes técnicos y cambiar el estado del requerimiento a "Respondido / Cerrado". | Funcionario |
-| **RF-07** | El sistema deberá permitir al administrador gestionar cuentas de usuarios, configurar los departamentos municipales y consultar métricas globales de tiempos de respuesta. | Administrador |
+Cada requerimiento describe una sola acción, con la forma *el sistema deberá permitir a `<rol>` `<verbo>` `<necesidad>`*. La última columna indica en qué etapa quedó implementado.
+
+| ID | Requerimiento funcional | Rol | Estado |
+| :--- | :--- | :--- | :--- |
+| **RF-01** | El sistema deberá permitir al ciudadano ingresar una solicitud indicando su tipo, dirección y descripción. | Ciudadano | Implementado en EP2 |
+| **RF-02** | El sistema deberá asignar a cada solicitud ingresada un número de folio único e irrepetible. | Ciudadano | Implementado en EP2 |
+| **RF-03** | El sistema deberá permitir al ciudadano consultar el listado de sus propias solicitudes con el estado de cada una. | Ciudadano | Implementado en EP2 |
+| **RF-04** | El sistema deberá permitir al ciudadano consultar el detalle de una solicitud suya a partir de su folio. | Ciudadano | Implementado en EP2 |
+| **RF-05** | El sistema deberá permitir al ciudadano eliminar una solicitud propia mientras no haya sido tomada por un funcionario. | Ciudadano | Implementado en EP2 |
+| **RF-06** | El sistema deberá permitir al funcionario visualizar la bandeja con todas las solicitudes ingresadas. | Funcionario | Implementado en EP2 |
+| **RF-07** | El sistema deberá permitir al funcionario filtrar la bandeja por estado y buscar por folio o por nombre del ciudadano. | Funcionario | Implementado en EP2 |
+| **RF-08** | El sistema deberá permitir al funcionario cambiar el estado de una solicitud entre En revisión, En proceso, Resuelto y Rechazado. | Funcionario | Implementado en EP2 |
+| **RF-09** | El sistema deberá registrar cada cambio de estado con su fecha y su comentario, conformando el historial de la solicitud. | Funcionario | Implementado en EP2 |
+| **RF-10** | El sistema deberá permitir al funcionario derivar una solicitud a la unidad técnica correspondiente (Obras, Tránsito, Aseo y Ornato o Seguridad Ciudadana). | Funcionario | Planificado para la Entrega Final |
+| **RF-11** | El sistema deberá permitir al funcionario redactar y enviar la respuesta formal dirigida al ciudadano. | Funcionario | Planificado para la Entrega Final |
+| **RF-12** | El sistema deberá advertir al funcionario cuando una solicitud esté próxima a vencer el plazo de respuesta comprometido. | Funcionario | Planificado para la Entrega Final |
+| **RF-13** | El sistema deberá permitir al administrador asignar el rol de funcionario a una cuenta existente. | Administrador | Planificado para la Entrega Final |
+| **RF-14** | El sistema deberá permitir al administrador consultar el tiempo promedio de respuesta de las solicitudes cerradas. | Administrador | Planificado para la Entrega Final |
 
 ### Funcionalidades Transversales
 Las siguientes funcionalidades son necesarias para el funcionamiento general de la plataforma, pero complementan los requerimientos funcionales principales del dominio:
@@ -199,24 +216,24 @@ Las siguientes funcionalidades son necesarias para el funcionamiento general de 
 Los requerimientos no funcionales establecen las condiciones de calidad, rendimiento, accesibilidad y seguridad que debe satisfacer la plataforma:
 
 #### UX y Usabilidad
-* **RNF-UX-01 — Diseño adaptable:** La interfaz deberá adaptarse responsive a dispositivos móviles, tablets y computadores de escritorio, manteniendo accesibles todas las funciones principales.
+* **RNF-UX-01 — Diseño adaptable:** La interfaz deberá funcionar sin desplazamiento horizontal desde los 360 px de ancho y hasta los 1920 px, manteniendo accesibles todas las funciones principales en ambos extremos.
 * **RNF-UX-02 — Navegación consistente:** La aplicación deberá mantener patrones de navegación uniformes y predecibles en todas sus vistas.
-* **RNF-UX-03 — Reducción de carga cognitiva:** Los formularios deberán segmentarse de manera progresiva y clara, evitando saturar al usuario con campos innecesarios.
-* **RNF-UX-04 — Retroalimentación al usuario:** Todas las acciones del usuario deberán contar con retroalimentación visual inmediata (confirmaciones, indicadores de carga y alertas de error).
+* **RNF-UX-03 — Reducción de carga cognitiva:** Ningún formulario deberá presentar más de seis campos obligatorios en una misma pantalla, y cada campo deberá indicar si es obligatorio y qué formato espera.
+* **RNF-UX-04 — Retroalimentación al usuario:** Toda acción que envíe datos al servidor deberá mostrar un indicador de carga mientras se procesa y un mensaje de confirmación o de error al terminar. El botón que originó la acción deberá quedar deshabilitado hasta recibir la respuesta, para evitar envíos duplicados.
 
 #### Accesibilidad
 * **RNF-ACC-01 — Claridad del contenido:** Los textos e instrucciones deberán expresarse en un lenguaje ciudadano directo y accesible, facilitando su comprensión por personas de todas las edades.
-* **RNF-ACC-02 — Jerarquía visual:** Las pantallas deberán mantener una jerarquía visual estructurada, con contrastes de color adecuados y tamaños de texto legibles.
+* **RNF-ACC-02 — Jerarquía visual:** El texto de contenido deberá mantener un contraste mínimo de 4.5:1 contra su fondo y un tamaño base de 16 px, y los botones deberán tener un área mínima de 44 x 44 px en móvil.
 
 #### Seguridad y Privacidad
-* **RNF-SEG-01 — Protección de contraseñas:** Las contraseñas deberán almacenarse en la base de datos utilizando mecanismos seguros de derivación criptográfica (hash bcrypt) y nunca en texto plano.
-* **RNF-SEG-02 — Autenticación y control de acceso por roles:** Las rutas protegidas deberán verificar la identidad y permisos del usuario antes de desplegar información reservada.
+* **RNF-SEG-01 — Protección de contraseñas:** Las contraseñas deberán almacenarse con hash bcrypt de al menos 10 rondas y nunca en texto plano. La contraseña no deberá aparecer en ninguna respuesta de la API ni en los registros del servidor.
+* **RNF-SEG-02 — Autenticación y control de acceso por roles:** Toda ruta protegida deberá exigir un token JWT válido y responder 401 si falta o venció, y 403 si el rol no corresponde. Un ciudadano no deberá poder leer una solicitud de otro aunque conozca su identificador.
 * **RNF-SEG-03 — Privacidad de datos personales:** Los datos de contacto del ciudadano deberán resguardarse bajo confidencialidad en cumplimiento de la Ley Nº 19.628 y el Art. 47 de la Ordenanza Municipal.
 
 #### Rendimiento, Compatibilidad y Escalabilidad
-* **RNF-01: Tiempo de respuesta:** Las operaciones de consulta y guardado deberán ejecutarse en tiempos promedio inferiores a 2 segundos en condiciones estándar de conectividad.
+* **RNF-01: Tiempo de respuesta:** El 95% de las consultas y guardados deberá responder en menos de 2 segundos, medido con la base de datos local y una conexión de al menos 5 Mbps.
 * **RNF-02: Compatibilidad:** La plataforma deberá funcionar de manera consistente en las versiones actuales de Google Chrome, Mozilla Firefox, Microsoft Edge y Safari.
-* **RNF-03: Escalabilidad:** La arquitectura modular deberá permitir incorporar nuevas dependencias municipales o un incremento en el volumen de reclamos sin afectar el rendimiento global.
+* **RNF-03: Escalabilidad:** La plataforma deberá mantener el tiempo de respuesta definido en RNF-01 con al menos 10.000 solicitudes almacenadas y 50 usuarios consultando a la vez. Incorporar una nueva unidad municipal no deberá requerir cambios en el esquema de la base de datos.
 
 ---
 
@@ -308,7 +325,7 @@ La plataforma controla el acceso a las vistas de acuerdo con el perfil del usuar
 | Visualizar bandeja general de requerimientos municipales | — | ✓ | ✓ |
 | Derivar requerimientos a direcciones técnicas | — | ✓ | — |
 | Cargar informes técnicos y redactar respuesta oficial | — | ✓ | — |
-| Monitorear semáforo de plazos legales (20 días corridos) | — | ✓ | ✓ |
+| Monitorear semáforo de plazos (20 días hábiles) | — | ✓ | ✓ |
 | Crear y administrar cuentas de funcionarios | — | — | ✓ |
 | Configurar unidades municipales y parámetros del sistema | — | — | ✓ |
 
@@ -386,7 +403,7 @@ de validación                   ↓
 
 #### Task Flow 2: Gestión, derivación y respuesta oficial de requerimiento
 * **Rol:** Funcionario
-* **Objetivo:** Evaluar un requerimiento asignado, canalizarlo a la dirección técnica correspondiente y redactar la respuesta oficial dentro del plazo legal.
+* **Objetivo:** Evaluar un requerimiento asignado, canalizarlo a la dirección técnica correspondiente y redactar la respuesta oficial dentro del plazo comprometido.
 
 ```text
 Inicio de sesión del funcionario
@@ -395,7 +412,7 @@ Panel de control OIRS
         ↓
 Acceder a "Bandeja de Reclamos"
         ↓
-Filtrar por reclamos pendientes / próximos a vencer (plazo 20 días)
+Filtrar por reclamos pendientes / próximos a vencer (plazo 20 días hábiles)
         ↓
 Seleccionar requerimiento a gestionar
         ↓
@@ -427,7 +444,7 @@ Los puntos críticos de interacción corresponden a aquellos momentos del sistem
 1. **Autenticación y direccionamiento seguro según rol:** El sistema deberá validar de forma estricta las credenciales y redirigir inmediatamente a la vista autorizada de cada rol, bloqueando cualquier intento de manipulación manual de rutas URL.
 2. **Carga y compresión de evidencias fotográficas en móviles:** Al subir imágenes desde la cámara o galería de un dispositivo móvil, el proceso no debe bloquear la interfaz ni fallar ante conexiones lentas. Se requerirá compresión previa y retroalimentación mediante barra de progreso.
 3. **Generación y resguardo del código de folio único:** Al finalizar el envío de un reclamo, la pantalla de confirmación debe exhibir claramente el folio asignado y permitir su copiado o descarga inmediata, enviando además un respaldo por correo para evitar la pérdida del número de trámite.
-4. **Alerta y control de plazos legales de respuesta (20 días corridos):** La bandeja del funcionario debe advertir de forma notoria la proximidad del vencimiento del plazo legal estipulado en la Ordenanza OIRS (semáforo visual: verde > 10 días, amarillo entre 5 y 10 días, rojo < 5 días), asegurando que no se incurra en retrasos injustificados.
+4. **Alerta y control del plazo de respuesta (20 días hábiles):** La bandeja del funcionario debe advertir de forma notoria la proximidad del vencimiento del plazo comprometido (semáforo visual: verde > 10 días, amarillo entre 5 y 10 días, rojo < 5 días), asegurando que no se incurra en retrasos injustificados.
 5. **Claridad del estado del trámite para el ciudadano:** Las fases del expediente deben presentarse con lenguaje pedagógico y visual (ej. *Ingresado → En revisión técnica → En ejecución de solución → Respuesta emitida*), eliminando abreviaturas burocráticas confusas.
 6. **Consistencia de interacción entre versión web y móvil:** La experiencia de registro y consulta debe mantener los mismos pasos, botones y etiquetas tanto si el vecino interactúa desde un teléfono en la calle como si lo hace desde un computador en su hogar.
 
@@ -498,7 +515,7 @@ La separación en `pages`, `components`, `routes` y `services` permite agregar v
 ## 8. Instalación y Ejecución
 
 ### Requisitos previos
-- Node.js (v18 o superior)
+- Node.js **20.19 o superior** (o 22.12 en adelante). Es lo que pide Vite 8; con Node 18 la instalación falla.
 - Git
 
 ### Pasos para ejecutar el proyecto localmente
@@ -521,18 +538,68 @@ La aplicación quedará disponible en el navegador en: **`http://localhost:5173/
 
 ### Cómo probar la aplicación
 
-Todavía no existe backend (se implementa en la Entrega Parcial 2), por lo que la sesión se simula en el frontend y el rol se decide según el correo con el que se inicia sesión:
+El frontend necesita que el backend esté corriendo. En una terminal:
 
-| Perfil | Correo de ejemplo | Contraseña | Vista a la que entra |
-| :--- | :--- | :--- | :--- |
-| Ciudadano | `juan@correo.cl` | cualquiera | `/inicio` |
-| Funcionario | `carlos@muni.cl` | cualquiera | `/revisar-solicitudes` |
+```bash
+cd backend
+npm install
+cp .env.example .env     # completar los datos de PostgreSQL
+createdb santo_domingo
+psql -d santo_domingo -f sql/schema.sql
+npm run dev              # queda en http://localhost:3000
+```
 
-También se puede crear una cuenta nueva desde el registro: queda guardada en el navegador y se puede iniciar sesión con ese correo.
+Y en otra terminal, el frontend:
+
+```bash
+cp .env.example .env     # VITE_API_URL=http://localhost:3000/api
+npm run dev              # queda en http://localhost:5173
+```
+
+El `schema.sql` deja cargadas tres cuentas de prueba, todas con la contraseña `123456`:
+
+| Correo | Rol | Para qué sirve |
+|--------|-----|----------------|
+| `carlos@correo.cl` | Ciudadano | Tiene tres solicitudes ingresadas |
+| `ana@correo.cl` | Ciudadano | Tiene dos solicitudes, una resuelta y una rechazada |
+| `luis@muni.cl` | Funcionario | Entra al panel de gestión y ve la bandeja completa |
+
+También se puede crear una cuenta desde el registro, pero todas las cuentas nuevas entran como ciudadano. Para convertir una en funcionario:
+
+```bash
+psql -d santo_domingo -c "UPDATE usuarios SET rol = 'funcionario' WHERE correo = 'tucorreo@muni.cl';"
+```
+
+Hay que volver a iniciar sesión para que el token traiga el rol nuevo.
+
+### Variables de entorno
+
+Ninguno de los dos archivos `.env` se sube al repositorio, por eso están los `.env.example`. El backend necesita:
+
+| Variable | Para qué sirve | Ejemplo |
+| :--- | :--- | :--- |
+| `PORT` | Puerto del servidor | `3000` |
+| `DB_HOST` / `DB_PORT` | Dónde está PostgreSQL | `localhost` / `5432` |
+| `DB_NAME` | Nombre de la base | `santo_domingo` |
+| `DB_USER` / `DB_PASSWORD` | Credenciales de la base | `postgres` / `tu_clave` |
+| `JWT_SECRET` | Clave con la que se firman los tokens | una cadena larga y propia |
+| `JWT_EXPIRA` | Duración del token | `2h` |
+| `ORIGEN_FRONTEND` | Origen autorizado por CORS | `http://localhost:5173` |
+
+Y el frontend solo necesita una:
+
+| Variable | Para qué sirve | Ejemplo |
+| :--- | :--- | :--- |
+| `VITE_API_URL` | Dirección de la API | `http://localhost:3000/api` |
+
+### Pruebas de la API
+
+En `backend/postman/` está la colección de Postman con los endpoints, la tabla
+de referencia en `endpoints.md` y las capturas de las respuestas. Se importa la
+colección en Postman y se corre de arriba hacia abajo: los dos logins guardan el
+token solos, así que el resto de los request salen autenticados.
 
 Si se intenta abrir una ruta privada sin haber iniciado sesión, la aplicación redirige a `/login`. Si un ciudadano intenta entrar a la bandeja del funcionario (o al revés), la aplicación lo devuelve a la vista que sí le corresponde.
-
-Los reclamos que se ingresan y las cuentas que se crean se guardan en el `localStorage` del navegador, así que se puede probar el flujo completo sin backend. Para partir de cero basta con borrar los datos del sitio en el navegador.
 
 ---
 
@@ -542,35 +609,64 @@ Los reclamos que se ingresan y las cuentas que se crean se guardan en el `localS
 src/
 ├── components/   Componentes reutilizables (AppLayout, AuthLayout, MenuLateral, CampoTexto, EstadoBadge, OpcionCard, Campana, InfoTarjeta)
 ├── context/      PerfilContext: guarda la sesión y el rol del usuario
-├── data/         Datos de prueba mientras no exista backend
+├── data/         Opciones fijas de la interfaz (accesos rápidos del inicio)
 ├── pages/        Una carpeta por vista: Login, Register, Inicio, IngresoReclamo, MisSolicitudes, DetalleSolicitud, RevisarSolicitudes
 ├── routes/       RutaProtegida: control de sesión y de rol en las rutas privadas
-├── services/     solicitudesService: acceso a los datos; aquí irán las llamadas a la API
+├── services/     api.js y los servicios que hablan con el backend (usuarios, solicitudes)
 ├── theme/        Variables de color y tipografía
 └── App.jsx       Definición de todas las rutas de la aplicación
 ```
 
+```text
+backend/
+├── sql/
+│   └── schema.sql          Tablas, claves, restricciones y datos de prueba
+├── postman/
+│   ├── Santo Domingo Responde.postman_collection.json
+│   ├── endpoints.md        Tabla de referencia de la API
+│   └── capturas/           Evidencia de las pruebas
+└── src/
+    ├── config/db.js        Pool de conexión a PostgreSQL
+    ├── controllers/        Reciben la petición y responden con el código HTTP
+    ├── services/           Las consultas a la base de datos
+    ├── routes/             Definición de las rutas de la API
+    ├── middlewares/        Verificación del token y del rol
+    ├── validaciones.js     Revisión de los datos que llegan del frontend
+    ├── app.js              Configuración de Express
+    └── server.js           Levanta el servidor
+```
+
 ---
 
-## 10. Estado de la entrega (EP1)
+## 10. Estado de la entrega (EP2)
 
-La aplicación está publicada en **https://felipebechan.github.io/ingenieria-web-y-movil/login**, así que se puede revisar sin instalar nada. Cada vez que se sube un cambio a `main`, GitHub Actions compila el proyecto y actualiza el sitio (ver `.github/workflows/deploy.yml`).
-
+La aplicación está publicada en **https://felipebechan.github.io/ingenieria-web-y-movil/login**. Esa versión muestra las pantallas, pero para usarla de verdad hay que levantar el backend en el computador, porque GitHub Pages solo sirve archivos estáticos y no puede alojar el servidor ni la base de datos.
 
 ### Implementado en esta entrega
-* Siete pantallas en Figma (login, registro, inicio, mis solicitudes, ingreso de reclamo, panel del funcionario y detalle de solicitud), en versión web y móvil.
-* Seis vistas funcionando en Ionic con React: login, registro, inicio, ingreso de reclamo, mis solicitudes, detalle de solicitud y bandeja del funcionario.
-* Rutas públicas y protegidas con React Router, con redirección al login y diferenciación por rol.
-* Validaciones de formulario con mensajes de error visibles, RUT con dígito verificador y confirmación con folio al enviar un reclamo.
-* Ingreso de reclamos que quedan guardados y aparecen en "Mis solicitudes" y en la bandeja del funcionario, con folio y fecha generados automáticamente (RF-02).
-* Diseño responsivo para escritorio y móvil, con menú lateral en escritorio y menú desplegable en móvil.
+* **Servidor** en Node.js con Express, separado en rutas, controladores, servicios y middlewares.
+* **Base de datos PostgreSQL** con tres tablas (`usuarios`, `solicitudes`, `historial_estados`), claves primarias y foráneas, restricciones `CHECK` y `UNIQUE`, y el archivo `schema.sql` que la reproduce completa con datos de prueba.
+* **API REST** con los ocho endpoints de la tabla de `backend/postman/endpoints.md`, cubriendo GET, POST, PATCH y DELETE, con códigos HTTP y respuestas JSON consistentes.
+* **Autenticación con JWT**: registro, inicio de sesión, token con expiración, rutas protegidas y diferenciación entre ciudadano y funcionario.
+* **Seguridad**: contraseñas con bcrypt, validación de todos los datos que entran, consultas parametrizadas y verificación de que un vecino solo pueda ver o modificar lo suyo.
+* **Integración con el frontend**: las pantallas consumen la API con `fetch`, guardan el token y muestran los errores que devuelve el servidor.
+* **Pruebas**: colección de Postman con 14 requests, documentación de los endpoints y capturas de las respuestas.
 
-### Planificado para las siguientes entregas
-* Backend en Node.js con API REST, base de datos relacional y archivo `.sql`.
-* Autenticación real con JWT y contraseñas cifradas con bcrypt (hoy la sesión es solo del lado del frontend).
-* Consulta pública por folio, perfil de usuario, notificaciones, ayuda y las vistas de administrador.
-* Carga de fotografías y geolocalización en el formulario de reclamo.
-* Pantallas de notificaciones, ayuda y perfil: en el menú aparecen atenuadas porque todavía no existen.
+### Planificado para la Entrega Final
+* Derivación a la unidad técnica y respuesta formal al ciudadano (**RF-10** y **RF-11**).
+* Aviso de plazo por vencer en la bandeja (**RF-12**).
+* Vistas de administrador: asignar roles y ver tiempos de respuesta (**RF-13** y **RF-14**).
+* Pantallas de notificaciones, perfil y ayuda, que en el menú aparecen atenuadas.
+* Carga de fotografías y geolocalización en el formulario.
+
+### Organización del repositorio
+
+| Rama | Qué contiene |
+| :--- | :--- |
+| `main` | La versión integrada del proyecto, que es la que se publica. |
+| `frontend` | El código de la interfaz y la documentación de los requerimientos. |
+| `backend` | El servidor, la API, la conexión a la base de datos y el `schema.sql`. |
+
+El trabajo se hizo en ramas por tarea (`validaciones`, `bandeja-funcionario`, `frontend-con-api`, `sql-y-pruebas`, entre otras), cada una integrada con su pull request. El historial de commits y los pull requests cerrados quedan como evidencia del trabajo de cada integrante.
 
 ---
 
@@ -578,12 +674,12 @@ La aplicación está publicada en **https://felipebechan.github.io/ingenieria-we
 
 Lista de lo que sigue, en orden de prioridad:
 
-### Entrega Parcial 2
-- [ ] Levantar el backend en Node.js con Express y conectarlo a una base de datos relacional.
-- [ ] Escribir el archivo `.sql` con las tablas, claves primarias y foráneas, en la rama `backend`.
-- [ ] Crear los endpoints REST de solicitudes y usuarios, y reemplazar el `localStorage` por llamadas a la API dentro de `services/`.
-- [ ] Autenticación real con JWT y contraseñas cifradas con bcrypt, en vez de decidir el rol por el correo.
-- [ ] Probar los endpoints en Postman y guardar la evidencia.
+### Entrega Parcial 2 (listo)
+- [x] Levantar el backend en Node.js con Express y conectarlo a una base de datos relacional.
+- [x] Escribir el archivo `.sql` con las tablas, claves primarias y foráneas, en la rama `backend`.
+- [x] Crear los endpoints REST de solicitudes y usuarios, y reemplazar el `localStorage` por llamadas a la API dentro de `services/`.
+- [x] Autenticación real con JWT y contraseñas cifradas con bcrypt, en vez de decidir el rol por el correo.
+- [x] Probar los endpoints en Postman y guardar la evidencia.
 
 ### Pantallas que faltan
 - [ ] Notificaciones, Mi perfil y Ayuda: hoy aparecen atenuadas en el menú.
@@ -592,6 +688,6 @@ Lista de lo que sigue, en orden de prioridad:
 
 ### Mejoras pendientes
 - [ ] Subir fotografías y ubicación en el formulario de reclamo.
-- [ ] Semáforo del plazo legal de 20 días en la bandeja del funcionario.
+- [ ] Semáforo del plazo de 20 días hábiles en la bandeja del funcionario.
 - [ ] Revisar la aplicación en tamaños de tablet, hoy está probada en escritorio y móvil.
 - [ ] Validar las proto-personas con usuarios reales.

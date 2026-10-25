@@ -34,15 +34,15 @@ function App() {
             {/* Rutas protegidas del ciudadano */}
             <Route
               path="/inicio"
-              element={<RutaProtegida rol="usuario"><Inicio /></RutaProtegida>}
+              element={<RutaProtegida rol="ciudadano"><Inicio /></RutaProtegida>}
             />
             <Route
               path="/ingreso-reclamo"
-              element={<RutaProtegida rol="usuario"><IngresoReclamo /></RutaProtegida>}
+              element={<RutaProtegida rol="ciudadano"><IngresoReclamo /></RutaProtegida>}
             />
             <Route
               path="/mis-solicitudes"
-              element={<RutaProtegida rol="usuario"><MisSolicitudes /></RutaProtegida>}
+              element={<RutaProtegida rol="ciudadano"><MisSolicitudes /></RutaProtegida>}
             />
 
             <Route
@@ -53,7 +53,7 @@ function App() {
             {/* Rutas protegidas del funcionario */}
             <Route
               path="/revisar-solicitudes"
-              element={<RutaProtegida rol="admin"><RevisarSolicitudes /></RutaProtegida>}
+              element={<RutaProtegida rol="funcionario"><RevisarSolicitudes /></RutaProtegida>}
             />
 
             {/* Cualquier otra ruta manda al login */}
