@@ -1,16 +1,28 @@
-# Medidas de Seguridad del Backend
+# Seguridad del backend
 
-Este documento resume los principales riesgos de seguridad identificados en la aplicación, la estrategia adoptada para mitigarlos y los archivos correspondientes donde se implementa cada protección.
+Resumen de los riesgos que consideramos y cómo los cubre el código, con el archivo donde está cada cosa.
 
-## Matriz de Riesgos y Controles
-
-| Riesgo | Cómo lo prevenimos | Archivo de protección |
+| Riesgo | Cómo lo prevenimos | Dónde está |
 | :--- | :--- | :--- |
-| **Inyección SQL** | Se utilizan consultas parametrizadas (`$1`, `$2`, etc.) mediante la librería `pg`. Los parámetros se envían por separado al motor de base de datos, impidiendo que datos de entrada alteren la lógica de la consulta SQL. | `backend/src/config/db.js`<br>`backend/src/services/solicitudes.service.js`<br>`backend/src/services/usuarios.service.js` |
-| **Cross-Site Scripting (XSS)** | Sanitización de entradas de texto libre mediante la función `limpiarTexto`, la cual neutraliza caracteres especiales transformando `<` y `>` en sus entidades HTML seguras (`&lt;` y `&gt;`), además de aplicar `trim()`. | `backend/src/validaciones.js`<br>`backend/src/controllers/solicitudes.controller.js`<br>`backend/src/controllers/auth.controller.js`<br>`backend/src/controllers/direcciones.controller.js` |
-| **Robo de contraseñas** | Las contraseñas nunca se almacenan en texto plano. Se procesan mediante hash criptográfico unidireccional con `bcryptjs` utilizando un factor de costo (salt) de 10 rondas antes de persistirlas. | `backend/src/services/usuarios.service.js` |
-| **Acceso a datos de otros usuarios** | Control de acceso basado en el identificador del usuario autenticado (`req.usuario.id`) y validación de roles (`soloFuncionario`). Un vecino solo puede consultar o cancelar sus propias solicitudes. | `backend/src/middlewares/auth.middleware.js`<br>`backend/src/controllers/solicitudes.controller.js` |
-| **Peticiones no autorizadas entre sitios (CORS)** | Se configura el middleware `cors` limitando el acceso exclusivamente al origen definido en la variable de entorno `ORIGEN_FRONTEND` (sin utilizar comodines `*`). | `backend/src/app.js` |
-| **Manipulación o falsificación de tokens** | Autenticación mediante JWT firmados con clave secreta (`JWT_SECRET`) y con expiración obligatoria. El middleware `verificarToken` valida la firma y vigencia en cada solicitud a rutas protegidas. | `backend/src/middlewares/auth.middleware.js`<br>`backend/src/controllers/auth.controller.js` |
-| **Ataques de denegación de servicio (DoS por payload)** | Restricción del tamaño máximo del cuerpo de las peticiones JSON a 2MB en `express.json({ limit: '2mb' })` para evitar saturación de memoria. | `backend/src/app.js` |
-| **Fuga de información técnica en errores** | Centralización de errores con el middleware `manejarErrores`, que registra el detalle técnico solo en los logs internos del servidor y responde siempre con mensajes genéricos y limpios al cliente. | `backend/src/middlewares/errores.middleware.js`<br>`backend/src/controllers/auth.controller.js` |
+| **Inyección SQL** | Todas las consultas van parametrizadas con `$1`, `$2`. Los valores viajan aparte del texto del SQL, así que lo que escriba el usuario nunca puede cambiar la consulta. | `config/db.js`, `services/` |
+| **XSS** | Los textos libres pasan por `limpiarTexto`, que les saca las etiquetas HTML antes de guardarlos. Se borran en vez de escaparlas, porque React ya escapa lo que imprime y si no el usuario vería `&lt;` en pantalla. | `validaciones.js`, `controllers/` |
+| **Contraseñas** | Nunca se guardan en texto plano: se usa bcrypt con 10 rondas. La contraseña tampoco aparece en ninguna respuesta de la API. | `services/usuarios.service.js` |
+| **Ver datos de otro usuario** | Cada consulta se filtra por el id del usuario del token, y las rutas del funcionario pasan por `soloFuncionario`. Un vecino no puede abrir una solicitud ajena aunque sepa el id. | `middlewares/auth.middleware.js`, `controllers/` |
+| **CORS** | El origen permitido sale de la variable `ORIGEN_FRONTEND`, nunca un asterisco. | `app.js` |
+| **Tokens falsificados o vencidos** | Los JWT van firmados con `JWT_SECRET` y tienen expiración. `verificarToken` revisa la firma y la vigencia en cada ruta protegida. | `middlewares/auth.middleware.js` |
+| **Peticiones demasiado grandes** | El cuerpo de las peticiones tiene un tope de 2 MB, que es lo que necesita una foto en base64 y nada más. | `app.js` |
+| **Filtrar detalles internos en los errores** | El manejador de errores solo devuelve el mensaje cuando es un error controlado (4xx). Cualquier otro responde "Error interno del servidor" y el detalle queda en la consola del servidor. | `middlewares/errores.middleware.js` |
+
+## Códigos que devuelve la API
+
+| Código | Cuándo |
+| :--- | :--- |
+| `400` | Los datos que llegaron no pasan la validación |
+| `401` | Falta el token o ya venció |
+| `403` | El token es válido pero el rol o el dueño no corresponde |
+| `404` | El recurso no existe |
+| `409` | La operación choca con el estado actual (correo repetido, solicitud ya cerrada) |
+
+## Lo que falta
+
+La aplicación no tiene límite de intentos de inicio de sesión, así que alguien podría probar contraseñas a repetición. Para un sistema real habría que agregarlo.
