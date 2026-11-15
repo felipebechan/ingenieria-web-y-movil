@@ -45,6 +45,7 @@ La versión publicada muestra la interfaz, pero para usarla con datos reales hay
    * [La aplicación funcionando](#la-aplicación-funcionando)
 7. [Tecnologías y Librerías Utilizadas](#7-tecnologías-y-librerías-utilizadas)
 8. [Instalación y Ejecución](#8-instalación-y-ejecución)
+   * [Levantar todo con Docker](#levantar-todo-con-docker)
    * [Modelo de la base de datos](#modelo-de-la-base-de-datos)
 9. [Estructura del proyecto](#9-estructura-del-proyecto)
 10. [Estado de la entrega (EP2)](#10-estado-de-la-entrega-ep2)
@@ -629,6 +630,40 @@ erDiagram
 
 Un usuario puede tener muchas solicitudes y una solicitud guarda todos sus cambios de estado en el historial. Las contraseñas se guardan como hash de bcrypt, nunca en texto plano. El estado, el rol y la unidad están limitados por restricciones `CHECK`, así que la base rechaza un valor que no corresponda aunque la petición logre pasar las validaciones del backend.
 
+### Levantar todo con Docker
+
+La forma más corta de probar el proyecto completo, sin instalar Node ni PostgreSQL en el computador. Solo hace falta tener Docker:
+
+```bash
+docker compose up --build
+```
+
+Eso levanta tres contenedores y los conecta entre ellos:
+
+| Servicio | Qué es | Dónde queda |
+| :--- | :--- | :--- |
+| `base` | PostgreSQL 17, que carga el `schema.sql` la primera vez | interno |
+| `api` | El backend en Express | `http://localhost:3000` |
+| `web` | El frontend compilado y servido con nginx | `http://localhost:8080` |
+
+La aplicación queda en **`http://localhost:8080`** y se entra con las cuentas de prueba de más abajo. Para apagarlo, `docker compose down`; y `docker compose down -v` borra además los datos para volver a partir de cero.
+
+![La aplicación corriendo en Docker](docs/capturas/docker-funcionando.png)
+
+Un par de decisiones que conviene explicar:
+
+* La dirección de la API se pasa como argumento al compilar la imagen del frontend, porque Vite reemplaza esa variable dentro del código. Por eso es `localhost:3000` y no el nombre del contenedor: la petición la hace el navegador, que está fuera de la red de Docker.
+* El `schema.sql` se monta en `/docker-entrypoint-initdb.d/`, que es la carpeta que PostgreSQL ejecuta sola la primera vez que crea la base. Así no hay que cargar nada a mano.
+* El contenedor de la API espera a que la base esté sana antes de arrancar, con un `healthcheck`, porque si no se cae al intentar conectarse antes de tiempo.
+
+### Aviso por correo al vecino
+
+Cuando el funcionario cambia el estado de una solicitud, la deriva o la responde, el vecino recibe un correo. Está hecho con la API de [Resend](https://resend.com), que es un servicio externo al proyecto.
+
+Para que funcione hay que crear una cuenta gratis en Resend, sacar una clave y ponerla en `RESEND_API_KEY` junto con `CORREO_DESDE`. **Si esas variables quedan vacías la aplicación funciona igual**: el aviso no sale y queda anotado en la consola del servidor. Se decidió así porque un problema con el correo no puede impedir que la municipalidad gestione una solicitud.
+
+El envío tiene un límite de 5 segundos y cualquier error queda registrado sin cortar la respuesta al funcionario.
+
 ### Variables de entorno
 
 Ninguno de los dos archivos `.env` se sube al repositorio, por eso están los `.env.example`. El backend necesita:
@@ -642,6 +677,8 @@ Ninguno de los dos archivos `.env` se sube al repositorio, por eso están los `.
 | `JWT_SECRET` | Clave con la que se firman los tokens | una cadena larga y propia |
 | `JWT_EXPIRA` | Duración del token | `2h` |
 | `ORIGEN_FRONTEND` | Origen autorizado por CORS | `http://localhost:5173` |
+| `RESEND_API_KEY` | Clave del servicio de correo, opcional | `re_...` |
+| `CORREO_DESDE` | Remitente de los avisos, opcional | `onboarding@resend.dev` |
 
 Y el frontend solo necesita una:
 
@@ -672,6 +709,13 @@ src/
 ├── services/     api.js y los servicios que hablan con el backend (usuarios, solicitudes)
 ├── theme/        Variables de color y tipografía
 └── App.jsx       Definición de todas las rutas de la aplicación
+```
+
+```text
+Dockerfile              Imagen del frontend: compila y lo sirve con nginx
+nginx.conf              Configuración de nginx, con el fallback de la SPA
+docker-compose.yml      Levanta la base, la API y el frontend juntos
+backend/Dockerfile      Imagen del backend
 ```
 
 ```text
@@ -781,12 +825,12 @@ Organizado según los criterios de la pauta:
 - [ ] Devolver solo las columnas necesarias en los listados.
 
 **EF5 — Servicio externo**
-- [ ] Integrar un servicio de terceros que aporte al problema, por ejemplo correo de aviso al cambiar el estado o un mapa para la ubicación del reclamo.
+- [x] Aviso por correo al vecino cuando su solicitud cambia de estado, con la API de Resend.
 
 **EF6 — Despliegue con Docker**
-- [ ] `Dockerfile` para el frontend y para el backend.
-- [ ] `docker-compose` que levante la API, la base de datos y el frontend.
-- [ ] Probar el despliegue local y documentarlo.
+- [x] `Dockerfile` para el frontend y para el backend.
+- [x] `docker-compose` que levanta la API, la base de datos y el frontend.
+- [x] Despliegue local probado y documentado.
 
 ### Otras cosas pendientes
 - [ ] Validar las proto-personas con usuarios reales.
