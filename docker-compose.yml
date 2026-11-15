@@ -1,0 +1,59 @@
+# Levanta los tres servicios del proyecto: la base de datos, la API y el
+# frontend. Para probarlo:  docker compose up --build
+# Despues la aplicacion queda en http://localhost:8080
+
+services:
+  base:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: santo_domingo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    volumes:
+      # Postgres ejecuta solo los archivos de esta carpeta la primera vez que
+      # se crea la base, asi que el schema queda cargado con sus datos.
+      - ./backend/sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+      - datos_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d santo_domingo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: ./backend
+    environment:
+      PORT: 3000
+      # El host es el nombre del servicio, porque los contenedores se ven entre
+      # ellos por la red que arma docker compose.
+      DB_HOST: base
+      DB_PORT: 5432
+      DB_NAME: santo_domingo
+      DB_USER: postgres
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      JWT_SECRET: ${JWT_SECRET:-clave-para-probar-en-local}
+      JWT_EXPIRA: 2h
+      ORIGEN_FRONTEND: http://localhost:8080
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      CORREO_DESDE: ${CORREO_DESDE:-}
+    ports:
+      - "3000:3000"
+    depends_on:
+      base:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      args:
+        # Esta direccion la usa el navegador, no el contenedor, por eso va
+        # localhost y no el nombre del servicio.
+        VITE_API_URL: http://localhost:3000/api
+        VITE_BASE: /
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  datos_postgres:
