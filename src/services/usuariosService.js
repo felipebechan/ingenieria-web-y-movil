@@ -15,3 +15,7 @@ export function iniciarSesion(correo, password) {
     body: JSON.stringify({ correo, password })
   })
 }
+
+export function obtenerMiPerfil() {
+  return pedir('/auth/yo')
+}

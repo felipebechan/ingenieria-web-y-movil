@@ -12,6 +12,8 @@ import DetalleSolicitud from './pages/DetalleSolicitud'
 import Notificaciones from './pages/Notificaciones'
 import DerivarSolicitud from './pages/DerivarSolicitud'
 import ResponderSolicitud from './pages/ResponderSolicitud'
+import Perfil from './pages/Perfil'
+import Ayuda from './pages/Ayuda'
 import RutaProtegida from './routes/RutaProtegida'
 import { PerfilProvider } from './context/PerfilContext'
 
@@ -71,6 +73,15 @@ function App() {
             <Route
               path="/responder/:id"
               element={<RutaProtegida rol="funcionario"><ResponderSolicitud /></RutaProtegida>}
+            />
+
+            <Route
+              path="/perfil"
+              element={<RutaProtegida><Perfil /></RutaProtegida>}
+            />
+            <Route
+              path="/ayuda"
+              element={<RutaProtegida><Ayuda /></RutaProtegida>}
             />
 
             <Route path="/" element={<Navigate to="/login" replace />} />
