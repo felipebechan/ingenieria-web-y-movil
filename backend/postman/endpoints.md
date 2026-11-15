@@ -16,6 +16,7 @@ La URL base es `http://localhost:3000/api`. El token se manda en la cabecera
 | **PATCH** | `/api/solicitudes/:id/estado` | Sí (Funcionario) | `{"estado": "En proceso", "comentario": "..."}` | `200 OK` (Solicitud actualizada) | `400 Bad Request` (Estado inválido), `403 Forbidden`, `404 Not Found` |
 | **PATCH** | `/api/solicitudes/:id/derivar` | Sí (Funcionario) | `{"unidad": "Tránsito", "observacion": "..."}` | `200 OK` (Solicitud derivada y En proceso) | `400 Bad Request` (Unidad inválida), `403 Forbidden`, `404 Not Found`, `409 Conflict` (Ya cerrada) |
 | **PATCH** | `/api/solicitudes/:id/responder` | Sí (Funcionario) | `{"respuesta": "..."}` | `200 OK` (Solicitud Resuelta con su respuesta) | `400 Bad Request` (Respuesta muy corta), `403 Forbidden`, `404 Not Found`, `409 Conflict` (Ya respondida) |
+| **GET** | `/api/direcciones?texto=` | Sí | Ninguno | `200 OK` (Hasta 5 direcciones con sus coordenadas) | `400 Bad Request` (Menos de 4 caracteres), `401 Unauthorized` |
 | **DELETE** | `/api/solicitudes/:id` | Sí | Ninguno | `200 OK` (Confirmación con el folio) | `403 Forbidden` (No es suya), `404 Not Found`, `409 Conflict` (Ya está en trámite) |
 
 El listado del funcionario acepta además los filtros `?busqueda=` y `?estado=`,
