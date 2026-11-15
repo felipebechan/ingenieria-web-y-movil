@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { crearUsuario, buscarPorCorreo, buscarPorRut, compararPassword } from '../services/usuarios.service.js'
-import { validarRegistro, validarLogin } from '../validaciones.js'
+import { validarRegistro, validarLogin, limpiarTexto } from '../validaciones.js'
 
 function generarToken(usuario) {
   return jwt.sign(
@@ -29,7 +29,10 @@ export async function registrar(req, res, next) {
     }
 
     // el rol no se toma del body, lo pone la base como ciudadano
-    const usuario = await crearUsuario(req.body)
+    const usuario = await crearUsuario({
+      ...req.body,
+      nombre: limpiarTexto(req.body.nombre)
+    })
 
     res.status(201).json({ usuario, token: generarToken(usuario) })
   } catch (error) {

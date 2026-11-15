@@ -6,8 +6,11 @@ export function noEncontrado(req, res) {
 export function manejarErrores(err, req, res, next) {
   console.error(err)
 
-  const estado = err.estado || 500
-  const mensaje = estado === 500 ? 'Error interno del servidor' : err.message
+  // Solo se envian al cliente errores controlados (4xx), nunca detalles internos de la base ni trazas
+  const estado = err.estado || err.status || err.statusCode || 500
+  const mensaje = estado >= 400 && estado < 500 && err.message
+    ? err.message
+    : 'Error interno del servidor'
 
   res.status(estado).json({ error: mensaje })
 }
