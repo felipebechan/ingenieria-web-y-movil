@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import authRoutes from './routes/auth.routes.js'
 import solicitudesRoutes from './routes/solicitudes.routes.js'
+import direccionesRoutes from './routes/direcciones.routes.js'
 import { manejarErrores, noEncontrado } from './middlewares/errores.middleware.js'
 
 const app = express()
@@ -15,6 +16,7 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRoutes)
 app.use('/api/solicitudes', solicitudesRoutes)
+app.use('/api/direcciones', direccionesRoutes)
 
 app.use(noEncontrado)
 app.use(manejarErrores)
