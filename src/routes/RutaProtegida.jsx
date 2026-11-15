@@ -4,7 +4,7 @@ import { usePerfil } from '../context/PerfilContext'
 // Envuelve las vistas privadas: sin token manda al login y si el rol no
 // corresponde manda a la vista de inicio que si le toca a ese usuario.
 function RutaProtegida({ children, rol }) {
-  const { haySesion, esAdmin } = usePerfil()
+  const { haySesion, esAdmin, esAdministrador } = usePerfil()
 
   if (!haySesion) {
     return <Navigate to="/login" replace />
@@ -16,6 +16,10 @@ function RutaProtegida({ children, rol }) {
 
   if (rol === 'ciudadano' && esAdmin) {
     return <Navigate to="/revisar-solicitudes" replace />
+  }
+
+  if (rol === 'administrador' && !esAdministrador) {
+    return <Navigate to="/inicio" replace />
   }
 
   return children

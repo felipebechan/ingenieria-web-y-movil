@@ -25,7 +25,9 @@ export function PerfilProvider({ children }) {
   }
 
   const haySesion = perfil !== null && Boolean(localStorage.getItem('token'))
-  const esAdmin = perfil === 'funcionario'
+  // el administrador entra a todo lo del funcionario y ademas a lo suyo
+  const esAdmin = perfil === 'funcionario' || perfil === 'administrador'
+  const esAdministrador = perfil === 'administrador'
 
   return (
     <PerfilContext.Provider
@@ -34,6 +36,7 @@ export function PerfilProvider({ children }) {
         nombre,
         haySesion,
         esAdmin,
+        esAdministrador,
         iniciarSesion,
         cerrarSesion
       }}

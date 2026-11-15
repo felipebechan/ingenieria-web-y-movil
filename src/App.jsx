@@ -12,6 +12,7 @@ import DetalleSolicitud from './pages/DetalleSolicitud'
 import Notificaciones from './pages/Notificaciones'
 import DerivarSolicitud from './pages/DerivarSolicitud'
 import ResponderSolicitud from './pages/ResponderSolicitud'
+import Administracion from './pages/Administracion'
 import Perfil from './pages/Perfil'
 import Ayuda from './pages/Ayuda'
 import RutaProtegida from './routes/RutaProtegida'
@@ -73,6 +74,11 @@ function App() {
             <Route
               path="/responder/:id"
               element={<RutaProtegida rol="funcionario"><ResponderSolicitud /></RutaProtegida>}
+            />
+
+            <Route
+              path="/administracion"
+              element={<RutaProtegida rol="administrador"><Administracion /></RutaProtegida>}
             />
 
             <Route

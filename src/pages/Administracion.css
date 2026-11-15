@@ -1,0 +1,181 @@
+.admin-seccion {
+  padding: 0 40px 40px;
+}
+
+.admin-titulo {
+  color: var(--azul);
+  font-size: 30px;
+  font-weight: 800;
+  margin: 0 0 4px;
+}
+
+.admin-bajada {
+  color: #4a5568;
+  font-size: 14px;
+  margin: 0 0 22px;
+}
+
+.admin-card {
+  background: white;
+  border: 1px solid #e3e6ee;
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+}
+
+.admin-card h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--azul);
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+/* ---------- Metricas ---------- */
+.admin-numeros {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.admin-cifra {
+  display: block;
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--azul);
+  line-height: 1;
+}
+
+.admin-leyenda {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #4a5568;
+}
+
+.admin-estados {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eef1f6;
+}
+
+.admin-estado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1c2230;
+}
+
+/* ---------- Tabla de cuentas ---------- */
+.tabla-admin-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tabla-admin-usuarios th {
+  text-align: left;
+  padding: 10px 12px;
+  background: #f1f4fa;
+  color: #333842;
+  font-weight: 700;
+}
+
+.tabla-admin-usuarios td {
+  padding: 10px 12px;
+  border-top: 1px solid #eef1f6;
+  color: #4a5568;
+}
+
+.celda-correo {
+  color: #6b7280;
+}
+
+.celda-centro {
+  text-align: center;
+}
+
+.sin-accion {
+  color: #9aa3b2;
+}
+
+.boton-rol {
+  padding: 6px 12px;
+  border: 1.5px solid var(--azul);
+  border-radius: 8px;
+  background: white;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--azul);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.boton-rol:hover {
+  background: #eef3fc;
+}
+
+.usuarios-movil {
+  display: none;
+}
+
+/* ---------- Movil ---------- */
+@media (max-width: 768px) {
+  .admin-seccion {
+    padding: 0 16px 30px;
+  }
+
+  .admin-titulo {
+    font-size: 24px;
+  }
+
+  .admin-numeros {
+    gap: 24px;
+  }
+
+  .tabla-caja {
+    display: none;
+  }
+
+  .usuarios-movil {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .usuario-card {
+    border: 1px solid #e3e6ee;
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  .usuario-card h3 {
+    margin: 0;
+    font-size: 15px;
+    color: #1c2230;
+  }
+
+  .usuario-correo {
+    margin: 2px 0 6px;
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  .usuario-linea {
+    margin: 0 0 10px;
+    font-size: 13px;
+    color: #4a5568;
+  }
+
+  .usuario-card .boton-rol {
+    width: 100%;
+  }
+}

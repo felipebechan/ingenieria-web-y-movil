@@ -1,6 +1,7 @@
 import { IonIcon, useIonRouter } from '@ionic/react'
 import { useLocation } from 'react-router-dom'
 import {
+  peopleOutline,
   homeOutline,
   documentTextOutline,
   createOutline,
@@ -15,7 +16,7 @@ import './MenuLateral.css'
 function MenuLateral() {
   const router = useIonRouter()
   const location = useLocation()
-  const { esAdmin, cerrarSesion } = usePerfil()
+  const { esAdmin, esAdministrador, cerrarSesion } = usePerfil()
 
   // Las opciones sin ruta son pantallas que quedan para la proxima entrega
   const opciones = esAdmin
@@ -24,6 +25,9 @@ function MenuLateral() {
         { nombre: 'Revisar solicitudes', icono: documentTextOutline, ruta: '/revisar-solicitudes' },
         { nombre: 'Notificaciones', icono: notificationsOutline, ruta: '/notificaciones' },
         { nombre: 'Mi perfil', icono: personOutline, ruta: '/perfil' },
+        ...(esAdministrador
+          ? [{ nombre: 'Administración', icono: peopleOutline, ruta: '/administracion' }]
+          : []),
         { nombre: 'Cerrar sesión', icono: logOutOutline, accion: 'salir' },
       ]
     : [
