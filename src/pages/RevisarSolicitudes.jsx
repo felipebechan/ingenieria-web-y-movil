@@ -11,23 +11,28 @@ function RevisarSolicitudes() {
   const router = useIonRouter()
   const [busqueda, setBusqueda] = useState('')
   const [filtroEstado, setFiltroEstado] = useState('')
+  const [pagina, setPagina] = useState(1)
+  const [total, setTotal] = useState(0)
+  const porPagina = 10
 
   const [solicitudes, setSolicitudes] = useState([])
   const [error, setError] = useState('')
 
   const cargar = async () => {
     try {
-      setSolicitudes(await buscarSolicitudesAdmin(busqueda, filtroEstado))
+      const respuesta = await buscarSolicitudesAdmin(busqueda, filtroEstado, pagina, porPagina)
+      setSolicitudes(respuesta.datos)
+      setTotal(respuesta.total)
       setError('')
     } catch (problema) {
       setError(problema.message)
     }
   }
 
-  // cada vez que cambia el buscador o el filtro le preguntamos al backend
+  // cada vez que cambia el buscador, el filtro o la pagina le preguntamos al backend
   useEffect(() => {
     cargar()
-  }, [busqueda, filtroEstado])
+  }, [busqueda, filtroEstado, pagina])
 
   const cambiarEstado = async (id, estado) => {
     try {
@@ -37,6 +42,8 @@ function RevisarSolicitudes() {
       setError(problema.message)
     }
   }
+
+  const totalPaginas = Math.max(1, Math.ceil(total / porPagina))
 
   return (
     <AppLayout>
@@ -55,7 +62,10 @@ function RevisarSolicitudes() {
               className="filtro-input"
               placeholder="Buscar por #Folio o ciudadano..."
               value={busqueda}
-              onChange={(e) => setBusqueda(e.target.value)}
+              onChange={(e) => {
+                setBusqueda(e.target.value)
+                setPagina(1)
+              }}
             />
           </div>
 
@@ -67,7 +77,10 @@ function RevisarSolicitudes() {
               id="estado-select"
               className="filtro-input filtro-select"
               value={filtroEstado}
-              onChange={(e) => setFiltroEstado(e.target.value)}
+              onChange={(e) => {
+                setFiltroEstado(e.target.value)
+                setPagina(1)
+              }}
             >
               <option value="">Filtrar por Estado:</option>
               <option value="En revisión">En revisión</option>
@@ -86,12 +99,18 @@ function RevisarSolicitudes() {
             className="filtro-input-movil"
             placeholder="Buscar por #Folio o ciudadano..."
             value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
+            onChange={(e) => {
+              setBusqueda(e.target.value)
+              setPagina(1)
+            }}
           />
           <select
             className="filtro-input-movil filtro-select"
             value={filtroEstado}
-            onChange={(e) => setFiltroEstado(e.target.value)}
+            onChange={(e) => {
+              setFiltroEstado(e.target.value)
+              setPagina(1)
+            }}
           >
             <option value="">Filtrar por Estado:</option>
             {ESTADOS.map((estado) => (
@@ -116,63 +135,100 @@ function RevisarSolicitudes() {
               </tr>
             </thead>
             <tbody>
-              {solicitudes.map((item) => (
-                <tr key={item.id} className="fila-clickeable" onClick={() => router.push(`/solicitud/${item.id}`)}>
-                  <td className="td-folio">{item.folio}</td>
-                  <td className="td-fecha">{item.fecha}</td>
-                  <td className="td-ciudadano">{item.ciudadano}</td>
-                  <td className="td-tipo">{item.tipo}</td>
-                  <td className="td-estado">
-                    <EstadoBadge estado={item.estado} />
-                  </td>
-                  <td className="td-accion">
-                    <select
-                      className="select-estado"
-                      value={item.estado}
-                      onClick={(e) => e.stopPropagation()}
-                      onChange={(e) => cambiarEstado(item.id, e.target.value)}
-                    >
-                      {ESTADOS.map((estado) => (
-                        <option key={estado} value={estado}>{estado}</option>
-                      ))}
-                    </select>
+              {solicitudes.length === 0 ? (
+                <tr>
+                  <td colSpan="6" style={{ textAlign: 'center', padding: '32px', color: '#718096' }}>
+                    No se encontraron solicitudes
                   </td>
                 </tr>
-              ))}
+              ) : (
+                solicitudes.map((item) => (
+                  <tr key={item.id} className="fila-clickeable" onClick={() => router.push(`/solicitud/${item.id}`)}>
+                    <td className="td-folio">{item.folio}</td>
+                    <td className="td-fecha">{item.fecha}</td>
+                    <td className="td-ciudadano">{item.ciudadano}</td>
+                    <td className="td-tipo">{item.tipo}</td>
+                    <td className="td-estado">
+                      <EstadoBadge estado={item.estado} />
+                    </td>
+                    <td className="td-accion">
+                      <select
+                        className="select-estado"
+                        value={item.estado}
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => cambiarEstado(item.id, e.target.value)}
+                      >
+                        {ESTADOS.map((estado) => (
+                          <option key={estado} value={estado}>{estado}</option>
+                        ))}
+                      </select>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
 
         {/* tarjetas para el celular */}
         <div className="solicitudes-movil-contenedor">
-          {solicitudes.map((item) => (
-            <div
-              className="tarjeta-solicitud"
-              key={item.id}
-              onClick={() => router.push(`/solicitud/${item.id}`)}
-            >
-              <h3 className="tarjeta-folio-titulo">FOLIO {item.folio}</h3>
-              <p className="tarjeta-linea">
-                <span className="tarjeta-campo">Ciudadano:</span> {item.ciudadano}
-              </p>
-              <p className="tarjeta-linea">
-                <span className="tarjeta-campo">Tipo:</span> {item.tipo}
-              </p>
-              <div className="tarjeta-badge-wrapper">
-                <EstadoBadge estado={item.estado} />
-                <select
-                  className="select-estado"
-                  value={item.estado}
-                  onClick={(e) => e.stopPropagation()}
-                  onChange={(e) => cambiarEstado(item.id, e.target.value)}
-                >
-                  {ESTADOS.map((estado) => (
-                    <option key={estado} value={estado}>{estado}</option>
-                  ))}
-                </select>
+          {solicitudes.length === 0 ? (
+            <p style={{ textAlign: 'center', color: '#718096', padding: '16px' }}>
+              No se encontraron solicitudes
+            </p>
+          ) : (
+            solicitudes.map((item) => (
+              <div
+                className="tarjeta-solicitud"
+                key={item.id}
+                onClick={() => router.push(`/solicitud/${item.id}`)}
+              >
+                <h3 className="tarjeta-folio-titulo">FOLIO {item.folio}</h3>
+                <p className="tarjeta-linea">
+                  <span className="tarjeta-campo">Ciudadano:</span> {item.ciudadano}
+                </p>
+                <p className="tarjeta-linea">
+                  <span className="tarjeta-campo">Tipo:</span> {item.tipo}
+                </p>
+                <div className="tarjeta-badge-wrapper">
+                  <EstadoBadge estado={item.estado} />
+                  <select
+                    className="select-estado"
+                    value={item.estado}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e) => cambiarEstado(item.id, e.target.value)}
+                  >
+                    {ESTADOS.map((estado) => (
+                      <option key={estado} value={estado}>{estado}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
+        </div>
+
+        {/* paginacion de la bandeja */}
+        <div className="paginacion-contenedor">
+          <button
+            type="button"
+            className="boton-paginacion"
+            onClick={() => setPagina((prev) => Math.max(1, prev - 1))}
+            disabled={pagina <= 1}
+          >
+            Anterior
+          </button>
+          <span className="info-paginacion">
+            Página {pagina} de {totalPaginas}
+          </span>
+          <button
+            type="button"
+            className="boton-paginacion"
+            onClick={() => setPagina((prev) => Math.min(totalPaginas, prev + 1))}
+            disabled={pagina >= totalPaginas}
+          >
+            Siguiente
+          </button>
         </div>
       </div>
     </AppLayout>

@@ -67,9 +67,9 @@ export async function obtener(req, res, next) {
 
 export async function listarTodas(req, res, next) {
   try {
-    const { estado, busqueda } = req.query
-    const solicitudes = await listarTodasService({ estado, busqueda })
-    res.json(solicitudes)
+    const { estado, busqueda, pagina, porPagina } = req.query
+    const resultado = await listarTodasService({ estado, busqueda, pagina, porPagina })
+    res.json(resultado)
   } catch (error) {
     next(error)
   }
