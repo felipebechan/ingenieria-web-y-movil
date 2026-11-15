@@ -1,8 +1,10 @@
+import { useState, useEffect } from 'react'
 import { IonPage, IonContent, IonIcon, IonMenuButton } from '@ionic/react'
 import { personOutline, chevronDown } from 'ionicons/icons'
 import MenuLateral from './MenuLateral'
 import Campana from './Campana'
 import { usePerfil } from '../context/PerfilContext'
+import { obtenerContadorNotificaciones } from '../services/notificacionesService'
 import './AppLayout.css'
 
 // Layout de las pantallas con sesion iniciada (menu, header y footer)
@@ -10,6 +12,25 @@ function AppLayout({ children }) {
   // El rol viene de la sesion, no de la ruta
   const { esAdmin, nombre } = usePerfil()
   const nombreUsuario = nombre || (esAdmin ? 'Administrador' : 'Vecino')
+  const [cantidadNotificaciones, setCantidadNotificaciones] = useState(0)
+
+  useEffect(() => {
+    let montado = true
+    const cargarContador = async () => {
+      try {
+        const respuesta = await obtenerContadorNotificaciones()
+        if (montado && respuesta && typeof respuesta.sinLeer === 'number') {
+          setCantidadNotificaciones(respuesta.sinLeer)
+        }
+      } catch {
+        // si falla la peticion dejamos el contador en 0
+      }
+    }
+    cargarContador()
+    return () => {
+      montado = false
+    }
+  }, [])
 
   return (
     <IonPage>
@@ -27,7 +48,7 @@ function AppLayout({ children }) {
                 <>Santo Domingo:<br />Responde</>
               )}
             </p>
-            <Campana />
+            <Campana cantidad={cantidadNotificaciones} />
           </div>
           <div className="app-ola ola-movil-app"></div>
 
@@ -54,7 +75,7 @@ function AppLayout({ children }) {
                 <div className="app-ola"></div>
 
                 <div className="header-acciones">
-                  <Campana />
+                  <Campana cantidad={cantidadNotificaciones} />
                   
                   <div className="usuario">
                     <div className="avatar">

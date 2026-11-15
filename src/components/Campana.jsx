@@ -1,10 +1,16 @@
-import { IonIcon } from '@ionic/react'
+import { IonIcon, useIonRouter } from '@ionic/react'
 import { notificationsOutline } from 'ionicons/icons'
 import './Campana.css'
 
 function Campana({ cantidad }) {
+  const router = useIonRouter()
+
   return (
-    <button className="campana" title="Las notificaciones llegan en la próxima entrega">
+    <button
+      className="campana"
+      title="Notificaciones"
+      onClick={() => router.push('/notificaciones')}
+    >
       <IonIcon icon={notificationsOutline} />
       {cantidad > 0 && <span className="badge-chico">{cantidad}</span>}
     </button>
