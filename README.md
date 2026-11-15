@@ -49,7 +49,7 @@ La versión publicada muestra la interfaz, pero para usarla con datos reales hay
    * [Servicio externo: OpenStreetMap](#servicio-externo-openstreetmap)
    * [Modelo de la base de datos](#modelo-de-la-base-de-datos)
 9. [Estructura del proyecto](#9-estructura-del-proyecto)
-10. [Estado de la entrega (EP2)](#10-estado-de-la-entrega-ep2)
+10. [Estado de la entrega (Entrega Final)](#10-estado-de-la-entrega-entrega-final)
 11. [Cosas por hacer](#11-cosas-por-hacer)
 
 ---
@@ -206,9 +206,9 @@ Cada requerimiento describe una sola acción, con la forma *el sistema deberá p
 | **RF-09** | El sistema deberá registrar cada cambio de estado con su fecha y su comentario, conformando el historial de la solicitud. | Funcionario | Implementado en EP2 |
 | **RF-10** | El sistema deberá permitir al funcionario derivar una solicitud a la unidad técnica correspondiente (Obras, Tránsito, Aseo y Ornato o Seguridad Ciudadana). | Funcionario | Implementado en EP2 |
 | **RF-11** | El sistema deberá permitir al funcionario redactar y enviar la respuesta formal dirigida al ciudadano. | Funcionario | Implementado en EP2 |
-| **RF-12** | El sistema deberá advertir al funcionario cuando una solicitud esté próxima a vencer el plazo de respuesta comprometido. | Funcionario | Planificado para la Entrega Final |
-| **RF-13** | El sistema deberá permitir al administrador asignar el rol de funcionario a una cuenta existente. | Administrador | Planificado para la Entrega Final |
-| **RF-14** | El sistema deberá permitir al administrador consultar el tiempo promedio de respuesta de las solicitudes cerradas. | Administrador | Planificado para la Entrega Final |
+| **RF-12** | El sistema deberá advertir al funcionario cuando una solicitud esté próxima a vencer el plazo de respuesta comprometido. | Funcionario | Implementado en la Entrega Final |
+| **RF-13** | El sistema deberá permitir al administrador asignar el rol de funcionario a una cuenta existente. | Administrador | Implementado en la Entrega Final |
+| **RF-14** | El sistema deberá permitir al administrador consultar el tiempo promedio de respuesta de las solicitudes cerradas. | Administrador | Implementado en la Entrega Final |
 
 ### Funcionalidades Transversales
 Las siguientes funcionalidades son necesarias para el funcionamiento general de la plataforma, pero complementan los requerimientos funcionales principales del dominio:
@@ -234,7 +234,7 @@ Los requerimientos no funcionales establecen las condiciones de calidad, rendimi
 #### Seguridad y Privacidad
 * **RNF-SEG-01 — Protección de contraseñas:** Las contraseñas deberán almacenarse con hash bcrypt de al menos 10 rondas y nunca en texto plano. La contraseña no deberá aparecer en ninguna respuesta de la API ni en los registros del servidor.
 * **RNF-SEG-02 — Autenticación y control de acceso por roles:** Toda ruta protegida deberá exigir un token JWT válido y responder 401 si falta o venció, y 403 si el rol no corresponde. Un ciudadano no deberá poder leer una solicitud de otro aunque conozca su identificador.
-* **RNF-SEG-03 — Privacidad de datos personales:** El RUT, el correo y el teléfono del ciudadano solo deberán ser visibles para su propio dueño y para el funcionario que atiende su solicitud, conforme a la [Ley Nº 19.628](https://www.bcn.cl/leychile/navegar?idLey=19628). Ningún listado ni respuesta de la API deberá exponer datos de contacto de terceros.
+* **RNF-SEG-03 — Privacidad de datos personales:** El RUT, el correo y el teléfono del ciudadano solo deberán ser visibles para su propio dueño, para el funcionario que atiende su solicitud y para el administrador que gestiona las cuentas, conforme a la [Ley Nº 19.628](https://www.bcn.cl/leychile/navegar?idLey=19628). Ningún listado ni respuesta de la API deberá exponer datos de contacto de terceros.
 
 #### Rendimiento, Compatibilidad y Escalabilidad
 * **RNF-01: Tiempo de respuesta:** El 95% de las consultas y guardados deberá responder en menos de 2 segundos, medido con la base de datos local y una conexión de al menos 5 Mbps.
@@ -263,6 +263,9 @@ La aplicación considera rutas públicas y rutas protegidas según el perfil aut
 | `/ingreso-reclamo` | Nueva solicitud | Implementada en EP1 | Formulario para registrar una solicitud o reclamo con tipo, dirección y descripción. |
 | `/mis-solicitudes` | Mis Solicitudes | Implementada en EP1 | Listado completo de trámites del vecino, con folio, fecha, tipo, descripción y estado. |
 | `/solicitud/:id` | Detalle de la solicitud | Implementada en EP1 | Muestra la información, la descripción, la evidencia y el historial de seguimiento. |
+| `/notificaciones` | Notificaciones | Implementada en la Entrega Final | Movimientos de las solicitudes del usuario, con las no leídas destacadas. |
+| `/perfil` | Mi perfil | Implementada en la Entrega Final | Datos de la cuenta y cuántas solicitudes lleva ingresadas. |
+| `/ayuda` | Ayuda | Implementada en la Entrega Final | Preguntas frecuentes y qué significa cada estado. |
 | `/perfil` | Perfil de Usuario | Planificada | Consulta y actualización de datos de contacto y preferencias de notificación. |
 
 #### Rutas protegidas del Funcionario
@@ -271,6 +274,7 @@ La aplicación considera rutas públicas y rutas protegidas según el perfil aut
 | `/revisar-solicitudes` | Bandeja de solicitudes | Implementada en EP1 | Listado de requerimientos con buscador por folio o ciudadano y filtro por estado. |
 | `/derivar/:id` | Derivar solicitud | Implementada en EP2 | Permite asignar la solicitud a una unidad municipal y dejar una observación interna (**RF-10**). |
 | `/responder/:id` | Responder solicitud | Implementada en EP2 | Muestra el historial y permite registrar la respuesta formal al ciudadano (**RF-11**). |
+| `/administracion` | Administración | Implementada en la Entrega Final | Cuentas de la plataforma y tiempos de respuesta (**RF-13** y **RF-14**). Solo para el rol administrador. |
 | `/revisar-solicitudes/:id` | Adjuntar informes técnicos | Planificada | Carga de informes y archivos de respaldo de la unidad técnica. |
 
 #### Rutas protegidas del Administrador
@@ -591,6 +595,7 @@ El `schema.sql` deja cargadas tres cuentas de prueba, todas con la contraseña `
 | `carlos@correo.cl` | Ciudadano | Tiene tres solicitudes ingresadas |
 | `ana@correo.cl` | Ciudadano | Tiene dos solicitudes, una resuelta y una rechazada |
 | `luis@muni.cl` | Funcionario | Entra al panel de gestión y ve la bandeja completa |
+| `marta@muni.cl` | Administrador | Ve además la pantalla de administración, con las cuentas y los tiempos de respuesta |
 
 También se puede crear una cuenta desde el registro, pero todas las cuentas nuevas entran como ciudadano. Para convertir una en funcionario:
 
@@ -760,15 +765,15 @@ backend/
 
 ---
 
-## 10. Estado de la entrega (EP2)
+## 10. Estado de la entrega (Entrega Final)
 
 La aplicación está publicada en **https://felipebechan.github.io/ingenieria-web-y-movil/login**. Esa versión muestra las pantallas, pero para usarla de verdad hay que levantar el backend en el computador, porque GitHub Pages solo sirve archivos estáticos y no puede alojar el servidor ni la base de datos.
 
 ### Implementado en esta entrega
 * **Servidor** en Node.js con Express, separado en rutas, controladores, servicios y middlewares.
 * **Base de datos PostgreSQL** con tres tablas (`usuarios`, `solicitudes`, `historial_estados`), claves primarias y foráneas, restricciones `CHECK` y `UNIQUE`, y el archivo `schema.sql` que la reproduce completa con datos de prueba.
-* **API REST** con los diez endpoints de la tabla de `backend/postman/endpoints.md`, cubriendo GET, POST, PATCH y DELETE, con códigos HTTP y respuestas JSON consistentes.
-* **Autenticación con JWT**: registro, inicio de sesión, token con expiración, rutas protegidas y diferenciación entre ciudadano y funcionario.
+* **API REST** con los endpoints de la tabla de `backend/postman/endpoints.md`, cubriendo GET, POST, PATCH y DELETE, con códigos HTTP y respuestas JSON consistentes.
+* **Autenticación con JWT**: registro, inicio de sesión, token con expiración, rutas protegidas y tres roles: ciudadano, funcionario y administrador.
 * **Seguridad**: contraseñas con bcrypt, validación de todos los datos que entran, consultas parametrizadas y verificación de que un vecino solo pueda ver o modificar lo suyo.
 * **Integración con el frontend**: las pantallas consumen la API con `fetch`, guardan el token y muestran los errores que devuelve el servidor.
 * **Gestión completa del funcionario**: derivar una solicitud a la unidad municipal correspondiente (**RF-10**) y registrar la respuesta formal al ciudadano (**RF-11**), con las dos acciones guardadas en el historial y visibles para el vecino en el detalle de su solicitud.
@@ -778,11 +783,26 @@ La aplicación está publicada en **https://felipebechan.github.io/ingenieria-we
 * **Seguridad**: las entradas de texto se limpian contra XSS y los riesgos cubiertos están documentados en `backend/SEGURIDAD.md`.
 * **Pruebas**: colección de Postman con 18 requests, documentación de los endpoints y capturas de las respuestas.
 
-### Planificado para la Entrega Final
-* Aviso de plazo por vencer en la bandeja (**RF-12**).
-* Vistas de administrador: asignar roles y ver tiempos de respuesta (**RF-13** y **RF-14**).
-* Pantallas de notificaciones, perfil y ayuda, que en el menú aparecen atenuadas.
-* Carga de fotografías y geolocalización en el formulario.
+* **Semáforo de plazos** (**RF-12**): la bandeja avisa cuántos días hábiles le quedan a cada solicitud del plazo comprometido, en verde, amarillo o rojo.
+* **Administración** (**RF-13** y **RF-14**): el administrador asigna el rol de funcionario a una cuenta y ve el tiempo promedio que toma cerrar una solicitud.
+* **Mi perfil y Ayuda**: eran las dos opciones que quedaban atenuadas en el menú.
+* **Almacenamiento local**: el reclamo a medio escribir se guarda en el navegador, así no se pierde si el vecino cierra la pestaña.
+
+Los catorce requerimientos funcionales quedaron implementados. Lo que sigue fuera del alcance está en la sección 11.
+
+### Pantallas nuevas de esta entrega
+
+| Notificaciones | Administración |
+| :--- | :--- |
+| ![Pantalla de notificaciones](docs/capturas/notificaciones.png) | ![Pantalla de administración](docs/capturas/administracion.png) |
+
+| Mi perfil | Ayuda |
+| :--- | :--- |
+| ![Mi perfil](docs/capturas/perfil.png) | ![Ayuda](docs/capturas/ayuda.png) |
+
+El semáforo de plazos en la bandeja del funcionario:
+
+![Bandeja con el semáforo de plazos](docs/capturas/bandeja-plazos.png)
 
 ### Correcciones incorporadas desde la entrega anterior
 
@@ -832,19 +852,21 @@ Organizado según los criterios de la pauta:
 - [x] Derivar una solicitud a la unidad técnica correspondiente (**RF-10**).
 - [x] Redactar y enviar la respuesta formal al ciudadano (**RF-11**).
 - [x] Pantalla de notificaciones, con su contador real en la campana.
-- [ ] Aviso de plazo por vencer en la bandeja (**RF-12**).
-- [ ] Vistas de administrador: asignar el rol de funcionario y ver tiempos de respuesta (**RF-13** y **RF-14**).
-- [ ] Mi perfil y Ayuda, que hoy aparecen atenuadas en el menú.
+- [x] Aviso de plazo por vencer en la bandeja (**RF-12**).
+- [x] Vistas de administrador: asignar roles y ver tiempos de respuesta (**RF-13** y **RF-14**).
+- [x] Mi perfil y Ayuda, que antes aparecían atenuadas en el menú.
+- [x] Almacenamiento local: el reclamo a medio escribir se guarda en el navegador.
 - [ ] Consulta pública por folio, sin necesidad de iniciar sesión.
 
 **EF2 — UI/UX y rendimiento**
 - [x] Subir fotografías y marcar la ubicación con el GPS en el formulario de reclamo.
-- [ ] Revisar la aplicación en tamaños de tablet; hoy está probada en escritorio y móvil.
+- [x] Revisado en tamaños de tablet, vertical y horizontal, sin desbordes.
 - [ ] Conectar en el prototipo de Figma los flujos hacia las pantallas de derivación y respuesta.
 
 **EF3 — Seguridad avanzada**
 - [x] Sanitización de las entradas contra XSS, documentada en `backend/SEGURIDAD.md`.
-- [ ] Revisar la configuración de CORS para el entorno de despliegue, hoy apunta al servidor de desarrollo.
+- [x] CORS limitado al origen configurado y límite al tamaño del cuerpo.
+- [ ] Límite de intentos de inicio de sesión.
 
 **EF4 — Consultas y eficiencia**
 - [x] Bandeja paginada, con tope de 50 por página.
