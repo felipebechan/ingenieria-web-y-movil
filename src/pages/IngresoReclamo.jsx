@@ -18,6 +18,10 @@ const TIPOS = {
   bache: 'Vialidad'
 };
 
+const UN_MB = 1024 * 1024;
+// mismo limite que revisa el backend
+const MAXIMO_BASE64 = 1000000;
+
 const IngresoReclamo = () => {
   const router = useIonRouter();
   const [formulario, setFormulario] = useState({
@@ -33,6 +37,13 @@ const IngresoReclamo = () => {
   const [sugerencias, setSugerencias] = useState([]);
   const [buscando, setBuscando] = useState(false);
   const [direccionElegida, setDireccionElegida] = useState(false);
+
+  // aparte del formulario para que la respuesta del GPS no pise lo que se escribio mientras tanto
+  const [foto, setFoto] = useState('');
+  const [errorFoto, setErrorFoto] = useState('');
+  const [ubicacion, setUbicacion] = useState(null);
+  const [obteniendoUbicacion, setObteniendoUbicacion] = useState(false);
+  const [errorUbicacion, setErrorUbicacion] = useState('');
 
   // esperamos a que deje de escribir antes de consultar, para no mandar
   // una peticion por cada letra
@@ -71,6 +82,72 @@ const IngresoReclamo = () => {
     });
   };
 
+  const elegirFoto = (e) => {
+    const archivo = e.target.files[0];
+    // limpiamos el input para poder volver a elegir la misma imagen
+    e.target.value = '';
+    if (!archivo) return;
+
+    if (archivo.size > UN_MB) {
+      setErrorFoto('La imagen pesa más de 1 MB. Elige una más liviana.');
+      return;
+    }
+
+    const lector = new FileReader();
+    lector.onload = () => {
+      // en base64 la imagen crece, asi que revisamos el largo final
+      if (lector.result.length > MAXIMO_BASE64) {
+        setErrorFoto('La imagen es muy grande. Elige una más liviana.');
+        return;
+      }
+      setFoto(lector.result);
+      setErrorFoto('');
+    };
+    lector.onerror = () => {
+      setErrorFoto('No se pudo leer la imagen. Intenta con otra.');
+    };
+    lector.readAsDataURL(archivo);
+  };
+
+  const quitarFoto = () => {
+    setFoto('');
+    setErrorFoto('');
+  };
+
+  const usarMiUbicacion = () => {
+    if (!navigator.geolocation) {
+      setErrorUbicacion('Tu navegador no permite obtener la ubicación. Puedes escribir la dirección a mano.');
+      return;
+    }
+
+    setObteniendoUbicacion(true);
+    setErrorUbicacion('');
+
+    navigator.geolocation.getCurrentPosition(
+      (posicion) => {
+        setUbicacion({
+          latitud: Number(posicion.coords.latitude.toFixed(6)),
+          longitud: Number(posicion.coords.longitude.toFixed(6))
+        });
+        setObteniendoUbicacion(false);
+      },
+      (problema) => {
+        if (problema.code === problema.PERMISSION_DENIED) {
+          setErrorUbicacion('No diste permiso para usar tu ubicación. Puedes escribir la dirección a mano.');
+        } else {
+          setErrorUbicacion('No pudimos obtener tu ubicación. Puedes escribir la dirección a mano.');
+        }
+        setObteniendoUbicacion(false);
+      },
+      { enableHighAccuracy: true, timeout: 15000 }
+    );
+  };
+
+  const borrarUbicacion = () => {
+    setUbicacion(null);
+    setErrorUbicacion('');
+  };
+
   const enviarReclamo = async () => {
     if (!formulario.tipo || !formulario.direccion || !formulario.descripcion || !formulario.terminos) {
       presentToast({
@@ -84,7 +161,10 @@ const IngresoReclamo = () => {
     try {
       const solicitud = await crearSolicitud({
         ...formulario,
-        tipo: TIPOS[formulario.tipo] || formulario.tipo
+        tipo: TIPOS[formulario.tipo] || formulario.tipo,
+        foto: foto || null,
+        latitud: ubicacion ? ubicacion.latitud : null,
+        longitud: ubicacion ? ubicacion.longitud : null
       });
 
       presentToast({
@@ -95,6 +175,8 @@ const IngresoReclamo = () => {
       });
 
       setFormulario({ tipo: '', direccion: '', descripcion: '', terminos: false });
+      setFoto('');
+      setUbicacion(null);
 
       // despues de enviar lo mandamos a ver el listado de sus solicitudes
       router.push('/mis-solicitudes');
@@ -158,6 +240,50 @@ const IngresoReclamo = () => {
                 ))}
               </ul>
             )}
+
+            <div className="bloque-ubicacion">
+              {ubicacion ? (
+                <div className="ubicacion-tomada">
+                  <span>
+                    Ubicación: {ubicacion.latitud}, {ubicacion.longitud}
+                  </span>
+                  <button type="button" className="boton-secundario" onClick={borrarUbicacion}>
+                    Borrar ubicación
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  className="boton-secundario"
+                  onClick={usarMiUbicacion}
+                  disabled={obteniendoUbicacion}
+                >
+                  {obteniendoUbicacion ? 'Obteniendo...' : 'Usar mi ubicación'}
+                </button>
+              )}
+              {errorUbicacion && <p className="mensaje-error">{errorUbicacion}</p>}
+            </div>
+          </div>
+
+          <div className="campo-contenedor">
+            <label className="etiqueta-campo" htmlFor="foto-reclamo">Foto (opcional)</label>
+            {foto ? (
+              <div className="vista-previa">
+                <img src={foto} alt="Vista previa de la foto" />
+                <button type="button" className="boton-secundario" onClick={quitarFoto}>
+                  Quitar foto
+                </button>
+              </div>
+            ) : (
+              <input
+                id="foto-reclamo"
+                type="file"
+                accept="image/*"
+                className="input-foto"
+                onChange={elegirFoto}
+              />
+            )}
+            {errorFoto && <p className="mensaje-error">{errorFoto}</p>}
           </div>
 
           <div className="campo-contenedor">

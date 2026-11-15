@@ -144,3 +144,75 @@
 .sugerencias button:hover {
   background: #f6f8fc;
 }
+
+/* boton de GPS y foto adjunta */
+.bloque-ubicacion {
+  margin-top: 10px;
+}
+
+.boton-secundario {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid #1a56a8;
+  border-radius: 6px;
+  background: white;
+  color: #1a56a8;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.boton-secundario:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.ubicacion-tomada {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #333842;
+}
+
+.input-foto {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid #8e8e8e;
+  border-radius: 6px;
+  background: white;
+  font-family: inherit;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.vista-previa {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.vista-previa img {
+  max-width: 100%;
+  max-height: 180px;
+  border-radius: 6px;
+  border: 1px solid #d3dae6;
+  object-fit: contain;
+}
+
+.mensaje-error {
+  margin: 6px 2px 0;
+  font-size: 13px;
+  color: #d93025;
+}
+
+@media (max-width: 768px) {
+  .boton-secundario {
+    width: 100%;
+  }
+}

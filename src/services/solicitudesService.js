@@ -18,10 +18,10 @@ function acomodar(solicitud) {
   }
 }
 
-export async function crearSolicitud({ tipo, descripcion, direccion }) {
+export async function crearSolicitud({ tipo, descripcion, direccion, foto, latitud, longitud }) {
   const creada = await pedir('/solicitudes', {
     method: 'POST',
-    body: JSON.stringify({ tipo, descripcion, direccion })
+    body: JSON.stringify({ tipo, descripcion, direccion, foto, latitud, longitud })
   })
   return acomodar(creada)
 }
