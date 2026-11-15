@@ -1,4 +1,5 @@
 import { consultar } from '../config/db.js'
+import { calcularPlazo } from '../plazo.js'
 
 function armarFolio(id) {
   const anio = new Date().getFullYear()
@@ -37,7 +38,12 @@ export async function buscarPorId(id) {
      WHERE s.id = $1`,
     [id]
   )
-  return rows[0]
+
+  if (!rows[0]) {
+    return undefined
+  }
+
+  return { ...rows[0], ...calcularPlazo(rows[0]) }
 }
 
 export async function listarTodas(filtros = {}) {
@@ -84,8 +90,11 @@ export async function listarTodas(filtros = {}) {
 
   const { rows: datos } = await consultar(sql, valoresPaginacion)
 
+  // a cada solicitud abierta se le calcula cuanto le queda del plazo
+  const conPlazo = datos.map((solicitud) => ({ ...solicitud, ...calcularPlazo(solicitud) }))
+
   return {
-    datos,
+    datos: conPlazo,
     total,
     pagina: numPagina,
     porPagina: limite
