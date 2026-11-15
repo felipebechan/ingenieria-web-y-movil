@@ -1,9 +1,13 @@
 // Todo lo que llega del frontend se valida aca antes de tocar la base de datos.
 
-// Limpia espacios en los extremos y neutraliza etiquetas HTML para evitar XSS
+// Limpia espacios en los extremos y saca las etiquetas HTML, para que no se
+// pueda inyectar nada en las pantallas que despues muestran este texto.
+// Se borran las etiquetas en vez de convertirlas en &lt; y &gt;, porque React
+// ya escapa lo que imprime: si ademas lo escribieramos escapado, el vecino
+// veria "&lt;" en la pantalla en lugar del simbolo que escribio.
 export function limpiarTexto(valor) {
   if (typeof valor !== 'string') return valor
-  return valor.trim().replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  return valor.trim().replace(/<\s*\/?\s*[a-zA-Z][^>]*>/g, '')
 }
 
 const TIPOS_SOLICITUD = ['Alumbrado', 'Aseo y limpieza', 'Vialidad']
