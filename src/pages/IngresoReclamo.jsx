@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import React, { useEffect, useState } from 'react'; 
 import { 
   IonItem, IonLabel, IonInput, IonTextarea, 
   IonSelect, IonSelectOption, IonButton, IonCheckbox,
@@ -7,7 +7,7 @@ import {
 import { useIonRouter } from '@ionic/react';
 import AppLayout from '../components/AppLayout';
 import TerminosLink from '../components/TerminosLink';
-import { crearSolicitud } from '../services/solicitudesService';
+import { crearSolicitud, buscarDirecciones } from '../services/solicitudesService';
 
 import './IngresoReclamo.css';
 
@@ -27,7 +27,42 @@ const IngresoReclamo = () => {
     terminos: false
   });
 
-  const [presentToast] = useIonToast(); 
+  const [presentToast] = useIonToast();
+
+  // sugerencias de direcciones que vienen de OpenStreetMap
+  const [sugerencias, setSugerencias] = useState([]);
+  const [buscando, setBuscando] = useState(false);
+  const [direccionElegida, setDireccionElegida] = useState(false);
+
+  // esperamos a que deje de escribir antes de consultar, para no mandar
+  // una peticion por cada letra
+  useEffect(() => {
+    if (direccionElegida || formulario.direccion.trim().length < 4) {
+      setSugerencias([]);
+      return;
+    }
+
+    const espera = setTimeout(async () => {
+      setBuscando(true);
+      try {
+        const { resultados } = await buscarDirecciones(formulario.direccion);
+        setSugerencias(resultados);
+      } catch {
+        // si falla la busqueda no molestamos: igual puede escribirla a mano
+        setSugerencias([]);
+      } finally {
+        setBuscando(false);
+      }
+    }, 600);
+
+    return () => clearTimeout(espera);
+  }, [formulario.direccion, direccionElegida]);
+
+  const elegirDireccion = (direccion) => {
+    manejarCambio('direccion', direccion);
+    setDireccionElegida(true);
+    setSugerencias([]);
+  };
 
   const manejarCambio = (campo, valor) => {
     setFormulario({
@@ -103,9 +138,26 @@ const IngresoReclamo = () => {
               <IonInput 
                 placeholder="Av. Arturo Phillips 158" 
                 value={formulario.direccion}
-                onIonInput={(e) => manejarCambio('direccion', e.detail.value)}
+                onIonInput={(e) => {
+                  setDireccionElegida(false);
+                  manejarCambio('direccion', e.detail.value);
+                }}
               />
             </IonItem>
+
+            {buscando && <p className="ayuda-direccion">Buscando direcciones...</p>}
+
+            {sugerencias.length > 0 && (
+              <ul className="sugerencias">
+                {sugerencias.map((lugar) => (
+                  <li key={lugar.direccion}>
+                    <button type="button" onClick={() => elegirDireccion(lugar.direccion)}>
+                      {lugar.direccion}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div className="campo-contenedor">

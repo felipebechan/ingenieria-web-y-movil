@@ -89,3 +89,9 @@ export async function responderSolicitud(id, respuesta) {
   })
   return acomodar(solicitud)
 }
+
+// Busca direcciones en OpenStreetMap a traves de nuestro backend
+export async function buscarDirecciones(texto) {
+  const filtros = new URLSearchParams({ texto })
+  return pedir(`/direcciones?${filtros.toString()}`)
+}

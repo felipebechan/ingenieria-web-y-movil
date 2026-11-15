@@ -107,3 +107,40 @@
     justify-content: center;
   }
 }
+/* sugerencias de direcciones que entrega OpenStreetMap */
+.ayuda-direccion {
+  margin: 6px 2px 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.sugerencias {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  border: 1px solid #d3dae6;
+  border-radius: 8px;
+  background: white;
+  overflow: hidden;
+}
+
+.sugerencias li + li {
+  border-top: 1px solid #eef1f6;
+}
+
+.sugerencias button {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: 13px;
+  color: #333842;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sugerencias button:hover {
+  background: #f6f8fc;
+}
