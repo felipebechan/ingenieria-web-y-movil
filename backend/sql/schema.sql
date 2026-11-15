@@ -29,6 +29,10 @@ CREATE TABLE solicitudes (
   -- unidad y respuesta quedan nulas hasta que el funcionario deriva y responde
   unidad VARCHAR(60),
   respuesta TEXT,
+  -- foto en base64 y coordenadas del GPS, son opcionales
+  foto TEXT,
+  latitud NUMERIC(9,6),
+  longitud NUMERIC(9,6),
   creada_en TIMESTAMP NOT NULL DEFAULT NOW(),
   CONSTRAINT estado_valido CHECK (estado IN ('En revisión', 'En proceso', 'Resuelto', 'Rechazado')),
   CONSTRAINT unidad_valida CHECK (unidad IS NULL OR unidad IN ('Dirección de Obras Municipales', 'Aseo y Ornato', 'Tránsito', 'Seguridad Ciudadana'))
