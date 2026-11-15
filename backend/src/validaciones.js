@@ -102,6 +102,35 @@ export function validarSolicitud(datos = {}) {
     errores.push('La descripción debe tener entre 10 y 500 caracteres')
   }
 
+  if (datos.foto) {
+    if (typeof datos.foto !== 'string' || !datos.foto.startsWith('data:image/')) {
+      errores.push('La foto debe ser una imagen')
+    } else if (datos.foto.length > 1000000) {
+      errores.push('La foto es muy grande, elige una imagen más liviana')
+    }
+  }
+
+  const tieneLatitud = datos.latitud !== undefined && datos.latitud !== null
+  const tieneLongitud = datos.longitud !== undefined && datos.longitud !== null
+
+  if (tieneLatitud || tieneLongitud) {
+    const latitud = Number(datos.latitud)
+    const longitud = Number(datos.longitud)
+
+    if (!tieneLatitud || !tieneLongitud) {
+      errores.push('La ubicación debe tener latitud y longitud')
+    } else if (datos.latitud === '' || datos.longitud === '' || isNaN(latitud) || isNaN(longitud)) {
+      errores.push('La latitud y la longitud deben ser números')
+    } else {
+      if (latitud < -90 || latitud > 90) {
+        errores.push('La latitud debe estar entre -90 y 90')
+      }
+      if (longitud < -180 || longitud > 180) {
+        errores.push('La longitud debe estar entre -180 y 180')
+      }
+    }
+  }
+
   return errores
 }
 

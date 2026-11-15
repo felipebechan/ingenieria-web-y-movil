@@ -149,9 +149,22 @@ function DetalleSolicitud() {
 
           <div className="detalle-card">
             <h2><IonIcon icon={documentTextOutline} /> Evidencia adjunta</h2>
-            <p className="detalle-sin-evidencia">
-              Esta solicitud no tiene archivos adjuntos. La carga de imágenes queda para la siguiente entrega.
-            </p>
+            {solicitud.foto ? (
+              <img className="detalle-foto" src={solicitud.foto} alt="Foto adjunta al reclamo" />
+            ) : (
+              <p className="detalle-sin-evidencia">Esta solicitud no tiene archivos adjuntos.</p>
+            )}
+
+            {solicitud.latitud && solicitud.longitud && (
+              <a
+                className="detalle-mapa"
+                href={`https://www.openstreetmap.org/?mlat=${solicitud.latitud}&mlon=${solicitud.longitud}#map=18/${solicitud.latitud}/${solicitud.longitud}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <IonIcon icon={locationOutline} /> Ver ubicación en el mapa
+              </a>
+            )}
           </div>
         </div>
 

@@ -5,12 +5,12 @@ function armarFolio(id) {
   return `#SD-${anio}-${String(id).padStart(4, '0')}`
 }
 
-export async function crearSolicitud(usuarioId, { tipo, descripcion, direccion }) {
+export async function crearSolicitud(usuarioId, { tipo, descripcion, direccion, foto, latitud, longitud }) {
   const { rows } = await consultar(
-    `INSERT INTO solicitudes (usuario_id, tipo, descripcion, direccion)
-     VALUES ($1, $2, $3, $4)
+    `INSERT INTO solicitudes (usuario_id, tipo, descripcion, direccion, foto, latitud, longitud)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
      RETURNING id`,
-    [usuarioId, tipo, descripcion, direccion]
+    [usuarioId, tipo, descripcion, direccion, foto || null, latitud ?? null, longitud ?? null]
   )
 
   const { rows: creada } = await consultar(
