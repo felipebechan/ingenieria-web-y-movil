@@ -495,6 +495,16 @@ La bandeja permite buscar por folio o ciudadano, filtrar por estado y cambiar el
 | :--- | :--- |
 | ![Pantalla de derivación](docs/capturas/derivar-solicitud.png) | ![Pantalla de respuesta formal](docs/capturas/responder-solicitud.png) |
 
+La pantalla de notificaciones y la bandeja paginada:
+
+| Notificaciones del vecino | Bandeja con paginación |
+| :--- | :--- |
+| ![Pantalla de notificaciones](docs/capturas/notificaciones.png) | ![Bandeja paginada](docs/capturas/bandeja-paginada.png) |
+
+El formulario de reclamo, con la búsqueda de direcciones, el botón de ubicación y la carga de foto:
+
+![Formulario de reclamo completo](docs/capturas/formulario-completo.png)
+
 **Versión móvil**
 
 Las mismas vistas en pantalla de celular, con el menú desplegable y las tarjetas apiladas:
@@ -762,6 +772,10 @@ La aplicación está publicada en **https://felipebechan.github.io/ingenieria-we
 * **Seguridad**: contraseñas con bcrypt, validación de todos los datos que entran, consultas parametrizadas y verificación de que un vecino solo pueda ver o modificar lo suyo.
 * **Integración con el frontend**: las pantallas consumen la API con `fetch`, guardan el token y muestran los errores que devuelve el servidor.
 * **Gestión completa del funcionario**: derivar una solicitud a la unidad municipal correspondiente (**RF-10**) y registrar la respuesta formal al ciudadano (**RF-11**), con las dos acciones guardadas en el historial y visibles para el vecino en el detalle de su solicitud.
+* **Notificaciones**: el vecino ve en su propia pantalla los movimientos de sus solicitudes, y la campana del menú muestra cuántas tiene sin leer.
+* **Fotografías y ubicación**: al ingresar un reclamo se puede adjuntar una foto y marcar la ubicación con el GPS del teléfono, además de buscar la dirección en OpenStreetMap.
+* **Despliegue con Docker**: `docker compose up --build` levanta la base, la API y el frontend juntos.
+* **Seguridad**: las entradas de texto se limpian contra XSS y los riesgos cubiertos están documentados en `backend/SEGURIDAD.md`.
 * **Pruebas**: colección de Postman con 18 requests, documentación de los endpoints y capturas de las respuestas.
 
 ### Planificado para la Entrega Final
@@ -817,23 +831,24 @@ Organizado según los criterios de la pauta:
 **EF1 — Funcionalidades completas e integración**
 - [x] Derivar una solicitud a la unidad técnica correspondiente (**RF-10**).
 - [x] Redactar y enviar la respuesta formal al ciudadano (**RF-11**).
-- [ ] Pantalla de notificaciones, con su contador real (**RF-12** incluido: aviso de plazo por vencer).
+- [x] Pantalla de notificaciones, con su contador real en la campana.
+- [ ] Aviso de plazo por vencer en la bandeja (**RF-12**).
 - [ ] Vistas de administrador: asignar el rol de funcionario y ver tiempos de respuesta (**RF-13** y **RF-14**).
 - [ ] Mi perfil y Ayuda, que hoy aparecen atenuadas en el menú.
 - [ ] Consulta pública por folio, sin necesidad de iniciar sesión.
 
 **EF2 — UI/UX y rendimiento**
-- [ ] Subir fotografías y ubicación en el formulario de reclamo.
+- [x] Subir fotografías y marcar la ubicación con el GPS en el formulario de reclamo.
 - [ ] Revisar la aplicación en tamaños de tablet; hoy está probada en escritorio y móvil.
 - [ ] Conectar en el prototipo de Figma los flujos hacia las pantallas de derivación y respuesta.
 
 **EF3 — Seguridad avanzada**
-- [ ] Sanitizar la entrada contra XSS además de la validación que ya existe.
+- [x] Sanitización de las entradas contra XSS, documentada en `backend/SEGURIDAD.md`.
 - [ ] Revisar la configuración de CORS para el entorno de despliegue, hoy apunta al servidor de desarrollo.
 
 **EF4 — Consultas y eficiencia**
-- [ ] Paginar el listado de la bandeja cuando crezca el volumen.
-- [ ] Devolver solo las columnas necesarias en los listados.
+- [x] Bandeja paginada, con tope de 50 por página.
+- [x] Los listados devuelven solo las columnas que la pantalla usa.
 
 **EF5 — Servicio externo**
 - [x] Búsqueda de direcciones con OpenStreetMap al ingresar un reclamo.
