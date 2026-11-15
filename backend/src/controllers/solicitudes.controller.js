@@ -9,7 +9,7 @@ import {
   derivarSolicitud,
   responderSolicitud
 } from '../services/solicitudes.service.js'
-import { validarSolicitud, validarDerivacion, validarRespuesta } from '../validaciones.js'
+import { validarSolicitud, validarDerivacion, validarRespuesta, limpiarTexto } from '../validaciones.js'
 import { avisarCambioDeEstado } from '../services/correo.service.js'
 
 const ESTADOS_VALIDOS = ['En revisión', 'En proceso', 'Resuelto', 'Rechazado']
@@ -26,7 +26,16 @@ export async function crear(req, res, next) {
       return res.status(400).json({ error: errores[0] })
     }
 
-    const solicitud = await crearSolicitud(req.usuario.id, req.body)
+    const datos = {
+      ...req.body,
+      descripcion: limpiarTexto(req.body.descripcion),
+      direccion: limpiarTexto(req.body.direccion)
+    }
+    if (req.body.nombre) {
+      datos.nombre = limpiarTexto(req.body.nombre)
+    }
+
+    const solicitud = await crearSolicitud(req.usuario.id, datos)
     res.status(201).json(solicitud)
   } catch (error) {
     next(error)
@@ -90,13 +99,14 @@ export async function cambiarEstado(req, res, next) {
       })
     }
 
-    const solicitud = await cambiarEstadoService(id, estado, comentario)
+    const comentarioLimpio = comentario ? limpiarTexto(comentario) : comentario
+    const solicitud = await cambiarEstadoService(id, estado, comentarioLimpio)
     if (!solicitud) {
       return res.status(404).json({ error: 'La solicitud no existe' })
     }
 
     // el vecino se entera por correo, pero si el aviso falla igual respondemos
-    await avisarCambioDeEstado(solicitud, comentario)
+    await avisarCambioDeEstado(solicitud, comentarioLimpio)
 
     res.json(solicitud)
   } catch (error) {
@@ -177,7 +187,8 @@ export async function derivar(req, res, next) {
       return res.status(409).json({ error: 'La solicitud ya está cerrada y no se puede derivar' })
     }
 
-    const derivada = await derivarSolicitud(req.params.id, req.body.unidad, req.body.observacion)
+    const observacionLimpia = req.body.observacion ? limpiarTexto(req.body.observacion) : req.body.observacion
+    const derivada = await derivarSolicitud(req.params.id, req.body.unidad, observacionLimpia)
     await avisarCambioDeEstado(derivada, `Derivada a ${req.body.unidad}`)
 
     res.json(derivada)
@@ -206,8 +217,9 @@ export async function responder(req, res, next) {
       return res.status(409).json({ error: 'La solicitud ya fue respondida o rechazada' })
     }
 
-    const respondida = await responderSolicitud(req.params.id, req.body.respuesta)
-    await avisarCambioDeEstado(respondida, req.body.respuesta)
+    const respuestaLimpia = limpiarTexto(req.body.respuesta)
+    const respondida = await responderSolicitud(req.params.id, respuestaLimpia)
+    await avisarCambioDeEstado(respondida, respuestaLimpia)
 
     res.json(respondida)
   } catch (error) {

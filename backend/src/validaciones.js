@@ -1,5 +1,11 @@
 // Todo lo que llega del frontend se valida aca antes de tocar la base de datos.
 
+// Limpia espacios en los extremos y neutraliza etiquetas HTML para evitar XSS
+export function limpiarTexto(valor) {
+  if (typeof valor !== 'string') return valor
+  return valor.trim().replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
 const TIPOS_SOLICITUD = ['Alumbrado', 'Aseo y limpieza', 'Vialidad']
 
 const UNIDADES = [
