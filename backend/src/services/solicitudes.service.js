@@ -70,7 +70,8 @@ export async function listarTodas(filtros = {}) {
   const total = conteo[0].total
 
   const numPagina = Math.max(1, parseInt(pagina, 10) || 1)
-  const limite = Math.max(1, parseInt(porPagina, 10) || 10)
+  // con tope, si no alguien podria pedir la tabla entera en una sola consulta
+  const limite = Math.min(50, Math.max(1, parseInt(porPagina, 10) || 10))
   const offset = (numPagina - 1) * limite
 
   // solo traemos las columnas que la bandeja muestra en pantalla
