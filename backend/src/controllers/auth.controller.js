@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { crearUsuario, buscarPorCorreo, buscarPorRut, compararPassword } from '../services/usuarios.service.js'
+import { crearUsuario, buscarPorCorreo, buscarPorRut, buscarPerfil, compararPassword } from '../services/usuarios.service.js'
 import { validarRegistro, validarLogin, limpiarTexto } from '../validaciones.js'
 
 function generarToken(usuario) {
@@ -64,6 +64,16 @@ export async function iniciarSesion(req, res, next) {
   }
 }
 
-export function miPerfil(req, res) {
-  res.json({ id: req.usuario.id, nombre: req.usuario.nombre, rol: req.usuario.rol })
+export async function miPerfil(req, res, next) {
+  try {
+    // los datos salen de la base y no del token, para que esten al dia
+    const perfil = await buscarPerfil(req.usuario.id)
+    if (!perfil) {
+      return res.status(404).json({ error: 'La cuenta no existe' })
+    }
+
+    res.json(perfil)
+  } catch (error) {
+    next(error)
+  }
 }

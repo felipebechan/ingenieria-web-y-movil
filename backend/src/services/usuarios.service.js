@@ -24,6 +24,18 @@ export async function buscarPorRut(rut) {
   return rows[0]
 }
 
+// datos propios del usuario para su pantalla de perfil, sin la contraseña
+export async function buscarPerfil(id) {
+  const { rows } = await consultar(
+    `SELECT u.id, u.nombre, u.correo, u.rut, u.telefono, u.rol,
+            (SELECT COUNT(*)::int FROM solicitudes WHERE usuario_id = u.id) AS solicitudes
+     FROM usuarios u
+     WHERE u.id = $1`,
+    [id]
+  )
+  return rows[0]
+}
+
 export function compararPassword(password, hash) {
   return bcrypt.compare(password, hash)
 }
