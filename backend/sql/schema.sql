@@ -47,6 +47,7 @@ CREATE TABLE historial_estados (
   solicitud_id INTEGER NOT NULL REFERENCES solicitudes(id),
   estado VARCHAR(20) NOT NULL,
   comentario TEXT,
+  leida BOOLEAN NOT NULL DEFAULT false,
   registrado_en TIMESTAMP NOT NULL DEFAULT NOW(),
   CONSTRAINT estado_historial_valido CHECK (estado IN ('En revisión', 'En proceso', 'Resuelto', 'Rechazado'))
 );
