@@ -79,6 +79,26 @@
   line-height: 1.5;
 }
 
+.detalle-foto {
+  display: block;
+  max-width: 100%;
+  max-height: 260px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.detalle-mapa {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  margin-top: 12px;
+  color: var(--azul);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
 /* ---------- historial ---------- */
 .historial h2 {
   justify-content: center;
