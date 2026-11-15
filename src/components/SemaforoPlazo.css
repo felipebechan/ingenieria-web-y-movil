@@ -1,0 +1,33 @@
+.plazo {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.plazo-verde {
+  background: #e3f4e8;
+  color: #1e7a3c;
+}
+
+.plazo-amarillo {
+  background: #fdf3d6;
+  color: #8a6400;
+}
+
+.plazo-rojo {
+  background: #fde3e1;
+  color: #b3261e;
+}
+
+.plazo-vencido {
+  background: #b3261e;
+  color: white;
+}
+
+.plazo-cerrado {
+  color: #9aa3b2;
+  font-size: 13px;
+}

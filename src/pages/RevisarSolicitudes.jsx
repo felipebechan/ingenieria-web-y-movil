@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useIonRouter } from '@ionic/react'
 import AppLayout from '../components/AppLayout'
 import EstadoBadge from '../components/EstadoBadge'
+import SemaforoPlazo from '../components/SemaforoPlazo'
 import { buscarSolicitudesAdmin, cambiarEstadoSolicitud } from '../services/solicitudesService'
 import './RevisarSolicitudes.css'
 
@@ -131,6 +132,7 @@ function RevisarSolicitudes() {
                 <th>Ciudadano</th>
                 <th>Tipo</th>
                 <th className="th-estado">Estado</th>
+                <th className="th-plazo">Plazo</th>
                 <th className="th-accion"></th>
               </tr>
             </thead>
@@ -150,6 +152,9 @@ function RevisarSolicitudes() {
                     <td className="td-tipo">{item.tipo}</td>
                     <td className="td-estado">
                       <EstadoBadge estado={item.estado} />
+                    </td>
+                    <td className="td-plazo">
+                      <SemaforoPlazo dias={item.diasRestantes} color={item.semaforo} />
                     </td>
                     <td className="td-accion">
                       <select
@@ -189,6 +194,10 @@ function RevisarSolicitudes() {
                 </p>
                 <p className="tarjeta-linea">
                   <span className="tarjeta-campo">Tipo:</span> {item.tipo}
+                </p>
+                <p className="tarjeta-linea">
+                  <span className="tarjeta-campo">Plazo:</span>{' '}
+                  <SemaforoPlazo dias={item.diasRestantes} color={item.semaforo} />
                 </p>
                 <div className="tarjeta-badge-wrapper">
                   <EstadoBadge estado={item.estado} />
