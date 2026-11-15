@@ -16,9 +16,17 @@ export function verificarToken(req, res, next) {
   }
 }
 
+// el administrador tambien entra a las pantallas del funcionario
 export function soloFuncionario(req, res, next) {
-  if (req.usuario.rol !== 'funcionario') {
+  if (req.usuario.rol !== 'funcionario' && req.usuario.rol !== 'administrador') {
     return res.status(403).json({ error: 'No tienes permiso para esta operación' })
+  }
+  next()
+}
+
+export function soloAdministrador(req, res, next) {
+  if (req.usuario.rol !== 'administrador') {
+    return res.status(403).json({ error: 'Esta operación es solo para administradores' })
   }
   next()
 }

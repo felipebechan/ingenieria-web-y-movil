@@ -15,7 +15,7 @@ CREATE TABLE usuarios (
   password_hash VARCHAR(100) NOT NULL,
   rol VARCHAR(20) NOT NULL DEFAULT 'ciudadano',
   creado_en TIMESTAMP NOT NULL DEFAULT NOW(),
-  CONSTRAINT rol_valido CHECK (rol IN ('ciudadano', 'funcionario'))
+  CONSTRAINT rol_valido CHECK (rol IN ('ciudadano', 'funcionario', 'administrador'))
 );
 
 CREATE TABLE solicitudes (
@@ -65,7 +65,8 @@ CREATE INDEX idx_historial_solicitud ON historial_estados(solicitud_id);
 INSERT INTO usuarios (nombre, correo, rut, password_hash, rol) VALUES
 ('Carlos Ciudadano', 'carlos@correo.cl', '11.111.111-1', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'ciudadano'),
 ('Ana Vecina', 'ana@correo.cl', '22.222.222-2', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'ciudadano'),
-('Luis Funcionario', 'luis@muni.cl', '33.333.333-3', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'funcionario');
+('Luis Funcionario', 'luis@muni.cl', '33.333.333-3', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'funcionario'),
+('Marta Administradora', 'marta@muni.cl', '44.444.444-2', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'administrador');
 
 -- El folio va escrito aca porque el backend solo lo arma cuando la solicitud entra por la API.
 -- Las fechas van relativas al dia en que se carga el archivo, para que el semaforo

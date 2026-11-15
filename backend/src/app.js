@@ -4,6 +4,7 @@ import authRoutes from './routes/auth.routes.js'
 import solicitudesRoutes from './routes/solicitudes.routes.js'
 import direccionesRoutes from './routes/direcciones.routes.js'
 import notificacionesRoutes from './routes/notificaciones.routes.js'
+import administracionRoutes from './routes/administracion.routes.js'
 import { manejarErrores, noEncontrado } from './middlewares/errores.middleware.js'
 
 const app = express()
@@ -20,6 +21,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/solicitudes', solicitudesRoutes)
 app.use('/api/direcciones', direccionesRoutes)
 app.use('/api/notificaciones', notificacionesRoutes)
+app.use('/api/admin', administracionRoutes)
 
 app.use(noEncontrado)
 app.use(manejarErrores)
