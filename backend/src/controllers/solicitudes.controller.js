@@ -10,6 +10,7 @@ import {
   responderSolicitud
 } from '../services/solicitudes.service.js'
 import { validarSolicitud, validarDerivacion, validarRespuesta } from '../validaciones.js'
+import { avisarCambioDeEstado } from '../services/correo.service.js'
 
 const ESTADOS_VALIDOS = ['En revisión', 'En proceso', 'Resuelto', 'Rechazado']
 
@@ -94,6 +95,9 @@ export async function cambiarEstado(req, res, next) {
       return res.status(404).json({ error: 'La solicitud no existe' })
     }
 
+    // el vecino se entera por correo, pero si el aviso falla igual respondemos
+    await avisarCambioDeEstado(solicitud, comentario)
+
     res.json(solicitud)
   } catch (error) {
     next(error)
@@ -173,7 +177,10 @@ export async function derivar(req, res, next) {
       return res.status(409).json({ error: 'La solicitud ya está cerrada y no se puede derivar' })
     }
 
-    res.json(await derivarSolicitud(req.params.id, req.body.unidad, req.body.observacion))
+    const derivada = await derivarSolicitud(req.params.id, req.body.unidad, req.body.observacion)
+    await avisarCambioDeEstado(derivada, `Derivada a ${req.body.unidad}`)
+
+    res.json(derivada)
   } catch (error) {
     next(error)
   }
@@ -199,7 +206,10 @@ export async function responder(req, res, next) {
       return res.status(409).json({ error: 'La solicitud ya fue respondida o rechazada' })
     }
 
-    res.json(await responderSolicitud(req.params.id, req.body.respuesta))
+    const respondida = await responderSolicitud(req.params.id, req.body.respuesta)
+    await avisarCambioDeEstado(respondida, req.body.respuesta)
+
+    res.json(respondida)
   } catch (error) {
     next(error)
   }
