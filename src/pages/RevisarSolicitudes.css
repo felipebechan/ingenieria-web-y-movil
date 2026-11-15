@@ -260,3 +260,44 @@
 .fila-clickeable:hover {
   background: #f6f8fc;
 }
+
+/* ---------- Paginación ---------- */
+.paginacion-contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.boton-paginacion {
+  background: white;
+  border: 1.5px solid #8e9db3;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f4e8c;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.boton-paginacion:hover:not(:disabled) {
+  background: #1f4e8c;
+  color: white;
+  border-color: #1f4e8c;
+}
+
+.boton-paginacion:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: #cbd5e1;
+  color: #94a3b8;
+}
+
+.info-paginacion {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5568;
+}
