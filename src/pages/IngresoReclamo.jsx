@@ -22,14 +22,26 @@ const UN_MB = 1024 * 1024;
 // mismo limite que revisa el backend
 const MAXIMO_BASE64 = 1000000;
 
+// El reclamo a medio escribir se guarda en el navegador, asi si el vecino
+// cierra la pestaña por error no pierde lo que llevaba. La foto no se guarda
+// porque en base64 llena el espacio que da el navegador.
+const BORRADOR = 'borrador-reclamo';
+
+const FORMULARIO_VACIO = { tipo: '', direccion: '', descripcion: '', terminos: false };
+
+function leerBorrador() {
+  try {
+    const guardado = localStorage.getItem(BORRADOR);
+    return guardado ? { ...FORMULARIO_VACIO, ...JSON.parse(guardado) } : FORMULARIO_VACIO;
+  } catch {
+    return FORMULARIO_VACIO;
+  }
+}
+
 const IngresoReclamo = () => {
   const router = useIonRouter();
-  const [formulario, setFormulario] = useState({
-    tipo: '',
-    direccion: '',
-    descripcion: '',
-    terminos: false
-  });
+  const [formulario, setFormulario] = useState(leerBorrador);
+  const [huboBorrador] = useState(() => Boolean(localStorage.getItem(BORRADOR)));
 
   const [presentToast] = useIonToast();
 
@@ -73,6 +85,21 @@ const IngresoReclamo = () => {
     manejarCambio('direccion', direccion);
     setDireccionElegida(true);
     setSugerencias([]);
+  };
+
+  // cada vez que cambia algo, se guarda el borrador
+  useEffect(() => {
+    const tieneAlgo = formulario.tipo || formulario.direccion || formulario.descripcion;
+    if (tieneAlgo) {
+      localStorage.setItem(BORRADOR, JSON.stringify(formulario));
+    } else {
+      localStorage.removeItem(BORRADOR);
+    }
+  }, [formulario]);
+
+  const descartarBorrador = () => {
+    localStorage.removeItem(BORRADOR);
+    setFormulario(FORMULARIO_VACIO);
   };
 
   const manejarCambio = (campo, valor) => {
@@ -174,7 +201,8 @@ const IngresoReclamo = () => {
         icon: 'checkmark-circle-outline'
       });
 
-      setFormulario({ tipo: '', direccion: '', descripcion: '', terminos: false });
+      localStorage.removeItem(BORRADOR);
+      setFormulario(FORMULARIO_VACIO);
       setFoto('');
       setUbicacion(null);
 
@@ -194,6 +222,13 @@ const IngresoReclamo = () => {
       <div className="ion-padding contenedor-relativo">
         
         <h1 className="titulo-principal">Ingresa tu reclamo:</h1>
+
+        {huboBorrador && (
+          <div className="aviso-borrador">
+            <span>Recuperamos lo que habías escrito antes.</span>
+            <button type="button" onClick={descartarBorrador}>Empezar de nuevo</button>
+          </div>
+        )}
 
         <div className="contenedor-formulario">
           
