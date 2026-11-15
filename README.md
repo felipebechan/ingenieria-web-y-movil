@@ -46,7 +46,7 @@ La versión publicada muestra la interfaz, pero para usarla con datos reales hay
 7. [Tecnologías y Librerías Utilizadas](#7-tecnologías-y-librerías-utilizadas)
 8. [Instalación y Ejecución](#8-instalación-y-ejecución)
    * [Levantar todo con Docker](#levantar-todo-con-docker)
-   * [Servicios externos](#servicios-externos)
+   * [Servicio externo: OpenStreetMap](#servicio-externo-openstreetmap)
    * [Modelo de la base de datos](#modelo-de-la-base-de-datos)
 9. [Estructura del proyecto](#9-estructura-del-proyecto)
 10. [Estado de la entrega (EP2)](#10-estado-de-la-entrega-ep2)
@@ -657,21 +657,23 @@ Un par de decisiones que conviene explicar:
 * El `schema.sql` se monta en `/docker-entrypoint-initdb.d/`, que es la carpeta que PostgreSQL ejecuta sola la primera vez que crea la base. Así no hay que cargar nada a mano.
 * El contenedor de la API espera a que la base esté sana antes de arrancar, con un `healthcheck`, porque si no se cae al intentar conectarse antes de tiempo.
 
-### Servicios externos
+### Servicio externo: OpenStreetMap
 
-**Búsqueda de direcciones con OpenStreetMap.** Al ingresar un reclamo, el vecino escribe la dirección y la aplicación le ofrece direcciones reales para elegir, con sus coordenadas. Se consulta [Nominatim](https://nominatim.openstreetmap.org), el servicio de búsqueda de OpenStreetMap, a través del endpoint `GET /api/direcciones?texto=`.
+Al ingresar un reclamo, el vecino escribe la dirección y la aplicación le ofrece direcciones reales para elegir, con sus coordenadas. Se consulta [Nominatim](https://nominatim.openstreetmap.org), el servicio de búsqueda de OpenStreetMap, a través del endpoint `GET /api/direcciones?texto=`.
 
-Se eligió este servicio porque resuelve un problema concreto del municipio: que las direcciones lleguen escritas siempre de la misma forma, en vez de "av central 123" una vez y "Avenida Central #123" la siguiente. No necesita cuenta ni clave, pero su política de uso pide identificar a la aplicación con un `User-Agent` y no hacer consultas masivas, así que la búsqueda espera a que el vecino deje de escribir y pide como máximo cinco resultados, limitados a Chile.
+**Por qué este servicio.** Resuelve un problema concreto del municipio: que las direcciones lleguen escritas siempre de la misma forma, en vez de "av central 123" una vez y "Avenida Central #123" la siguiente. Para una oficina que tiene que derivar requerimientos por sector, una dirección normalizada y con coordenadas vale bastante más que un texto libre.
 
-Si el servicio no responde en 5 segundos o devuelve un error, la lista llega vacía con un aviso y el vecino puede escribir la dirección a mano igual que antes.
+**Cómo está integrado.** No necesita cuenta ni clave, pero su política de uso pide identificar a la aplicación con un `User-Agent` y no hacer consultas masivas. Por eso la búsqueda espera 600 ms a que el vecino deje de escribir antes de consultar, pide como máximo cinco resultados y los limita a Chile. Si el servicio no responde en 5 segundos o devuelve un error, la lista llega vacía con un aviso y el vecino puede escribir la dirección a mano igual que antes.
 
 ![Búsqueda de direcciones con OpenStreetMap](docs/capturas/direcciones-openstreetmap.png)
 
-**Aviso por correo al vecino.** Cuando el funcionario cambia el estado de una solicitud, la deriva o la responde, se manda un correo con la API de [Resend](https://resend.com).
+#### Por qué no quedó el correo
 
-Para que salga de verdad hay que poner `RESEND_API_KEY` y `CORREO_DESDE`. **Si quedan vacías la aplicación funciona igual**: el aviso no se envía y queda anotado en la consola del servidor. Se decidió así porque un problema con el correo no puede impedir que la municipalidad gestione una solicitud. El envío tiene un límite de 5 segundos y cualquier error queda registrado sin cortar la respuesta al funcionario.
+La primera opción fue avisarle al vecino por correo cuando su solicitud cambiara de estado, usando la API de [Resend](https://resend.com). Está implementada y funciona, pero **no quedó como la integración principal** por una limitación del servicio: sin un dominio propio verificado, Resend solo permite enviar al correo de la cuenta que hizo la integración, y a cualquier otro responde `403` con "You can only send testing emails to your own email address" ([documentación de Resend](https://resend.com/docs/knowledge-base/403-error-resend-dev-domain)).
 
-Ojo con una limitación de Resend: sin un dominio verificado solo permite enviar al correo de la propia cuenta, así que para probarlo hay que registrarse en la aplicación con esa misma dirección.
+Como los vecinos de prueba tienen correos de ejemplo, el aviso rebotaría para todos salvo uno. Comprar y verificar un dominio quedaba fuera del alcance del proyecto, así que se prefirió OpenStreetMap, que funciona sin cuenta y se puede demostrar en cualquier computador.
+
+El código del correo se mantiene en `backend/src/services/correo.service.js` y se activa poniendo `RESEND_API_KEY` y `CORREO_DESDE`. **Si quedan vacías la aplicación funciona igual**: el aviso no se envía y queda anotado en la consola del servidor, porque un problema con el correo no puede impedir que la municipalidad gestione una solicitud.
 
 ### Variables de entorno
 
@@ -835,7 +837,7 @@ Organizado según los criterios de la pauta:
 
 **EF5 — Servicio externo**
 - [x] Búsqueda de direcciones con OpenStreetMap al ingresar un reclamo.
-- [x] Aviso por correo al vecino cuando su solicitud cambia de estado, con la API de Resend.
+- [x] Aviso por correo con Resend, implementado pero descartado como integración principal por no tener un dominio verificado.
 
 **EF6 — Despliegue con Docker**
 - [x] `Dockerfile` para el frontend y para el backend.
