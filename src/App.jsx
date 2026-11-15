@@ -9,6 +9,7 @@ import IngresoReclamo from './pages/IngresoReclamo'
 import MisSolicitudes from './pages/MisSolicitudes'
 import RevisarSolicitudes from './pages/RevisarSolicitudes'
 import DetalleSolicitud from './pages/DetalleSolicitud'
+import Notificaciones from './pages/Notificaciones'
 import DerivarSolicitud from './pages/DerivarSolicitud'
 import ResponderSolicitud from './pages/ResponderSolicitud'
 import RutaProtegida from './routes/RutaProtegida'
@@ -50,6 +51,10 @@ function App() {
             <Route
               path="/solicitud/:id"
               element={<RutaProtegida><DetalleSolicitud /></RutaProtegida>}
+            />
+            <Route
+              path="/notificaciones"
+              element={<RutaProtegida><Notificaciones /></RutaProtegida>}
             />
 
             {/* Rutas protegidas del funcionario */}

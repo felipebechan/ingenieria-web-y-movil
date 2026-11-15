@@ -7,21 +7,20 @@ function acomodar(solicitud) {
   const dia = String(fecha.getDate()).padStart(2, '0')
   const mes = String(fecha.getMonth() + 1).padStart(2, '0')
 
+  const desc = solicitud.descripcion || ''
+
   return {
     ...solicitud,
     fecha: `${dia}/${mes}/${fecha.getFullYear()}`,
-    descripcionMovil:
-      solicitud.descripcion.length > 22
-        ? solicitud.descripcion.slice(0, 22) + '...'
-        : solicitud.descripcion,
+    descripcionMovil: desc.length > 22 ? desc.slice(0, 22) + '...' : desc,
     ubicacion: solicitud.direccion
   }
 }
 
-export async function crearSolicitud({ tipo, descripcion, direccion }) {
+export async function crearSolicitud({ tipo, descripcion, direccion, foto, latitud, longitud }) {
   const creada = await pedir('/solicitudes', {
     method: 'POST',
-    body: JSON.stringify({ tipo, descripcion, direccion })
+    body: JSON.stringify({ tipo, descripcion, direccion, foto, latitud, longitud })
   })
   return acomodar(creada)
 }
@@ -42,19 +41,27 @@ export async function obtenerSolicitudPorId(id) {
 }
 
 export async function obtenerSolicitudesAdmin() {
-  const solicitudes = await pedir('/solicitudes')
-  return solicitudes.map(acomodar)
+  const respuesta = await pedir('/solicitudes')
+  return {
+    ...respuesta,
+    datos: (respuesta.datos || []).map(acomodar)
+  }
 }
 
 // Los filtros de la bandeja del funcionario viajan en la url
-export async function buscarSolicitudesAdmin(busqueda, estado) {
+export async function buscarSolicitudesAdmin(busqueda, estado, pagina = 1, porPagina = 10) {
   const filtros = new URLSearchParams()
   if (busqueda) filtros.set('busqueda', busqueda)
   if (estado) filtros.set('estado', estado)
+  if (pagina) filtros.set('pagina', pagina)
+  if (porPagina) filtros.set('porPagina', porPagina)
 
   const query = filtros.toString()
-  const solicitudes = await pedir('/solicitudes' + (query ? `?${query}` : ''))
-  return solicitudes.map(acomodar)
+  const respuesta = await pedir('/solicitudes' + (query ? `?${query}` : ''))
+  return {
+    ...respuesta,
+    datos: (respuesta.datos || []).map(acomodar)
+  }
 }
 
 // Solo el funcionario puede cambiar el estado; el backend lo guarda en el historial

@@ -1,0 +1,168 @@
+/* ---------- Pantalla Notificaciones ---------- */
+.notificaciones-seccion {
+  width: 100%;
+}
+
+.notificaciones-titulo {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--azul);
+  margin: 12px 0 6px;
+}
+
+.notificaciones-bajada {
+  font-size: 15px;
+  color: #4a5568;
+  margin-bottom: 24px;
+}
+
+.notificaciones-mensaje-estado {
+  font-size: 15px;
+  color: #4a5568;
+}
+
+.notificaciones-vacio-card {
+  background: white;
+  border: 1px solid #d3dae6;
+  border-radius: 12px;
+  padding: 48px 24px;
+  text-align: center;
+  color: #718096;
+}
+
+.icono-sin-notificaciones {
+  font-size: 48px;
+  color: #a0aec0;
+  margin-bottom: 12px;
+}
+
+.notificaciones-vacio-card p {
+  margin: 0;
+  font-size: 16px;
+  color: #4a5568;
+}
+
+.notificaciones-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notificacion-item {
+  background: white;
+  border: 1.5px solid #d4dbe8;
+  border-radius: 12px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+
+.notificacion-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  border-color: #1f4e8c;
+}
+
+/* las no leidas se destacan */
+.notificacion-item.no-leida {
+  background: #f0f6ff;
+  border-left: 5px solid #1f4e8c;
+}
+
+.notificacion-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.notificacion-folio-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.punto-no-leido {
+  width: 9px;
+  height: 9px;
+  background: #1f4e8c;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.notificacion-folio {
+  font-weight: 800;
+  font-size: 15px;
+  color: #1a202c;
+}
+
+.notificacion-tipo {
+  font-size: 14px;
+  color: #4a5568;
+}
+
+.notificacion-fecha {
+  font-size: 13px;
+  color: #718096;
+}
+
+.notificacion-cuerpo {
+  margin-bottom: 12px;
+}
+
+.notificacion-estado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.notificacion-estado-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.notificacion-comentario {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #4a5568;
+  line-height: 1.4;
+}
+
+.notificacion-pie {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.notificacion-accion {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f4e8c;
+}
+
+@media (max-width: 768px) {
+  .notificaciones-titulo {
+    font-size: 24px;
+    margin: 10px 0 6px;
+  }
+
+  .notificaciones-bajada {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .notificacion-cabecera {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .notificacion-fecha {
+    font-size: 12px;
+  }
+}

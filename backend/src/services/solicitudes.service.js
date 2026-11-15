@@ -5,12 +5,12 @@ function armarFolio(id) {
   return `#SD-${anio}-${String(id).padStart(4, '0')}`
 }
 
-export async function crearSolicitud(usuarioId, { tipo, descripcion, direccion }) {
+export async function crearSolicitud(usuarioId, { tipo, descripcion, direccion, foto, latitud, longitud }) {
   const { rows } = await consultar(
-    `INSERT INTO solicitudes (usuario_id, tipo, descripcion, direccion)
-     VALUES ($1, $2, $3, $4)
+    `INSERT INTO solicitudes (usuario_id, tipo, descripcion, direccion, foto, latitud, longitud)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
      RETURNING id`,
-    [usuarioId, tipo, descripcion, direccion]
+    [usuarioId, tipo, descripcion, direccion, foto || null, latitud ?? null, longitud ?? null]
   )
 
   const { rows: creada } = await consultar(
@@ -41,7 +41,7 @@ export async function buscarPorId(id) {
 }
 
 export async function listarTodas(filtros = {}) {
-  const { estado, busqueda } = filtros
+  const { estado, busqueda, pagina, porPagina } = filtros
   const condiciones = []
   const valores = []
 
@@ -55,18 +55,40 @@ export async function listarTodas(filtros = {}) {
     condiciones.push(`(s.folio ILIKE $${valores.length} OR u.nombre ILIKE $${valores.length})`)
   }
 
-  let sql = `SELECT s.*, u.nombre AS ciudadano
-     FROM solicitudes s
-     JOIN usuarios u ON u.id = s.usuario_id`
-
+  let whereSql = ''
   if (condiciones.length > 0) {
-    sql += ` WHERE ${condiciones.join(' AND ')}`
+    whereSql = ` WHERE ${condiciones.join(' AND ')}`
   }
 
-  sql += ' ORDER BY s.creada_en DESC, s.id DESC'
+  // total para saber cuantas paginas son en total
+  const { rows: conteo } = await consultar(
+    `SELECT COUNT(*)::int AS total
+     FROM solicitudes s
+     JOIN usuarios u ON u.id = s.usuario_id${whereSql}`,
+    valores
+  )
+  const total = conteo[0].total
 
-  const { rows } = await consultar(sql, valores)
-  return rows
+  const numPagina = Math.max(1, parseInt(pagina, 10) || 1)
+  const limite = Math.max(1, parseInt(porPagina, 10) || 10)
+  const offset = (numPagina - 1) * limite
+
+  // solo traemos las columnas que la bandeja muestra en pantalla
+  const valoresPaginacion = [...valores, limite, offset]
+  const sql = `SELECT s.id, s.folio, s.creada_en, s.tipo, s.estado, u.nombre AS ciudadano
+     FROM solicitudes s
+     JOIN usuarios u ON u.id = s.usuario_id${whereSql}
+     ORDER BY s.creada_en DESC, s.id DESC
+     LIMIT $${valores.length + 1} OFFSET $${valores.length + 2}`
+
+  const { rows: datos } = await consultar(sql, valoresPaginacion)
+
+  return {
+    datos,
+    total,
+    pagina: numPagina,
+    porPagina: limite
+  }
 }
 
 export async function cambiarEstado(id, estado, comentario) {
