@@ -17,12 +17,22 @@ La URL base es `http://localhost:3000/api`. El token se manda en la cabecera
 | **PATCH** | `/api/solicitudes/:id/derivar` | Sí (Funcionario) | `{"unidad": "Tránsito", "observacion": "..."}` | `200 OK` (Solicitud derivada y En proceso) | `400 Bad Request` (Unidad inválida), `403 Forbidden`, `404 Not Found`, `409 Conflict` (Ya cerrada) |
 | **PATCH** | `/api/solicitudes/:id/responder` | Sí (Funcionario) | `{"respuesta": "..."}` | `200 OK` (Solicitud Resuelta con su respuesta) | `400 Bad Request` (Respuesta muy corta), `403 Forbidden`, `404 Not Found`, `409 Conflict` (Ya respondida) |
 | **GET** | `/api/direcciones?texto=` | Sí | Ninguno | `200 OK` (Hasta 5 direcciones con sus coordenadas) | `400 Bad Request` (Menos de 4 caracteres), `401 Unauthorized` |
+| **GET** | `/api/notificaciones` | Sí | Ninguno | `200 OK` (Movimientos de las solicitudes del usuario) | `401 Unauthorized` |
+| **GET** | `/api/notificaciones/contador` | Sí | Ninguno | `200 OK` (`{"sinLeer": n}`) | `401 Unauthorized` |
+| **PATCH** | `/api/notificaciones/:id/leida` | Sí | Ninguno | `200 OK` (Notificación marcada) | `400`, `403` (No es suya), `404` |
+| **GET** | `/api/admin/usuarios` | Sí (Administrador) | Ninguno | `200 OK` (Cuentas con su rol) | `401`, `403` |
+| **PATCH** | `/api/admin/usuarios/:id/rol` | Sí (Administrador) | `{"rol": "funcionario"}` | `200 OK` (Usuario actualizado) | `400` (Rol inválido), `403`, `404`, `409` (Es administrador) |
+| **GET** | `/api/admin/metricas` | Sí (Administrador) | Ninguno | `200 OK` (Promedio de cierre y conteo por estado) | `401`, `403` |
 | **DELETE** | `/api/solicitudes/:id` | Sí | Ninguno | `200 OK` (Confirmación con el folio) | `403 Forbidden` (No es suya), `404 Not Found`, `409 Conflict` (Ya está en trámite) |
 
 El listado del funcionario acepta además los filtros `?busqueda=` y `?estado=`,
 que son los que usa la bandeja del panel de gestión.
 
 Un `id` que no sea un número responde `400` y no llega a consultar la base de datos.
+
+El listado del funcionario acepta también `?pagina=` y `?porPagina=`, con un tope de 50 por página, y devuelve `{ datos, total, pagina, porPagina }`. Cada solicitud abierta trae además `diasRestantes` y `semaforo`, que son el control del plazo de respuesta.
+
+Los roles son tres: `ciudadano`, `funcionario` y `administrador`. El administrador entra además a todo lo del funcionario.
 
 Las unidades válidas para derivar son `Dirección de Obras Municipales`, `Aseo y Ornato`,
 `Tránsito` y `Seguridad Ciudadana`. Derivar deja la solicitud `En proceso` y responder la

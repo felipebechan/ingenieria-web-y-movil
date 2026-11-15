@@ -652,6 +652,286 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "19. Login Administrador",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// el token del administrador queda aparte",
+              "pm.collectionVariables.set(\"token_admin\", pm.response.json().token);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"correo\": \"marta@muni.cl\", \"password\": \"123456\" }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "20. Cuentas Registradas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_admin}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/admin/usuarios",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "admin",
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "21. Metricas de Respuesta",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_admin}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/admin/metricas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "admin",
+            "metricas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "22. Asignar Rol de Funcionario",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_admin}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/admin/usuarios/2/rol",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "admin",
+            "usuarios",
+            "2",
+            "rol"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"rol\": \"funcionario\" }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "23. Error - Rol Invalido",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_admin}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/admin/usuarios/2/rol",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "admin",
+            "usuarios",
+            "2",
+            "rol"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"rol\": \"jefe\" }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "24. Error - Admin Para Funcionario",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token_funcionario}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/admin/usuarios",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "admin",
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "25. Notificaciones del Ciudadano",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/notificaciones",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "notificaciones"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "26. Contador Sin Leer",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/notificaciones/contador",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "notificaciones",
+            "contador"
+          ]
+        }
+      },
+      "response": []
     }
   ],
   "variable": [
@@ -661,6 +941,10 @@
     },
     {
       "key": "token_funcionario",
+      "value": ""
+    },
+    {
+      "key": "token_admin",
       "value": ""
     }
   ]
