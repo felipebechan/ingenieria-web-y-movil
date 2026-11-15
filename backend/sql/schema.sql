@@ -68,18 +68,19 @@ INSERT INTO usuarios (nombre, correo, rut, password_hash, rol) VALUES
 ('Luis Funcionario', 'luis@muni.cl', '33.333.333-3', '$2a$10$uEKQYZU2tVXI2yr6mLdmAOSX5dMhXbv30dBQmAkBO2LRCu0D2PQj6', 'funcionario');
 
 -- El folio va escrito aca porque el backend solo lo arma cuando la solicitud entra por la API.
--- Las fechas van distintas para que la lista se ordene y no queden todas el mismo dia.
+-- Las fechas van relativas al dia en que se carga el archivo, para que el semaforo
+-- de plazos muestre los tres colores sin tener que editar el schema cada vez.
 INSERT INTO solicitudes (folio, usuario_id, tipo, direccion, descripcion, estado, unidad, respuesta, creada_en) VALUES
-('#SD-2026-0001', 1, 'Alumbrado', 'Av. Central 123', 'Poste apagado hace una semana', 'En revisión', NULL, NULL, '2026-09-28 10:15'),
-('#SD-2026-0002', 1, 'Vialidad', 'Calle Sur 45', 'Hoyo grande en la calle', 'En proceso', 'Dirección de Obras Municipales', NULL, '2026-10-02 16:40'),
-('#SD-2026-0003', 2, 'Aseo y limpieza', 'Plaza Norte', 'Basura acumulada en la plaza', 'Resuelto', 'Aseo y Ornato', 'Se realizó el retiro de la basura acumulada el 10 de octubre. La plaza quedó despejada y se reforzó la frecuencia de recolección en el sector.', '2026-10-07 09:05'),
-('#SD-2026-0004', 2, 'Alumbrado', 'Pasaje Este 8', 'Foco roto en el pasaje', 'Rechazado', NULL, NULL, '2026-10-13 18:20'),
-('#SD-2026-0005', 1, 'Aseo y limpieza', 'Avenida Mar 99', 'Escombros botados en la vereda', 'En revisión', NULL, NULL, '2026-10-18 11:30');
+('#SD-2026-0001', 1, 'Alumbrado', 'Av. Central 123', 'Poste apagado hace una semana', 'En revisión', NULL, NULL, NOW() - INTERVAL '1 day'),
+('#SD-2026-0002', 1, 'Vialidad', 'Calle Sur 45', 'Hoyo grande en la calle', 'En proceso', 'Dirección de Obras Municipales', NULL, NOW() - INTERVAL '16 days'),
+('#SD-2026-0003', 2, 'Aseo y limpieza', 'Plaza Norte', 'Basura acumulada en la plaza', 'Resuelto', 'Aseo y Ornato', 'Se realizó el retiro de la basura acumulada y se reforzó la frecuencia de recolección en el sector.', NOW() - INTERVAL '30 days'),
+('#SD-2026-0004', 2, 'Alumbrado', 'Pasaje Este 8', 'Foco roto en el pasaje', 'Rechazado', NULL, NULL, NOW() - INTERVAL '25 days'),
+('#SD-2026-0005', 1, 'Aseo y limpieza', 'Avenida Mar 99', 'Escombros botados en la vereda', 'En revisión', NULL, NULL, NOW() - INTERVAL '24 days');
 
 -- La fecha va escrita para que cada movimiento quede despues de la solicitud
 -- a la que pertenece y no en el momento en que se carga este archivo.
 INSERT INTO historial_estados (solicitud_id, estado, comentario, registrado_en) VALUES
-(2, 'En proceso', 'Se derivó a obras públicas', '2026-10-05 09:30'),
-(3, 'En proceso', 'Se asignó al camión de aseo', '2026-10-08 11:45'),
-(3, 'Resuelto', 'Limpieza completada por el camión de aseo', '2026-10-10 15:10'),
-(4, 'Rechazado', 'El poste pertenece a un condominio privado', '2026-10-15 12:00');
+(2, 'En proceso', 'Se derivó a obras públicas', NOW() - INTERVAL '13 days'),
+(3, 'En proceso', 'Se asignó al camión de aseo', NOW() - INTERVAL '27 days'),
+(3, 'Resuelto', 'Limpieza completada por el camión de aseo', NOW() - INTERVAL '25 days'),
+(4, 'Rechazado', 'El poste pertenece a un condominio privado', NOW() - INTERVAL '22 days');
