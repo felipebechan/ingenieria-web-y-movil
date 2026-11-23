@@ -26,7 +26,7 @@ function Login() {
     try {
       const { usuario, token } = await loginApi(correo, password)
       iniciarSesion(usuario.rol, usuario.nombre, token)
-      router.push(usuario.rol === 'funcionario' ? '/revisar-solicitudes' : '/inicio')
+      router.push(usuario.rol === 'ciudadano' ? '/inicio' : '/revisar-solicitudes')
     } catch (problema) {
       setError(problema.message)
     } finally {

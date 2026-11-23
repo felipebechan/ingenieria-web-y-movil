@@ -89,7 +89,9 @@ function Perfil() {
               <div>
                 <span className="perfil-etiqueta">Tipo de cuenta</span>
                 <span className="perfil-valor">
-                  {datos.rol === 'funcionario' ? 'Funcionario municipal' : 'Vecino'}
+                  {datos.rol === 'administrador'
+                    ? 'Administrador'
+                    : datos.rol === 'funcionario' ? 'Funcionario municipal' : 'Vecino'}
                 </span>
               </div>
             </div>
@@ -100,7 +102,7 @@ function Perfil() {
 
             <p className="perfil-numero">{datos.solicitudes}</p>
             <p className="perfil-leyenda">
-              {datos.rol === 'funcionario'
+              {esAdmin
                 ? 'solicitudes ingresadas con esta cuenta'
                 : 'solicitudes que has ingresado'}
             </p>

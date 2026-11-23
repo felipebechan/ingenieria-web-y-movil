@@ -19,6 +19,11 @@ function idValido(id) {
   return /^\d+$/.test(id)
 }
 
+// el admin puede hacer todo lo que hace el funcionario
+function esGestor(usuario) {
+  return usuario.rol === 'funcionario' || usuario.rol === 'administrador'
+}
+
 export async function crear(req, res, next) {
   try {
     const errores = validarSolicitud(req.body)
@@ -62,9 +67,9 @@ export async function obtener(req, res, next) {
       return res.status(404).json({ error: 'La solicitud no existe' })
     }
 
-    // un vecino solo puede ver las suyas, el funcionario puede ver todas
+    // un vecino solo puede ver las suyas, el funcionario y el admin ven todas
     const esDueño = solicitud.usuario_id === req.usuario.id
-    if (!esDueño && req.usuario.rol !== 'funcionario') {
+    if (!esDueño && !esGestor(req.usuario)) {
       return res.status(403).json({ error: 'No tienes permiso para ver esta solicitud' })
     }
 
@@ -126,7 +131,7 @@ export async function historial(req, res, next) {
     }
 
     const esDueño = solicitud.usuario_id === req.usuario.id
-    if (!esDueño && req.usuario.rol !== 'funcionario') {
+    if (!esDueño && !esGestor(req.usuario)) {
       return res.status(403).json({ error: 'No tienes permiso para ver esta solicitud' })
     }
 
@@ -148,7 +153,7 @@ export async function eliminar(req, res, next) {
     }
 
     const esDueño = solicitud.usuario_id === req.usuario.id
-    const esFuncionario = req.usuario.rol === 'funcionario'
+    const esFuncionario = esGestor(req.usuario)
 
     if (!esDueño && !esFuncionario) {
       return res.status(403).json({ error: 'No tienes permiso para eliminar esta solicitud' })
